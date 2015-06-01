@@ -1,0 +1,30 @@
+{
+  "name": "DVP-PBXService",
+  "version": "1.0.0",
+  "description": "DVP-PBXService\r ==============",
+  "main": "index.js",
+  "dependencies": {
+    "node-uuid": "^1.4.3",
+    "DVP-Common": "DuoSoftware/DVP-Common",
+    "DVP-DBModels": "DuoSoftware/DVP-DBModels",
+    "pg": "^4.3.0",
+    "pg-hstore": "^2.3.2",
+    "restify": "^3.0.2",
+    "sequelize": "^3.0.0",
+    "config": "^1.13.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DuoSoftware/DVP-PBXService.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DuoSoftware/DVP-PBXService/issues"
+  },
+  "homepage": "https://github.com/DuoSoftware/DVP-PBXService"
+}
