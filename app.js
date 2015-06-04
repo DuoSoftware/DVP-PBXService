@@ -38,126 +38,252 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
         var companyId = 1;
         var tenantId = 3;
         var userUuid = '';
+        var fromUserUuid = '';
 
         if(extraData)
         {
             userUuid = extraData['UserUuid'];
+            fromUserUuid = extraData['FromUserUuid'];
         }
 
-        if(userUuid)
+        if(direction === 'IN')
         {
-            pbxBackendHandler.GetAllPbxUserDetailsByIdDB(reqId, userUuid, companyId, tenantId, function(err, pbxDetails)
-            {
-                if(err || !pbxDetails)
-                {
-                    var jsonResponse = JSON.stringify(pbxUserConf);
-                    res.end(jsonResponse);
-                }
-                else
-                {
-                    if(pbxDetails.PBXUserTemplate)
+            //try getting user for did
+
+
+                    pbxBackendHandler.GetAllPbxUserDetailsByIdDB(reqId, userUuid, companyId, tenantId, function(err, pbxDetails)
                     {
-                        var usrStatus = pbxDetails.PBXUserTemplate.UserStatus;
-                        var advancedMethod = pbxDetails.PBXUserTemplate.AdvancedRouteMethod;
-                        var voicemailEnabled = pbxDetails.VoicemailEnabled;
-                        var bypassMedia = pbxDetails.BypassMedia;
-
-                        if(usrStatus === 'DND')
+                        if(err || !pbxDetails)
                         {
-                            //xml DND response
-                            pbxUserConf.OperationType = 'DND';
-                            pbxUserConf.UserRefId = userUuid;
-                            var jsonResponse = JSON.stringify(pbxUserConf);
-                            res.end(jsonResponse);
-                        }
-                        else if(usrStatus === 'AVAILABLE')
-                        {
-                            //normal user xml
-
-                            if(advancedMethod === 'FOLLOW_ME')
-                            {
-                                pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, function(err, fmList)
-                                {
-                                    if(err)
-                                    {
-                                        var jsonResponse = JSON.stringify(pbxUserConf);
-                                        res.end(jsonResponse);
-                                    }
-                                    else
-                                    {
-                                        //Get follow me config and create xml
-                                        pbxUserConf.OperationType = 'FOLLOW_ME';
-                                        pbxUserConf.UserRefId = userUuid;
-                                        pbxUserConf.FollowMe = fmList;
-                                        pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                        pbxUserConf.BypassMedia = bypassMedia;
-                                        var jsonResponse = JSON.stringify(pbxUserConf);
-                                        res.end(jsonResponse);
-                                    }
-
-                                });
-
-                            }
-                            else if(advancedMethod === 'FORWARD')
-                            {
-                                pbxUserConf.OperationType = 'FORWARD';
-                                pbxUserConf.UserRefId = userUuid;
-                                pbxUserConf.Forward = undefined;
-                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                pbxUserConf.BypassMedia = bypassMedia;
-                                var jsonResponse = JSON.stringify(pbxUserConf);
-                                res.end(jsonResponse);
-
-                            }
-                            else
-                            {
-                                pbxUserConf.OperationType = 'USER_DIAL';
-                                pbxUserConf.UserRefId = userUuid;
-                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                pbxUserConf.BypassMedia = bypassMedia;
-
-                                var jsonResponse = JSON.stringify(pbxUserConf);
-                                res.end(jsonResponse);
-                            }
-                        }
-                        else if(userStatus === 'CALL_DIVERT')
-                        {
-                            //pick outbound rule and create outbound gateway xml
-                            pbxUserConf.OperationType = 'CALL_DIVERT';
-                            pbxUserConf.UserRefId = userUuid;
-                            pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                            pbxUserConf.BypassMedia = bypassMedia;
-
                             var jsonResponse = JSON.stringify(pbxUserConf);
                             res.end(jsonResponse);
                         }
                         else
                         {
-                            pbxUserConf.OperationType = 'USER_DIAL';
-                            pbxUserConf.UserRefId = userUuid;
-                            pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                            pbxUserConf.BypassMedia = bypassMedia;
+                            if(pbxDetails.PBXUserTemplate)
+                            {
+                                var usrStatus = pbxDetails.PBXUserTemplate.UserStatus;
+                                var advancedMethod = pbxDetails.PBXUserTemplate.AdvancedRouteMethod;
+                                var voicemailEnabled = pbxDetails.VoicemailEnabled;
+                                var bypassMedia = pbxDetails.BypassMedia;
 
-                            var jsonResponse = JSON.stringify(pbxUserConf);
-                            res.end(jsonResponse);
+                                if(usrStatus === 'DND')
+                                {
+                                    //xml DND response
+                                    pbxUserConf.OperationType = 'DND';
+                                    pbxUserConf.UserRefId = userUuid;
+                                    var jsonResponse = JSON.stringify(pbxUserConf);
+                                    res.end(jsonResponse);
+                                }
+                                else if(usrStatus === 'AVAILABLE')
+                                {
+                                    //normal user xml
+
+                                    if(advancedMethod === 'FOLLOW_ME')
+                                    {
+                                        pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, function(err, fmList)
+                                        {
+                                            if(err)
+                                            {
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
+                                            }
+                                            else
+                                            {
+                                                //Get follow me config and create xml
+                                                pbxUserConf.OperationType = 'FOLLOW_ME';
+                                                pbxUserConf.UserRefId = userUuid;
+                                                pbxUserConf.FollowMe = fmList;
+                                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                pbxUserConf.BypassMedia = bypassMedia;
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
+                                            }
+
+                                        });
+
+                                    }
+                                    else if(advancedMethod === 'FORWARD')
+                                    {
+                                        pbxUserConf.OperationType = 'FORWARD';
+                                        pbxUserConf.UserRefId = userUuid;
+                                        pbxUserConf.Forward = undefined;
+                                        pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                        pbxUserConf.BypassMedia = bypassMedia;
+                                        var jsonResponse = JSON.stringify(pbxUserConf);
+                                        res.end(jsonResponse);
+
+                                    }
+                                    else
+                                    {
+                                        pbxUserConf.OperationType = 'USER_DIAL';
+                                        pbxUserConf.UserRefId = userUuid;
+                                        pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                        pbxUserConf.BypassMedia = bypassMedia;
+
+                                        var jsonResponse = JSON.stringify(pbxUserConf);
+                                        res.end(jsonResponse);
+                                    }
+                                }
+                                else if(userStatus === 'CALL_DIVERT')
+                                {
+                                    //pick outbound rule and create outbound gateway xml
+                                    pbxUserConf.OperationType = 'CALL_DIVERT';
+                                    pbxUserConf.UserRefId = userUuid;
+                                    pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                    pbxUserConf.BypassMedia = bypassMedia;
+
+                                    var jsonResponse = JSON.stringify(pbxUserConf);
+                                    res.end(jsonResponse);
+                                }
+                                else
+                                {
+                                    pbxUserConf.OperationType = 'USER_DIAL';
+                                    pbxUserConf.UserRefId = userUuid;
+                                    pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                    pbxUserConf.BypassMedia = bypassMedia;
+
+                                    var jsonResponse = JSON.stringify(pbxUserConf);
+                                    res.end(jsonResponse);
+                                }
+
+                            }
+                            else
+                            {
+                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                res.end(jsonResponse);
+                            }
                         }
-
-                    }
-                    else
+                    })
+        }
+        else
+        {
+            if(userUuid)
+            {
+                pbxBackendHandler.GetAllPbxUserDetailsByIdDB(reqId, userUuid, companyId, tenantId, function(err, pbxDetails)
+                {
+                    if(err || !pbxDetails)
                     {
                         var jsonResponse = JSON.stringify(pbxUserConf);
                         res.end(jsonResponse);
                     }
-                }
-            })
+                    else
+                    {
+                        if(fromUserUuid)
+                        {
+                            pbxBackendHandler.GetPbxUserByIdDB(reqId, fromUserUuid, companyId, tenantId, function(err, fromPbxUser)
+                            {
+                                if(!err && fromPbxUser)
+                                {
+                                    pbxUserConf.DodNumber = fromPbxUser.DodNumber;
+                                    pbxUserConf.DodActive = fromPbxUser.DodActive;
+
+                                    if(pbxDetails.PBXUserTemplate)
+                                    {
+                                        var usrStatus = pbxDetails.PBXUserTemplate.UserStatus;
+                                        var advancedMethod = pbxDetails.PBXUserTemplate.AdvancedRouteMethod;
+                                        var voicemailEnabled = pbxDetails.VoicemailEnabled;
+                                        var bypassMedia = pbxDetails.BypassMedia;
+
+                                        if(usrStatus === 'DND')
+                                        {
+                                            //xml DND response
+                                            pbxUserConf.OperationType = 'DND';
+                                            pbxUserConf.UserRefId = userUuid;
+                                            var jsonResponse = JSON.stringify(pbxUserConf);
+                                            res.end(jsonResponse);
+                                        }
+                                        else if(usrStatus === 'AVAILABLE')
+                                        {
+                                            //normal user xml
+
+                                            if(advancedMethod === 'FOLLOW_ME')
+                                            {
+                                                pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, function(err, fmList)
+                                                {
+                                                    if(err)
+                                                    {
+                                                        var jsonResponse = JSON.stringify(pbxUserConf);
+                                                        res.end(jsonResponse);
+                                                    }
+                                                    else
+                                                    {
+                                                        //Get follow me config and create xml
+                                                        pbxUserConf.OperationType = 'FOLLOW_ME';
+                                                        pbxUserConf.UserRefId = userUuid;
+                                                        pbxUserConf.FollowMe = fmList;
+                                                        pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                        pbxUserConf.BypassMedia = bypassMedia;
+                                                        var jsonResponse = JSON.stringify(pbxUserConf);
+                                                        res.end(jsonResponse);
+                                                    }
+
+                                                });
+
+                                            }
+                                            else if(advancedMethod === 'FORWARD')
+                                            {
+                                                pbxUserConf.OperationType = 'FORWARD';
+                                                pbxUserConf.UserRefId = userUuid;
+                                                pbxUserConf.Forward = undefined;
+                                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                pbxUserConf.BypassMedia = bypassMedia;
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
+
+                                            }
+                                            else
+                                            {
+                                                pbxUserConf.OperationType = 'USER_DIAL';
+                                                pbxUserConf.UserRefId = userUuid;
+                                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                pbxUserConf.BypassMedia = bypassMedia;
+
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
+                                            }
+                                        }
+                                        else if(userStatus === 'CALL_DIVERT')
+                                        {
+                                            //pick outbound rule and create outbound gateway xml
+                                            pbxUserConf.OperationType = 'CALL_DIVERT';
+                                            pbxUserConf.UserRefId = userUuid;
+                                            pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                            pbxUserConf.BypassMedia = bypassMedia;
+
+                                            var jsonResponse = JSON.stringify(pbxUserConf);
+                                            res.end(jsonResponse);
+                                        }
+                                        else
+                                        {
+                                            pbxUserConf.OperationType = 'USER_DIAL';
+                                            pbxUserConf.UserRefId = userUuid;
+                                            pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                            pbxUserConf.BypassMedia = bypassMedia;
+
+                                            var jsonResponse = JSON.stringify(pbxUserConf);
+                                            res.end(jsonResponse);
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        var jsonResponse = JSON.stringify(pbxUserConf);
+                                        res.end(jsonResponse);
+                                    }
+
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+            else
+            {
+                var jsonResponse = JSON.stringify(pbxUserConf);
+                res.end(jsonResponse);
+            }
         }
-
-        //Call SIP UAC Service and pass dnis and security token to get sip uac info
-        //if uac record found get the relevant pbx configuration
-        //if uac record
-
-
-
 
     }
     catch(ex)
@@ -1005,7 +1131,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PbxMasterData', function(re
 
         logger.debug('[DVP-PBXService.AddPbxMasterData] - [%s] - HTTP Request Received - Req Body : ', reqId, reqBody);
 
-        pbxBackendHandler.AddPbxMasterData(reqId, reqBody, function (err, result)
+        pbxBackendHandler.AddPbxMasterDataDB(reqId, reqBody, function (err, result)
         {
             if (err)
             {

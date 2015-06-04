@@ -19,7 +19,7 @@ var AddPbxMasterDataDB = function(reqId, pbxMasterData, callback)
                         if(pbxMData.CompanyId == pbxMasterData.CompanyId && pbxMData.TenantId == pbxMasterData.TenantId)
                         {
                             //allow update
-                            pbxMData.updateAttributes({BypassMedia: pbxMasterData.BypassMedia, IgnoreEarlyMedia: pbxMasterData.IgnoreEarlyMedia, VoicemailEnabled: pbxMasterData.VoicemailEnabled}).complete(function (err)
+                            pbxMData.updateAttributes({BypassMedia: pbxMasterData.BypassMedia, IgnoreEarlyMedia: pbxMasterData.IgnoreEarlyMedia, VoicemailEnabled: pbxMasterData.VoicemailEnabled, AllowOutbound: pbxMasterData.AllowOutbound}).complete(function (err)
                             {
                                 if(err)
                                 {
@@ -268,6 +268,7 @@ var AddPbxUserDB = function(reqId, pbxUserData, callback)
 
 };
 
+
 var DeletePbxUserDB = function(reqId, pbxUserUuid, companyId, tenantId, callback)
 {
     try
@@ -306,6 +307,7 @@ var DeletePbxUserDB = function(reqId, pbxUserUuid, companyId, tenantId, callback
     }
 
 };
+
 
 var DeletePbxUserTemplateDB = function(reqId, templateId, companyId, tenantId, callback)
 {
