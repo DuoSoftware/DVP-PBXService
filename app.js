@@ -6,6 +6,7 @@ var config = require('config');
 var pbxBackendHandler = require('./PbxBackendHandler.js');
 var dbModel = require('DVP-DBModels');
 var extApi = require('./PbxExternalApiAccess.js');
+var underscore = require('underscore');
 
 var hostIp = config.Host.Ip;
 var hostPort = config.Host.Port;
@@ -19,6 +20,89 @@ var server = restify.createServer({
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
+
+var FeatureCodeHandler = function(reqId, dnis, companyId, tenantId, callback)
+{
+    try
+    {
+        var firstCharacter = dnis.charAt(0);
+
+        if(firstCharacter === '*')
+        {
+            //process feature codes
+            var splitArr = dnis.split('*', 2);
+
+            pbxBackendHandler.GetFeatureCodesForCompanyDB(reqId, companyId, tenantId, function(err, fc)
+            {
+                if(fc)
+                {
+                    var obj = {};
+
+                    if(fc.Barge)
+                    {
+                        if(!obj[fc.Barge])
+                        {
+                            obj[fc.Barge] = bits['Barge'];
+                        }
+
+                    }
+                    if(fc.Intercept)
+                    {
+                        if(!obj[fc.Intercept])
+                        {
+                            obj[fc.Intercept] = bits['Intercept'];
+                        }
+
+                    }
+                    if(fc.Park)
+                    {
+                        if(!obj[fc.Park])
+                        {
+                            obj[fc.Park] = bits['Park'];
+                        }
+
+                    }
+
+                    if(fc.VoiceMail)
+                    {
+                        if(!obj[fc.VoiceMail])
+                        {
+                            obj[fc.VoiceMail] = bits['VoiceMail'];
+                        }
+
+                    }
+
+                    if(fc.PickUp)
+                    {
+                        if(!obj[fc.PickUp])
+                        {
+                            obj[fc.PickUp] = bits['PickUp'];
+                        }
+
+                    }
+
+                    var opType = obj[splitArr[1]];
+
+                    callback(undefined, opType);
+
+                }
+                else
+                {
+                    callback(undefined, undefined);
+                }
+            })
+
+        }
+        else
+        {
+            callback(undefined, undefined);
+        }
+    }
+    catch(ex)
+    {
+        callback(ex, undefined);
+    }
+}
 
 
 server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', function(req, res, next)
@@ -173,64 +257,88 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                         {
                             pbxBackendHandler.GetPbxUserByIdDB(reqId, fromUserUuid, companyId, tenantId, function(err, fromPbxUser)
                             {
+
                                 if(!err && fromPbxUser)
                                 {
-                                    pbxUserConf.DodNumber = fromPbxUser.DodNumber;
-                                    pbxUserConf.DodActive = fromPbxUser.DodActive;
 
-                                    if(pbxDetails.PBXUserTemplate)
-                                    {
-                                        var usrStatus = pbxDetails.PBXUserTemplate.UserStatus;
-                                        var advancedMethod = pbxDetails.PBXUserTemplate.AdvancedRouteMethod;
-                                        var voicemailEnabled = pbxDetails.VoicemailEnabled;
-                                        var bypassMedia = pbxDetails.BypassMedia;
+                                        pbxUserConf.DodNumber = fromPbxUser.DodNumber;
+                                        pbxUserConf.DodActive = fromPbxUser.DodActive;
 
-                                        if(usrStatus === 'DND')
+                                        if(pbxDetails.PBXUserTemplate)
                                         {
-                                            //xml DND response
-                                            pbxUserConf.OperationType = 'DND';
-                                            pbxUserConf.UserRefId = userUuid;
-                                            var jsonResponse = JSON.stringify(pbxUserConf);
-                                            res.end(jsonResponse);
-                                        }
-                                        else if(usrStatus === 'AVAILABLE')
-                                        {
-                                            //normal user xml
+                                            var usrStatus = pbxDetails.PBXUserTemplate.UserStatus;
+                                            var advancedMethod = pbxDetails.PBXUserTemplate.AdvancedRouteMethod;
+                                            var voicemailEnabled = pbxDetails.VoicemailEnabled;
+                                            var bypassMedia = pbxDetails.BypassMedia;
 
-                                            if(advancedMethod === 'FOLLOW_ME')
+                                            if(usrStatus === 'DND')
                                             {
-                                                pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, function(err, fmList)
-                                                {
-                                                    if(err)
-                                                    {
-                                                        var jsonResponse = JSON.stringify(pbxUserConf);
-                                                        res.end(jsonResponse);
-                                                    }
-                                                    else
-                                                    {
-                                                        //Get follow me config and create xml
-                                                        pbxUserConf.OperationType = 'FOLLOW_ME';
-                                                        pbxUserConf.UserRefId = userUuid;
-                                                        pbxUserConf.FollowMe = fmList;
-                                                        pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                                        pbxUserConf.BypassMedia = bypassMedia;
-                                                        var jsonResponse = JSON.stringify(pbxUserConf);
-                                                        res.end(jsonResponse);
-                                                    }
-
-                                                });
-
-                                            }
-                                            else if(advancedMethod === 'FORWARD')
-                                            {
-                                                pbxUserConf.OperationType = 'FORWARD';
+                                                //xml DND response
+                                                pbxUserConf.OperationType = 'DND';
                                                 pbxUserConf.UserRefId = userUuid;
-                                                pbxUserConf.Forward = undefined;
-                                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                                pbxUserConf.BypassMedia = bypassMedia;
                                                 var jsonResponse = JSON.stringify(pbxUserConf);
                                                 res.end(jsonResponse);
+                                            }
+                                            else if(usrStatus === 'AVAILABLE')
+                                            {
+                                                //normal user xml
 
+                                                if(advancedMethod === 'FOLLOW_ME')
+                                                {
+                                                    pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, function(err, fmList)
+                                                    {
+                                                        if(err)
+                                                        {
+                                                            var jsonResponse = JSON.stringify(pbxUserConf);
+                                                            res.end(jsonResponse);
+                                                        }
+                                                        else
+                                                        {
+                                                            //Get follow me config and create xml
+                                                            pbxUserConf.OperationType = 'FOLLOW_ME';
+                                                            pbxUserConf.UserRefId = userUuid;
+                                                            pbxUserConf.FollowMe = fmList;
+                                                            pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                            pbxUserConf.BypassMedia = bypassMedia;
+                                                            var jsonResponse = JSON.stringify(pbxUserConf);
+                                                            res.end(jsonResponse);
+                                                        }
+
+                                                    });
+
+                                                }
+                                                else if(advancedMethod === 'FORWARD')
+                                                {
+                                                    pbxUserConf.OperationType = 'FORWARD';
+                                                    pbxUserConf.UserRefId = userUuid;
+                                                    pbxUserConf.Forward = undefined;
+                                                    pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                    pbxUserConf.BypassMedia = bypassMedia;
+                                                    var jsonResponse = JSON.stringify(pbxUserConf);
+                                                    res.end(jsonResponse);
+
+                                                }
+                                                else
+                                                {
+                                                    pbxUserConf.OperationType = 'USER_DIAL';
+                                                    pbxUserConf.UserRefId = userUuid;
+                                                    pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                    pbxUserConf.BypassMedia = bypassMedia;
+
+                                                    var jsonResponse = JSON.stringify(pbxUserConf);
+                                                    res.end(jsonResponse);
+                                                }
+                                            }
+                                            else if(userStatus === 'CALL_DIVERT')
+                                            {
+                                                //pick outbound rule and create outbound gateway xml
+                                                pbxUserConf.OperationType = 'CALL_DIVERT';
+                                                pbxUserConf.UserRefId = userUuid;
+                                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                pbxUserConf.BypassMedia = bypassMedia;
+
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
                                             }
                                             else
                                             {
@@ -242,46 +350,84 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                                                 var jsonResponse = JSON.stringify(pbxUserConf);
                                                 res.end(jsonResponse);
                                             }
-                                        }
-                                        else if(userStatus === 'CALL_DIVERT')
-                                        {
-                                            //pick outbound rule and create outbound gateway xml
-                                            pbxUserConf.OperationType = 'CALL_DIVERT';
-                                            pbxUserConf.UserRefId = userUuid;
-                                            pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                            pbxUserConf.BypassMedia = bypassMedia;
 
-                                            var jsonResponse = JSON.stringify(pbxUserConf);
-                                            res.end(jsonResponse);
                                         }
                                         else
                                         {
-                                            pbxUserConf.OperationType = 'USER_DIAL';
-                                            pbxUserConf.UserRefId = userUuid;
-                                            pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                            pbxUserConf.BypassMedia = bypassMedia;
-
                                             var jsonResponse = JSON.stringify(pbxUserConf);
                                             res.end(jsonResponse);
                                         }
 
-                                    }
-                                    else
-                                    {
-                                        var jsonResponse = JSON.stringify(pbxUserConf);
-                                        res.end(jsonResponse);
-                                    }
-
                                 }
                             })
+                        }
+                        else
+                        {
+                            var jsonResponse = JSON.stringify(pbxUserConf);
+                            res.end(jsonResponse);
                         }
                     }
                 })
             }
             else
             {
-                var jsonResponse = JSON.stringify(pbxUserConf);
-                res.end(jsonResponse);
+                //Check for feature codes
+                FeatureCodeHandler(reqId, dnis, companyId, tenantId, function(err, feature)
+                {
+                    if(feature)
+                    {
+                        pbxUserConf.OperationType = feature;
+
+                        var jsonResponse = JSON.stringify(pbxUserConf);
+                        res.end(jsonResponse);
+                    }
+                    else
+                    {
+                        if(fromUserUuid)
+                        {
+                            pbxBackendHandler.GetPbxUserByIdDB(reqId, fromUserUuid, companyId, tenantId, function (err, fromPbxUser)
+                            {
+                                if(fromPbxUser)
+                                {
+                                    if(!fromPbxUser.AllowOutbound)
+                                    {
+                                        var outNumArr = JSON.parse(fromPbxUser.AllowedNumbers);
+
+                                        var outNum = underscore.find(outNumArr, function (num)
+                                        {
+                                            return num == dnis;
+                                        });
+
+                                        if (outNum)
+                                        {
+                                            pbxUserConf.OperationType = 'GATEWAY';
+                                            pbxUserConf.UserRefId = undefined;
+                                            pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                            pbxUserConf.BypassMedia = bypassMedia;
+
+                                        }
+                                    }
+
+                                }
+
+                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                res.end(jsonResponse);
+
+                            })
+                        }
+                        else
+                        {
+                            var jsonResponse = JSON.stringify(pbxUserConf);
+                            res.end(jsonResponse);
+                        }
+                    }
+                });
+
+
+                //Check from user and check whether user is eligible for outbound call
+
+
+
             }
         }
 
@@ -292,6 +438,185 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
         var jsonResponse = JSON.stringify(pbxUserConf);
         logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
         res.end(jsonResponse);
+
+    }
+    return next();
+
+});
+
+server.post('/DVP/API/' + hostVersion + '/PBXService/AssignAllowedNumber', function(req, res, next)
+{
+    var reqId = nodeUuid.v1();
+    try
+    {
+        var securityToken = req.header('authorization');
+        var reqBody = req.body;
+
+        logger.debug('[DVP-PBXService.AssignAllowedNumber] - [%s] - HTTP Request Received - Req Body : ', reqId, reqBody);
+
+        if(reqBody && securityToken)
+        {
+            var pbxUserUuid = req.body.PbxUserUuid;
+
+            var allowedNumArr = req.body.AllowedNumbers;
+
+            if(pbxUserUuid && allowedNumArr)
+            {
+                pbxBackendHandler.AddPbxUserAllowedNumbersDB(reqId, pbxUserUuid, 1, 3, allowedNumArr, function(err, assignResult)
+                {
+                    if(err)
+                    {
+                        var jsonString = messageFormatter.FormatMessage(err, "Assign PBX User allowed numbers Failed", false, false);
+                        logger.debug('[DVP-PBXService.AssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                        res.end(jsonString);
+                    }
+                    else
+                    {
+                        var jsonString = messageFormatter.FormatMessage(err, "Assign PBX User allowed numbers Success", true, assignResult);
+                        logger.debug('[DVP-PBXService.AssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                        res.end(jsonString);
+                    }
+
+                })
+            }
+            else
+            {
+                var jsonString = messageFormatter.FormatMessage(new Error('Pbx user id and assign number list not given'), "Pbx user id and assign number list not given", false, false);
+                logger.debug('[DVP-PBXService.AssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                res.end(jsonString);
+            }
+        }
+        else
+        {
+            var jsonString = messageFormatter.FormatMessage(new Error('Empty request body or no authorization token set'), "Empty request body or no authorization token set", false, false);
+            logger.debug('[DVP-PBXService.AssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+            res.end(jsonString);
+
+        }
+
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.AssignAllowedNumber] - [%s] - Exception Occurred', reqId, ex);
+        var jsonString = messageFormatter.FormatMessage(ex, "Exception occurred", false, false);
+        logger.debug('[DVP-PBXService.AssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+        res.end(jsonString);
+
+    }
+    return next();
+
+});
+
+server.post('/DVP/API/' + hostVersion + '/PBXService/UnAssignAllowedNumber', function(req, res, next)
+{
+    var reqId = nodeUuid.v1();
+    try
+    {
+        var securityToken = req.header('authorization');
+        var reqBody = req.body;
+
+        logger.debug('[DVP-PBXService.UnAssignAllowedNumber] - [%s] - HTTP Request Received - Req Body : ', reqId, reqBody);
+
+        if(reqBody && securityToken)
+        {
+            var pbxUserUuid = req.body.PbxUserUuid;
+
+            var allowedNum = req.body.AllowedNumber;
+
+            if(pbxUserUuid && allowedNum)
+            {
+                pbxBackendHandler.RemovePbxUserAllowedNumberDB(reqId, pbxUserUuid, 1, 3, allowedNum, function(err, assignResult)
+                {
+                    if(err)
+                    {
+                        var jsonString = messageFormatter.FormatMessage(err, "Un Assign PBX User allowed number Failed", false, false);
+                        logger.debug('[DVP-PBXService.UnAssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                        res.end(jsonString);
+                    }
+                    else
+                    {
+                        var jsonString = messageFormatter.FormatMessage(err, "Un Assign PBX User allowed number Success", true, assignResult);
+                        logger.debug('[DVP-PBXService.UnAssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                        res.end(jsonString);
+                    }
+
+                })
+            }
+            else
+            {
+                var jsonString = messageFormatter.FormatMessage(new Error('Pbx user id and un assign number not given'), "Pbx user id and assign number list not given", false, false);
+                logger.debug('[DVP-PBXService.UnAssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                res.end(jsonString);
+            }
+        }
+        else
+        {
+            var jsonString = messageFormatter.FormatMessage(new Error('Empty request body or no authorization token set'), "Empty request body or no authorization token set", false, false);
+            logger.debug('[DVP-PBXService.UnAssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+            res.end(jsonString);
+
+        }
+
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.UnAssignAllowedNumber] - [%s] - Exception Occurred', reqId, ex);
+        var jsonString = messageFormatter.FormatMessage(ex, "Exception occurred", false, false);
+        logger.debug('[DVP-PBXService.UnAssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+        res.end(jsonString);
+
+    }
+    return next();
+
+});
+
+server.post('/DVP/API/' + hostVersion + '/PBXService/FeatureCodeTemplate', function(req, res, next)
+{
+    var reqId = nodeUuid.v1();
+    try
+    {
+        var securityToken = req.header('authorization');
+        var reqBody = req.body;
+
+        logger.debug('[DVP-PBXService.FeatureCodeTemplate] - [%s] - HTTP Request Received - Req Body : ', reqId, reqBody);
+
+        if(reqBody && securityToken)
+        {
+            pbxBackendHandler.AddFeatureCodesDB(reqId, reqBody, 1, 3, function (err, assignResult)
+            {
+                if (err)
+                {
+                    var jsonString = messageFormatter.FormatMessage(err, "Add pbx feature codes Failed", false, false);
+                    logger.debug('[DVP-PBXService.FeatureCodeTemplate] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    res.end(jsonString);
+                }
+                else
+                {
+                    var jsonString = messageFormatter.FormatMessage(err, "Add pbx feature codes Success", true, assignResult);
+                    logger.debug('[DVP-PBXService.FeatureCodeTemplate] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    res.end(jsonString);
+                }
+
+            })
+        }
+        else
+        {
+            var jsonString = messageFormatter.FormatMessage(new Error('Empty request body or no authorization token set'), "Empty request body or no authorization token set", false, false);
+            logger.debug('[DVP-PBXService.FeatureCodeTemplate] - [%s] - API RESPONSE : %s', reqId, jsonString);
+            res.end(jsonString);
+
+        }
+
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.FeatureCodeTemplate] - [%s] - Exception Occurred', reqId, ex);
+        var jsonString = messageFormatter.FormatMessage(ex, "Exception occurred", false, false);
+        logger.debug('[DVP-PBXService.FeatureCodeTemplate] - [%s] - API RESPONSE : %s', reqId, jsonString);
+        res.end(jsonString);
 
     }
     return next();
@@ -443,6 +768,7 @@ server.put('/DVP/API/' + hostVersion + '/PBXService/NewPbxUser/:sipUserUuid', fu
                         IgnoreEarlyMedia: reqBody.IgnoreEarlyMedia,
                         VoicemailEnabled: reqBody.VoicemailEnabled,
                         ScheduleId: reqBody.ScheduleId,
+                        AllowOutbound: reqBody.AllowOutbound,
                         CompanyId: 1,
                         TenantId: 3,
                         ObjClass: 'PBX',
@@ -954,6 +1280,57 @@ server.get('/DVP/API/' + hostVersion + '/PBXService/PbxUserTemplateById/:id', fu
         logger.error('[DVP-PBXService.PbxUserTemplateById] - [%s] - Exception Occurred', reqId, ex);
         var jsonString = messageFormatter.FormatMessage(ex, "Exception occurred", false, undefined);
         logger.debug('[DVP-PBXService.PbxUserTemplateById] - [%s] - API RESPONSE : %s', reqId, jsonString);
+        res.end(jsonString);
+
+    }
+    return next();
+
+});
+
+server.get('/DVP/API/' + hostVersion + '/PBXService/FeatureCodesForCompany', function(req, res, next)
+{
+    var reqId = nodeUuid.v1();
+    try
+    {
+        var securityToken = req.header('authorization');
+
+        logger.debug('[DVP-PBXService.FeatureCodesForCompany] - [%s] - HTTP Request Received', reqId);
+
+        if(securityToken)
+        {
+
+            pbxBackendHandler.GetFeatureCodesForCompanyDB(reqId, 1, 3, function (err, fc)
+            {
+                if (err)
+                {
+                    var jsonString = messageFormatter.FormatMessage(err, "Get feature codes Failed", false, fc);
+                    logger.debug('[DVP-PBXService.FeatureCodesForCompany] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    res.end(jsonString);
+                }
+                else
+                {
+                    var jsonString = messageFormatter.FormatMessage(err, "Get feature codes Success", true, fc);
+                    logger.debug('[DVP-PBXService.FeatureCodesForCompany] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    res.end(jsonString);
+                }
+
+            })
+
+        }
+        else
+        {
+            var jsonString = messageFormatter.FormatMessage(new Error('Empty request params or no authorization token set'), "Empty request params or no authorization token set", false, undefined);
+            logger.debug('[DVP-PBXService.FeatureCodesForCompany] - [%s] - API RESPONSE : %s', reqId, jsonString);
+            res.end(jsonString);
+
+        }
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.FeatureCodesForCompany] - [%s] - Exception Occurred', reqId, ex);
+        var jsonString = messageFormatter.FormatMessage(ex, "Exception occurred", false, undefined);
+        logger.debug('[DVP-PBXService.FeatureCodesForCompany] - [%s] - API RESPONSE : %s', reqId, jsonString);
         res.end(jsonString);
 
     }

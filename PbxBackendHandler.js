@@ -19,7 +19,7 @@ var AddPbxMasterDataDB = function(reqId, pbxMasterData, callback)
                         if(pbxMData.CompanyId == pbxMasterData.CompanyId && pbxMData.TenantId == pbxMasterData.TenantId)
                         {
                             //allow update
-                            pbxMData.updateAttributes({BypassMedia: pbxMasterData.BypassMedia, IgnoreEarlyMedia: pbxMasterData.IgnoreEarlyMedia, VoicemailEnabled: pbxMasterData.VoicemailEnabled, AllowOutbound: pbxMasterData.AllowOutbound}).complete(function (err)
+                            pbxMData.updateAttributes({BypassMedia: pbxMasterData.BypassMedia, IgnoreEarlyMedia: pbxMasterData.IgnoreEarlyMedia, VoicemailEnabled: pbxMasterData.VoicemailEnabled}).complete(function (err)
                             {
                                 if(err)
                                 {
@@ -77,6 +77,157 @@ var AddPbxMasterDataDB = function(reqId, pbxMasterData, callback)
     }
     catch(ex)
     {
+        callback(ex, false);
+    }
+
+};
+
+var RemovePbxUserAllowedNumberDB = function(reqId, userUuid, companyId, tenantId, numberToRemove, callback)
+{
+    try
+    {
+        dbModel.PBXUser.find({where: [{UserUuid: userUuid},{CompanyId: companyId},{TenantId: tenantId}]})
+            .complete(function (err, pbxUser)
+            {
+                if (err)
+                {
+                    logger.error('[DVP-PBXService.AddPbxUserAllowedNumbersDB] - [%s] - PGSQL get pbx user by uuid query failed', reqId, err);
+                    callback(err, false);
+                }
+                else if(pbxUser)
+                {
+                    logger.debug('[DVP-PBXService.AddPbxUserAllowedNumbersDB] - [%s] - PGSQL get pbx user by uuid query success', reqId);
+
+                    if(pbxUser.AllowedNumbers)
+                    {
+                        var allowedNumberArr = JSON.parse(pbxUser.AllowedNumbers);
+
+                        var index = allowedNumberArr.indexOf(numberToRemove);
+
+                        if(index > -1)
+                        {
+                            allowedNumberArr.splice(index, 1);
+                        }
+
+                        pbxUser.updateAttributes({AllowedNumbers: JSON.stringify(allowedNumberArr)}).complete(function (err)
+                        {
+                            if(err)
+                            {
+                                logger.error('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query failed', err);
+                                callback(err, false);
+                            }
+                            else
+                            {
+                                logger.info('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query success');
+                                callback(undefined, true);
+                            }
+
+                        });
+
+                    }
+                    else
+                    {
+                        callback(undefined, true);
+                    }
+                }
+                else
+                {
+                    logger.debug('[DVP-PBXService.AddPbxUserAllowedNumbersDB] - [%s] - PGSQL get pbx user by uuid query success', reqId);
+                    callback(new Error('User not found'), false);
+                }
+            });
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.AddPbxUserAllowedNumbersDB] - [%s] - Exception occurred', reqId, ex);
+        callback(ex, false);
+    }
+
+};
+
+var AddPbxUserAllowedNumbersDB = function(reqId, userUuid, companyId, tenantId, numberArr, callback)
+{
+    try
+    {
+        dbModel.PBXUser.find({where: [{UserUuid: userUuid},{CompanyId: companyId},{TenantId: tenantId}]})
+            .complete(function (err, pbxUser)
+            {
+                if (err)
+                {
+                    logger.error('[DVP-PBXService.AddPbxUserAllowedNumbersDB] - [%s] - PGSQL get pbx user by uuid query failed', reqId, err);
+                    callback(err, false);
+                }
+                else if(pbxUser)
+                {
+                    logger.debug('[DVP-PBXService.AddPbxUserAllowedNumbersDB] - [%s] - PGSQL get pbx user by uuid query success', reqId);
+
+                    if(pbxUser.AllowedNumbers)
+                    {
+                        var allowedNumberArr = JSON.parse(pbxUser.AllowedNumbers);
+
+                        numberArr.forEach(function(num)
+                        {
+                            var index = allowedNumberArr.indexOf(num);
+
+                            if(index <= -1)
+                            {
+                                allowedNumberArr.push(num);
+                            }
+                        })
+
+                        pbxUser.updateAttributes({AllowedNumbers: JSON.stringify(allowedNumberArr)}).complete(function (err)
+                        {
+                            if(err)
+                            {
+                                logger.error('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query failed', err);
+                                callback(err, false);
+                            }
+                            else
+                            {
+                                logger.info('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query success');
+                                callback(undefined, true);
+                            }
+
+                        });
+
+                    }
+                    else
+                    {
+                        var allowedNumberArr = [];
+
+                        numberArr.forEach(function(num)
+                        {
+                            allowedNumberArr.push(num);
+                        });
+
+                        pbxUser.updateAttributes({AllowedNumbers: JSON.stringify(allowedNumberArr)}).complete(function (err)
+                        {
+                            if(err)
+                            {
+                                logger.error('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query failed', err);
+                                callback(err, false);
+                            }
+                            else
+                            {
+                                logger.info('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query success');
+                                callback(undefined, true);
+                            }
+
+                        });
+                    }
+                }
+                else
+                {
+                    logger.debug('[DVP-PBXService.AddPbxUserAllowedNumbersDB] - [%s] - PGSQL get pbx user by uuid query success', reqId);
+                    callback(new Error('User not found'), false);
+                }
+            });
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.AddPbxUserAllowedNumbersDB] - [%s] - Exception occurred', reqId, ex);
         callback(ex, false);
     }
 
@@ -268,7 +419,6 @@ var AddPbxUserDB = function(reqId, pbxUserData, callback)
 
 };
 
-
 var DeletePbxUserDB = function(reqId, pbxUserUuid, companyId, tenantId, callback)
 {
     try
@@ -308,6 +458,72 @@ var DeletePbxUserDB = function(reqId, pbxUserUuid, companyId, tenantId, callback
 
 };
 
+var AddFeatureCodesDB = function(reqId, featureCodeProfile, companyId, tenantId, callback)
+{
+    try
+    {
+        dbModel.FeatureCode.find({where: [{CompanyId: companyId},{TenantId: tenantId}]})
+            .complete(function (err, featureCodeTemplate)
+            {
+                if (err)
+                {
+                    logger.error('[DVP-PBXService.AddFeatureCodesDB] - [%s] - PGSQL get feature code by company query failed', reqId, err);
+                    callback(err, false);
+                }
+                else if(featureCodeTemplate)
+                {
+                    logger.debug('[DVP-PBXService.AddFeatureCodesDB] - [%s] - PGSQL get feature code by company query success', reqId);
+
+
+                    featureCodeTemplate.updateAttributes({PickUp: featureCodeProfile.PickUp, Intercept: featureCodeProfile.Intercept, Park: featureCodeProfile.PickUp, VoiceMail: featureCodeProfile.PickUp, Barge: featureCodeProfile.PickUp}).complete(function (err)
+                    {
+                        if(err)
+                        {
+                            logger.error('[DVP-PBXService.AddFeatureCodesDB] PGSQL Update pbx user with allowed numbers query failed', err);
+                            callback(err, false);
+                        }
+                        else
+                        {
+                            logger.info('[DVP-PBXService.AddFeatureCodesDB] PGSQL Update pbx user with allowed numbers query success');
+                            callback(undefined, true);
+                        }
+
+                    });
+                }
+                else
+                {
+                    logger.debug('[DVP-PBXService.AddFeatureCodesDB] - [%s] - PGSQL get feature code by company query success', reqId);
+
+                    var fc = dbModel.FeatureCode.build({PickUp: featureCodeProfile.PickUp, Intercept: featureCodeProfile.Intercept, Park: featureCodeProfile.PickUp, VoiceMail: featureCodeProfile.PickUp, Barge: featureCodeProfile.PickUp, CompanyId: 1, TenantId: 3, ObjClass: 'PBX', ObjType: 'FeatureCodes', ObjCategory: 'FeatureCodes'});
+
+                    fc
+                        .save()
+                        .complete(function (err)
+                        {
+                            if (err)
+                            {
+                                logger.error('[DVP-PBXService.AddFeatureCodesDB] - [%s] - PGSQL query failed', reqId, err);
+                                callback(err, false);
+                            }
+                            else
+                            {
+                                logger.debug('[DVP-PBXService.AddFeatureCodesDB] - [%s] - PGSQL query success', reqId);
+                                callback(undefined, true);
+                            }
+
+                        });
+                }
+            });
+
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.AddFeatureCodesDB] - [%s] - Exception occurred', reqId, ex);
+        callback(ex, false);
+    }
+
+};
 
 var DeletePbxUserTemplateDB = function(reqId, templateId, companyId, tenantId, callback)
 {
@@ -430,6 +646,33 @@ var GetPbxUserTemplatesForCompanyDB = function(reqId, companyId, tenantId, callb
     {
         logger.error('[DVP-PBXService.GetPbxUserTemplatesForCompanyDB] - [%s] - Exception occurred', reqId, ex);
         callback(ex, emptyArr);
+    }
+
+};
+
+var GetFeatureCodesForCompanyDB = function(reqId, companyId, tenantId, callback)
+{
+    try
+    {
+        dbModel.FeatureCode.find({where: [{CompanyId: companyId},{TenantId: tenantId}]})
+            .complete(function (err, fc)
+            {
+                if (err)
+                {
+                    logger.error('[DVP-PBXService.GetFeatureCodesForCompanyDB] - [%s] - PGSQL get feature codes query failed', reqId, err);
+                    callback(err, undefined);
+                }
+                else
+                {
+                    logger.debug('[DVP-PBXService.GetFeatureCodesForCompanyDB] - [%s] - PGSQL get feature codes query success', reqId);
+                    callback(err, fc);
+                }
+            });
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.GetFeatureCodesForCompanyDB] - [%s] - Exception occurred', reqId, ex);
+        callback(ex, undefined);
     }
 
 };
@@ -662,3 +905,7 @@ module.exports.AddFollowMeDB = AddFollowMeDB;
 module.exports.DeleteFollowMeDB = DeleteFollowMeDB;
 module.exports.GetFollowMeByIdDB = GetFollowMeByIdDB;
 module.exports.GetFollowMeByUserDB = GetFollowMeByUserDB;
+module.exports.AddPbxUserAllowedNumbersDB = AddPbxUserAllowedNumbersDB;
+module.exports.RemovePbxUserAllowedNumberDB = RemovePbxUserAllowedNumberDB;
+module.exports.AddFeatureCodesDB = AddFeatureCodesDB;
+module.exports.GetFeatureCodesForCompanyDB = GetFeatureCodesForCompanyDB;
