@@ -2,6 +2,7 @@ var xmlBuilder = require('xmlbuilder');
 var config = require('config');
 var logger = require('DVP-Common/LogHandler/CommonLogHandler.js').logger;
 var util = require('util');
+var underscore = require('underscore');
 
 var createNotFoundResponse = function()
 {
@@ -24,184 +25,136 @@ var createNotFoundResponse = function()
 
 };
 
-var CreateSendBusyMessageDialplan = function(reqId, destinationPattern, context)
+var CreateVoicePortalDialplan = function(reqId, pbxUserInfo, context, destinationPattern, ignoreEarlyMedia, luaFile)
 {
     try
     {
-        if (!destinationPattern) {
-            destinationPattern = "";
-        }
-
-        if (!context) {
-            context = "";
-        }
-
-        //var httpUrl = Config.Services.HttApiUrl;
-
-        var doc = xmlBuilder.create('document');
-
-        doc.att('type', 'freeswitch/xml')
-            .ele('section').att('name', 'dialplan').att('description', 'RE Dial Plan For FreeSwitch')
-            .ele('context').att('name', context)
-            .ele('extension').att('name', 'test')
-            .ele('condition').att('field', 'destination_number').att('expression', destinationPattern)
-            .ele('action').att('application', 'answer')
-            .up()
-            .ele('action').att('application', 'hangup').att('data', 'USER_BUSY')
-            .up()
-            .up()
-            .up()
-            .up()
-            .up()
-
-            .end({pretty: true});
-
-
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" + doc.toString({pretty: true});
-
-
-    }
-    catch(ex)
-    {
-        logger.error('[DVP-DynamicConfigurationGenerator.CreateSendBusyMessageDialplan] - [%s] - Exception occurred creating xml', reqId, ex);
-        return createNotFoundResponse();
-    }
-
-};
-
-var CreateRouteUserDialplan = function(reqId, extention, context, profile, destinationPattern, legTimeout, legStartDelay, origination, destination, domain, isVoicemailEnabled, group, bypassMed, ignoreEarlyMedia, originationCallerIdNumber)
-{
-    try
-    {
-        if (!destinationPattern) {
-            destinationPattern = "";
-        }
-
-        if (!context) {
-            context = "";
-        }
-
-        var bypassMedia = "bypass_media=true";
-        if (!bypassMed)
+        if (!destinationPattern)
         {
-            bypassMedia = "bypass_media=false";
+            destinationPattern = "";
         }
+
+        if (!context)
+        {
+            context = "";
+        }
+
+        var bypassMedia = "bypass_media=false";
 
         var ignoreEarlyM = "ignore_early_media=false";
-        if (ignoreEarlyMedia)
+
+        var pin = '';
+        var userId = '';
+        var templateId = '';
+        var status = '';
+        var action = '';
+        var companyId = '';
+        var tenantId = '';
+        var voicemailStatus = 'false';
+        var forwardBusyId = 'none';
+        var forwardNoAnswerId = 'none';
+
+        if(pbxUserInfo)
         {
-            ignoreEarlyM = "ignore_early_media=true";
+            if(pbxUserInfo.Pin)
+            {
+                pin = pbxUserInfo.Pin;
+            }
+            if(pbxUserInfo.UserUuid)
+            {
+                userId = pbxUserInfo.UserUuid;
+            }
+
+            if(pbxUserInfo.VoicemailEnabled)
+            {
+                voicemailStatus = pbxUserInfo.VoicemailEnabled.toString();
+            }
+
+            if(pbxUserInfo.UserStatus)
+            {
+                status = pbxUserInfo.UserStatus;
+            }
+
+            if(pbxUserInfo.CompanyId)
+            {
+                companyId = pbxUserInfo.CompanyId.toString();
+            }
+            if(pbxUserInfo.TenantId)
+            {
+                tenantId = pbxUserInfo.TenantId.toString();
+            }
+
+            if(pbxUserInfo.AdvancedRouteMethod)
+            {
+                action = pbxUserInfo.AdvancedRouteMethod;
+            }
+
+            if(pbxUserInfo.Forwarding && pbxUserInfo.Forwarding.length > 0)
+            {
+                var fwdBusyRec = underscore.find(pbxUserInfo.Forwarding, function(fwd){ return fwd.DisconnectReason === 'BUSY'; });
+
+                if(fwdBusyRec)
+                {
+                    forwardBusyId = fwdBusyRec.id.toString();
+                }
+
+                var fwdNoAnsRec = underscore.find(pbxUserInfo.Forwarding, function(fwd){ return fwd.DisconnectReason === 'NO_ANSWER'; });
+
+                if(fwdNoAnsRec)
+                {
+                    forwardNoAnswerId = fwdNoAnsRec.id.toString();
+                }
+            }
+
+            if(pbxUserInfo.PBXUserTemplate)
+            {
+                if (pbxUserInfo.PBXUserTemplate.id)
+                {
+                    templateId = pbxUserInfo.PBXUserTemplate.id.toString();
+                }
+            }
+
+            if(pin && status && action && userId && companyId && tenantId)
+            {
+                var luaParams = util.format('%s \'%s\' \'%s\' \'%s\' \'%s\' \'%s\' \'%s\' \'%s\' \'%s\' \'%s\' \'%s\'', luaFile, companyId, tenantId, pin, userId, templateId, status, action, voicemailStatus, forwardBusyId, forwardNoAnswerId);
+
+                var doc = xmlBuilder.create('document');
+
+                doc.att('type', 'freeswitch/xml')
+                    .ele('section').att('name', 'dialplan').att('description', 'RE Dial Plan For FreeSwitch')
+                    .ele('context').att('name', context)
+                    .ele('extension').att('name', 'test')
+                    .ele('condition').att('field', 'destination_number').att('expression', destinationPattern)
+                    .ele('action').att('application', 'set').att('data', 'continue_on_fail=true')
+                    .up()
+                    .ele('action').att('application', 'set').att('data', 'hangup_after_bridge=true')
+                    .up()
+                    .ele('action').att('application', 'set').att('data', ignoreEarlyM)
+                    .up()
+                    .ele('action').att('application', 'set').att('data', bypassMedia)
+                    .up()
+                    .ele('action').att('application', 'lua').att('data', luaParams)
+                    .up()
+                    .ele('action').att('application', 'hangup')
+                    .up()
+                    .up()
+                    .up()
+                    .up()
+                    .up()
+
+                    .end({pretty: true});
+
+
+                return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" + doc.toString({pretty: true});
+            }
+            else
+            {
+                return createNotFoundResponse();
+            }
         }
-
-        var option = '';
-
-        if (legStartDelay > 0)
-            option = util.format('[leg_delay_start=%d,leg_timeout=%d,origination_caller_id_name=%s,origination_caller_id_number=%s]', legStartDelay, legTimeout, origination, originationCallerIdNumber);
         else
-            option = util.format('[leg_timeout=%d,origination_caller_id_name=%s,origination_caller_id_number=%s]', legTimeout, origination, originationCallerIdNumber);
-
-        //var httpUrl = Config.Services.HttApiUrl;
-
-        var dnis = destination;
-
-        if (domain)
         {
-            dnis = util.format('%s@%s', dnis, domain);
-        }
-        var protocol = 'sofia';
-        var destinationGroup = 'user';
-
-        var calling = util.format('%s%s/%s/%s', option, protocol, destinationGroup, dnis);
-
-        if (group)
-        {
-            calling = util.format("%s,pickup/%s", calling, group);
-        }
-
-        if(isVoicemailEnabled)
-        {
-            var doc = xmlBuilder.create('document');
-
-            doc.att('type', 'freeswitch/xml')
-                .ele('section').att('name', 'dialplan').att('description', 'RE Dial Plan For FreeSwitch')
-                .ele('context').att('name', context)
-                .ele('extension').att('name', 'test')
-                .ele('condition').att('field', 'destination_number').att('expression', destinationPattern)
-                .ele('action').att('application', 'set').att('data', 'ringback=${us-ring}')
-                .up()
-                .ele('action').att('application', 'set').att('data', 'continue_on_fail=true')
-                .up()
-                .ele('action').att('application', 'set').att('data', 'hangup_after_bridge=true')
-                .up()
-                .ele('action').att('application', 'set').att('data', ignoreEarlyM)
-                .up()
-                .ele('action').att('application', 'set').att('data', bypassMedia)
-                .up()
-                .ele('action').att('application', 'bind_meta_app').att('data', '3 ab s execute_extension::att_xfer XML PBXFeatures')
-                .up()
-                .ele('action').att('application', 'bind_meta_app').att('data', '4 ab s execute_extension::att_xfer_group XML PBXFeatures')
-                .up()
-                .ele('action').att('application', 'bind_meta_app').att('data', '6 ab s execute_extension::att_xfer_outbound XML PBXFeatures')
-                .up()
-                .ele('action').att('application', 'bind_meta_app').att('data', '5 ab s execute_extension::att_xfer_conference XML PBXFeatures')
-                .up()
-                .ele('action').att('application', 'bridge').att('data', calling)
-                .up()
-                .ele('action').att('application', 'answer')
-                .up()
-                .ele('action').att('application', 'voicemail').att('data', 'default %s %s', domain, extention)
-                .up()
-                .up()
-                .up()
-                .up()
-                .up()
-
-                .end({pretty: true});
-
-
-            return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" + doc.toString({pretty: true});
-
-        }
-        else
-        {
-            var doc = xmlBuilder.create('document');
-
-            doc.att('type', 'freeswitch/xml')
-                .ele('section').att('name', 'dialplan').att('description', 'RE Dial Plan For FreeSwitch')
-                .ele('context').att('name', context)
-                .ele('extension').att('name', 'test')
-                .ele('condition').att('field', 'destination_number').att('expression', destinationPattern)
-                .ele('action').att('application', 'set').att('data', 'ringback=${us-ring}')
-                .up()
-                .ele('action').att('application', 'set').att('data', 'continue_on_fail=true')
-                .up()
-                .ele('action').att('application', 'set').att('data', 'hangup_after_bridge=true')
-                .up()
-                .ele('action').att('application', 'set').att('data', ignoreEarlyM)
-                .up()
-                .ele('action').att('application', 'set').att('data', bypassMedia)
-                .up()
-                .ele('action').att('application', 'bind_meta_app').att('data', '3 ab s execute_extension::att_xfer XML PBXFeatures')
-                .up()
-                .ele('action').att('application', 'bind_meta_app').att('data', '4 ab s execute_extension::att_xfer_group XML PBXFeatures')
-                .up()
-                .ele('action').att('application', 'bind_meta_app').att('data', '6 ab s execute_extension::att_xfer_outbound XML PBXFeatures')
-                .up()
-                .ele('action').att('application', 'bind_meta_app').att('data', '5 ab s execute_extension::att_xfer_conference XML PBXFeatures')
-                .up()
-                .ele('action').att('application', 'bridge').att('data', calling)
-                .up()
-                .ele('action').att('application', 'hangup')
-                .up()
-                .up()
-                .up()
-                .up()
-                .up()
-
-                .end({pretty: true});
-
-
-            return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" + doc.toString({pretty: true});
+            return createNotFoundResponse();
         }
 
     }
@@ -214,5 +167,4 @@ var CreateRouteUserDialplan = function(reqId, extention, context, profile, desti
 };
 
 module.exports.createNotFoundResponse = createNotFoundResponse;
-module.exports.CreateSendBusyMessageDialplan = CreateSendBusyMessageDialplan;
-module.exports.CreateRouteUserDialplan = CreateRouteUserDialplan;
+module.exports.CreateVoicePortalDialplan = CreateVoicePortalDialplan;

@@ -110,5 +110,61 @@ var RemoteGetSipUserDetailsForExtension = function(reqId, extension, securityTok
     }
 };
 
+
+var RemoteGetFileMetadata = function(reqId, uuid, securityToken, callback)
+{
+    try
+    {
+        logger.debug('[DVP-PBXService.RemoteGetFileMetadata] - [%s] -  Trying to get file meta data from api - Params - uuid : %s', reqId, uuid);
+
+        var fileApiIp = config.Services.FileService.Ip;
+        var fileApiPort = config.Services.FileService.Port;
+        var fileApiVersion = config.Services.FileService.Version;
+
+        if(fileApiIp && fileApiPort && fileApiVersion)
+        {
+            var httpUrl = util.format('http://%s:%d/DVP/API/%s/FIleService/FileHandler/AttachmentMetaData/%s', fileApiIp, fileApiPort, fileApiVersion, uuid);
+
+            var options = {
+                url: httpUrl,
+                headers: {
+                    'authorization': securityToken
+                }
+            };
+
+            logger.debug('[DVP-PBXService.RemoteGetFileMetadata] - [%s] - Creating Api Url : %s', reqId, httpUrl);
+
+
+            httpReq(options, function (error, response, body)
+            {
+                if (!error && response.statusCode == 200)
+                {
+                    var apiResp = JSON.parse(body);
+
+                    logger.debug('[DVP-PBXService.RemoteGetFileMetadata] - [%s] - file service returned : %s', reqId, body);
+
+                    callback(apiResp.Exception, apiResp.Result);
+                }
+                else
+                {
+                    logger.error('[DVP-PBXService.RemoteGetFileMetadata] - [%s] - file service call failed', reqId, error);
+                    callback(error, undefined);
+                }
+            })
+        }
+        else
+        {
+            logger.error('[DVP-PBXService.RemoteGetSipUserDetailsForExtension] - [%s] - Sip uac service ip, port or version not set', reqId);
+            callback(new Error('Sip uac service ip, port or version not set'), undefined)
+        }
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.RemoteGetSipUserDetailsForExtension] - [%s] - Exception occurred', reqId, ex);
+        callback(ex, undefined);
+    }
+}
+
 module.exports.RemoteGetSipUserDetailsForUuid = RemoteGetSipUserDetailsForUuid;
 module.exports.RemoteGetSipUserDetailsForExtension =RemoteGetSipUserDetailsForExtension;
+module.exports.RemoteGetFileMetadata = RemoteGetFileMetadata;
