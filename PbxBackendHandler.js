@@ -48,7 +48,7 @@ var AddPbxMasterDataDB = function(reqId, pbxMasterData, callback)
                             IgnoreEarlyMedia: pbxMasterData.IgnoreEarlyMedia,
                             VoicemailEnabled: pbxMasterData.VoicemailEnabled,
                             CompanyId: 1,
-                            TenantId: 3,
+                            TenantId: 1,
                             ObjClass: "PBX",
                             ObjType: "PBXMASTERDATA",
                             ObjCategory: "DEFAULT"
@@ -886,7 +886,7 @@ var AddFeatureCodesDB = function(reqId, featureCodeProfile, companyId, tenantId,
                     logger.debug('[DVP-PBXService.AddFeatureCodesDB] - [%s] - PGSQL get feature code by company query success', reqId);
 
 
-                    featureCodeTemplate.updateAttributes({PickUp: featureCodeProfile.PickUp, Intercept: featureCodeProfile.Intercept, Park: featureCodeProfile.PickUp, VoiceMail: featureCodeProfile.PickUp, Barge: featureCodeProfile.PickUp}).complete(function (err)
+                    featureCodeTemplate.updateAttributes({PickUp: featureCodeProfile.PickUp, Intercept: featureCodeProfile.Intercept, Park: featureCodeProfile.Park, VoiceMail: featureCodeProfile.Voicemail, Barge: featureCodeProfile.Barge}).complete(function (err)
                     {
                         if(err)
                         {
@@ -905,7 +905,7 @@ var AddFeatureCodesDB = function(reqId, featureCodeProfile, companyId, tenantId,
                 {
                     logger.debug('[DVP-PBXService.AddFeatureCodesDB] - [%s] - PGSQL get feature code by company query success', reqId);
 
-                    var fc = dbModel.FeatureCode.build({PickUp: featureCodeProfile.PickUp, Intercept: featureCodeProfile.Intercept, Park: featureCodeProfile.PickUp, VoiceMail: featureCodeProfile.PickUp, Barge: featureCodeProfile.PickUp, CompanyId: 1, TenantId: 3, ObjClass: 'PBX', ObjType: 'FeatureCodes', ObjCategory: 'FeatureCodes'});
+                    var fc = dbModel.FeatureCode.build({PickUp: featureCodeProfile.PickUp, Intercept: featureCodeProfile.Intercept, Park: featureCodeProfile.Park, VoiceMail: featureCodeProfile.Voicemail, Barge: featureCodeProfile.Barge, CompanyId: 1, TenantId: 1, ObjClass: 'PBX', ObjType: 'FeatureCodes', ObjCategory: 'FeatureCodes'});
 
                     fc
                         .save()
