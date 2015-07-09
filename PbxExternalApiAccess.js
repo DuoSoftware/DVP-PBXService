@@ -9,13 +9,12 @@ var RemoteGetSipUserDetailsForUuid = function(reqId, sipUserUuid, securityToken,
     try
     {
         logger.debug('[DVP-PBXService.RemoteGetSipUserDetailsForUuid] - [%s] -  Trying to get Sip User Details From Api - Params - sipUserUuid : %s', reqId, sipUserUuid);
-        var sipUACIp = config.Services.SipUACApi.Ip;
-        var sipUACPort = config.Services.SipUACApi.Port;
-        var apiVersion = config.Services.SipUACApi.Version;
+        var sipUacServiceHost = config.Services.sipUacServiceHost;
+        var sipUacServiceVersion = config.Services.sipUacServiceVersion;
 
-        if(sipUACIp && sipUACPort && apiVersion)
+        if(sipUacServiceHost && sipUacServiceVersion)
         {
-            var httpUrl = util.format('http://%s:%d/DVP/%s/UACManagement/SipUserByUuid/%s', sipUACIp, sipUACPort, apiVersion, sipUserUuid);
+            var httpUrl = util.format('http://%s/DVP/%s/UACManagement/SipUserByUuid/%s', sipUacServiceHost, sipUacServiceVersion, sipUserUuid);
 
             var options = {
                 url: httpUrl,
@@ -62,13 +61,12 @@ var RemoteGetSipUserDetailsForExtension = function(reqId, extension, securityTok
     try
     {
         logger.debug('[DVP-PBXService.RemoteGetSipUserDetailsForExtension] - [%s] -  Trying to get Sip User Details From Api - Params - extension : %s', reqId, extension);
-        var sipUACIp = config.Services.SipUACApi.Ip;
-        var sipUACPort = config.Services.SipUACApi.Port;
-        var apiVersion = config.Services.SipUACApi.Version;
+        var sipUacServiceHost = config.Services.sipUacServiceHost;
+        var sipUacServiceVersion = config.Services.sipUacServiceVersion;
 
-        if(sipUACIp && sipUACPort && apiVersion)
+        if(sipUacServiceHost && sipUacServiceVersion)
         {
-            var httpUrl = util.format('http://%s:%d/DVP/API/%s/ExtensionManagement/FullExtensionDetails/%s', sipUACIp, sipUACPort, apiVersion, extension);
+            var httpUrl = util.format('http://%s/DVP/API/%s/ExtensionManagement/FullExtensionDetails/%s', sipUacServiceHost, sipUacServiceVersion, extension);
 
             var options = {
                 url: httpUrl,
@@ -117,13 +115,12 @@ var RemoteGetFileMetadata = function(reqId, uuid, securityToken, callback)
     {
         logger.debug('[DVP-PBXService.RemoteGetFileMetadata] - [%s] -  Trying to get file meta data from api - Params - uuid : %s', reqId, uuid);
 
-        var fileApiIp = config.Services.FileService.Ip;
-        var fileApiPort = config.Services.FileService.Port;
-        var fileApiVersion = config.Services.FileService.Version;
+        var fileServiceHost = config.Services.fileServiceHost;
+        var fileServiceVersion = config.Services.fileServiceVersion;
 
-        if(fileApiIp && fileApiPort && fileApiVersion)
+        if(fileServiceHost && fileServiceVersion)
         {
-            var httpUrl = util.format('http://%s:%d/DVP/API/%s/FIleService/FileHandler/AttachmentMetaData/%s', fileApiIp, fileApiPort, fileApiVersion, uuid);
+            var httpUrl = util.format('http://%s/DVP/API/%s/FIleService/FileHandler/AttachmentMetaData/%s', fileServiceHost, fileServiceVersion, uuid);
 
             var options = {
                 url: httpUrl,
