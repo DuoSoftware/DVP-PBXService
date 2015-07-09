@@ -123,7 +123,7 @@ var RemoteGetFileMetadata = function(reqId, uuid, securityToken, callback)
 
         if(fileServiceHost && fileServicePort && fileServiceVersion)
         {
-            var httpUrl = util.format('http://%s:%s/DVP/API/%s/FIleService/FileHandler/AttachmentMetaData/%s', fileServiceHost, fileServicePort, fileServicePort, fileServiceVersion, uuid);
+            var httpUrl = util.format('http://%s:%s/DVP/API/%s/FileService/File/MetaData/%s', fileServiceHost, fileServicePort, fileServicePort, fileServiceVersion, uuid);
 
             var options = {
                 url: httpUrl,
