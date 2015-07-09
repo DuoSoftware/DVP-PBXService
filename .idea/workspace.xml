@@ -5,7 +5,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PbxExternalApiAccess.js" afterPath="$PROJECT_DIR$/PbxExternalApiAccess.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/custom-environment-variables.js" afterPath="$PROJECT_DIR$/config/custom-environment-variables.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/default.js" afterPath="$PROJECT_DIR$/config/default.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DVP-PBXService.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -79,18 +78,18 @@
       <file leaf-file-name="custom-environment-variables.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/custom-environment-variables.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
-              <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="629">
+              <caret line="27" column="56" selection-start-line="27" selection-start-column="56" selection-end-line="27" selection-end-column="56" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.51944447" vertical-offset="0" max-vertical-offset="680">
-              <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
+            <state vertical-scroll-proportion="-3.9230769" vertical-offset="0" max-vertical-offset="680">
+              <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
               <folding />
             </state>
           </provider>
@@ -109,24 +108,25 @@
       <file leaf-file-name="default.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/default.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="107" max-vertical-offset="544">
-              <caret line="20" column="23" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="578">
+              <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="28" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PbxBackendHandler.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PbxBackendHandler.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/PbxBackendHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="8925">
-              <caret line="49" column="41" selection-start-line="49" selection-start-column="41" selection-end-line="49" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.17962466" vertical-offset="103" max-vertical-offset="2771">
+              <caret line="88" column="5" selection-start-line="88" selection-start-column="5" selection-end-line="88" selection-end-column="5" />
               <folding>
-                <element signature="e#3532#5155#0" expanded="false" />
+                <element signature="e#239#3437#0" expanded="false" />
                 <element signature="e#5251#6888#0" expanded="false" />
                 <element signature="e#6979#8616#0" expanded="false" />
                 <element signature="e#8726#11125#0" expanded="false" />
                 <element signature="e#11229#14693#0" expanded="false" />
+                <element signature="e#14802#25745#0" expanded="false" />
                 <element signature="e#25828#26676#0" expanded="false" />
                 <element signature="e#26764#27689#0" expanded="false" />
                 <element signature="e#27782#30475#0" expanded="false" />
@@ -136,6 +136,9 @@
                 <element signature="e#34210#35183#0" expanded="false" />
                 <element signature="e#35244#35942#0" expanded="false" />
                 <element signature="e#36027#37186#0" expanded="false" />
+                <element signature="e#37280#40195#0" expanded="false" />
+                <element signature="e#40287#41514#0" expanded="false" />
+                <element signature="e#41587#42829#0" expanded="false" />
                 <element signature="e#42909#43772#0" expanded="false" />
                 <element signature="e#43860#44793#0" expanded="false" />
                 <element signature="e#44877#45708#0" expanded="false" />
@@ -153,8 +156,8 @@
       <file leaf-file-name="PbxExternalApiAccess.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PbxExternalApiAccess.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="2924">
-              <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="2975">
+              <caret line="140" column="17" selection-start-line="140" selection-start-column="17" selection-end-line="140" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -392,12 +395,12 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32792208" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.49962825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32899022" sideWeight="0.49962825" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.49962825" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20446096" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39739415" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.49962825" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32899022" sideWeight="0.49962825" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.50037175" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -524,7 +527,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/PbxExternalApiAccess.js</url>
-          <line>54</line>
+          <line>55</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -534,7 +537,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/PbxExternalApiAccess.js</url>
-          <line>32</line>
+          <line>33</line>
           <option name="timeStamp" value="30" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -624,27 +627,27 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/PbxExternalApiAccess.js</url>
-          <line>62</line>
+          <line>63</line>
           <option name="timeStamp" value="61" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/PbxExternalApiAccess.js</url>
-          <line>66</line>
+          <line>68</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/PbxExternalApiAccess.js</url>
-          <line>82</line>
+          <line>84</line>
           <option name="timeStamp" value="63" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/PbxExternalApiAccess.js</url>
-          <line>92</line>
+          <line>94</line>
           <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/PbxExternalApiAccess.js</url>
-          <line>84</line>
+          <line>86</line>
           <option name="timeStamp" value="65" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -909,11 +912,12 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="1292">
           <caret line="648" column="39" selection-start-line="648" selection-start-column="39" selection-end-line="648" selection-end-column="39" />
           <folding>
-            <element signature="e#3532#5155#0" expanded="false" />
+            <element signature="e#239#3437#0" expanded="false" />
             <element signature="e#5251#6888#0" expanded="false" />
             <element signature="e#6979#8616#0" expanded="false" />
             <element signature="e#8726#11125#0" expanded="false" />
             <element signature="e#11229#14693#0" expanded="false" />
+            <element signature="e#14802#25745#0" expanded="false" />
             <element signature="e#25828#26676#0" expanded="false" />
             <element signature="e#26764#27689#0" expanded="false" />
             <element signature="e#27782#30475#0" expanded="false" />
@@ -923,6 +927,9 @@
             <element signature="e#34210#35183#0" expanded="false" />
             <element signature="e#35244#35942#0" expanded="false" />
             <element signature="e#36027#37186#0" expanded="false" />
+            <element signature="e#37280#40195#0" expanded="false" />
+            <element signature="e#40287#41514#0" expanded="false" />
+            <element signature="e#41587#42829#0" expanded="false" />
             <element signature="e#42909#43772#0" expanded="false" />
             <element signature="e#43860#44793#0" expanded="false" />
             <element signature="e#44877#45708#0" expanded="false" />
@@ -1047,11 +1054,12 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="2162" max-vertical-offset="5151">
           <caret line="359" column="0" selection-start-line="359" selection-start-column="0" selection-end-line="374" selection-end-column="2" />
           <folding>
-            <element signature="e#3532#5155#0" expanded="false" />
+            <element signature="e#239#3437#0" expanded="false" />
             <element signature="e#5251#6888#0" expanded="false" />
             <element signature="e#6979#8616#0" expanded="false" />
             <element signature="e#8726#11125#0" expanded="false" />
             <element signature="e#11229#14693#0" expanded="false" />
+            <element signature="e#14802#25745#0" expanded="false" />
             <element signature="e#25828#26676#0" expanded="false" />
             <element signature="e#26764#27689#0" expanded="false" />
             <element signature="e#27782#30475#0" expanded="false" />
@@ -1061,6 +1069,9 @@
             <element signature="e#34210#35183#0" expanded="false" />
             <element signature="e#35244#35942#0" expanded="false" />
             <element signature="e#36027#37186#0" expanded="false" />
+            <element signature="e#37280#40195#0" expanded="false" />
+            <element signature="e#40287#41514#0" expanded="false" />
+            <element signature="e#41587#42829#0" expanded="false" />
             <element signature="e#42909#43772#0" expanded="false" />
             <element signature="e#43860#44793#0" expanded="false" />
             <element signature="e#44877#45708#0" expanded="false" />
@@ -1139,11 +1150,12 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="1550" max-vertical-offset="2856">
           <caret line="393" column="2" selection-start-line="393" selection-start-column="2" selection-end-line="393" selection-end-column="2" />
           <folding>
-            <element signature="e#3532#5155#0" expanded="false" />
+            <element signature="e#239#3437#0" expanded="false" />
             <element signature="e#5251#6888#0" expanded="false" />
             <element signature="e#6979#8616#0" expanded="false" />
             <element signature="e#8726#11125#0" expanded="false" />
             <element signature="e#11229#14693#0" expanded="false" />
+            <element signature="e#14802#25745#0" expanded="false" />
             <element signature="e#25828#26676#0" expanded="false" />
             <element signature="e#26764#27689#0" expanded="false" />
             <element signature="e#27782#30475#0" expanded="false" />
@@ -1153,6 +1165,9 @@
             <element signature="e#34210#35183#0" expanded="false" />
             <element signature="e#35244#35942#0" expanded="false" />
             <element signature="e#36027#37186#0" expanded="false" />
+            <element signature="e#37280#40195#0" expanded="false" />
+            <element signature="e#40287#41514#0" expanded="false" />
+            <element signature="e#41587#42829#0" expanded="false" />
             <element signature="e#42909#43772#0" expanded="false" />
             <element signature="e#43860#44793#0" expanded="false" />
             <element signature="e#44877#45708#0" expanded="false" />
@@ -1237,11 +1252,12 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="1649">
           <caret line="84" column="48" selection-start-line="84" selection-start-column="48" selection-end-line="84" selection-end-column="48" />
           <folding>
-            <element signature="e#3532#5155#0" expanded="false" />
+            <element signature="e#239#3437#0" expanded="false" />
             <element signature="e#5251#6888#0" expanded="false" />
             <element signature="e#6979#8616#0" expanded="false" />
             <element signature="e#8726#11125#0" expanded="false" />
             <element signature="e#11229#14693#0" expanded="false" />
+            <element signature="e#14802#25745#0" expanded="false" />
             <element signature="e#25828#26676#0" expanded="false" />
             <element signature="e#26764#27689#0" expanded="false" />
             <element signature="e#27782#30475#0" expanded="false" />
@@ -1251,6 +1267,9 @@
             <element signature="e#34210#35183#0" expanded="false" />
             <element signature="e#35244#35942#0" expanded="false" />
             <element signature="e#36027#37186#0" expanded="false" />
+            <element signature="e#37280#40195#0" expanded="false" />
+            <element signature="e#40287#41514#0" expanded="false" />
+            <element signature="e#41587#42829#0" expanded="false" />
             <element signature="e#42909#43772#0" expanded="false" />
             <element signature="e#43860#44793#0" expanded="false" />
             <element signature="e#44877#45708#0" expanded="false" />
@@ -1343,11 +1362,12 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="1012" max-vertical-offset="1836">
           <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
           <folding>
-            <element signature="e#3532#5155#0" expanded="false" />
+            <element signature="e#239#3437#0" expanded="false" />
             <element signature="e#5251#6888#0" expanded="false" />
             <element signature="e#6979#8616#0" expanded="false" />
             <element signature="e#8726#11125#0" expanded="false" />
             <element signature="e#11229#14693#0" expanded="false" />
+            <element signature="e#14802#25745#0" expanded="false" />
             <element signature="e#25828#26676#0" expanded="false" />
             <element signature="e#26764#27689#0" expanded="false" />
             <element signature="e#27782#30475#0" expanded="false" />
@@ -1357,6 +1377,9 @@
             <element signature="e#34210#35183#0" expanded="false" />
             <element signature="e#35244#35942#0" expanded="false" />
             <element signature="e#36027#37186#0" expanded="false" />
+            <element signature="e#37280#40195#0" expanded="false" />
+            <element signature="e#40287#41514#0" expanded="false" />
+            <element signature="e#41587#42829#0" expanded="false" />
             <element signature="e#42909#43772#0" expanded="false" />
             <element signature="e#43860#44793#0" expanded="false" />
             <element signature="e#44877#45708#0" expanded="false" />
@@ -1434,11 +1457,12 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="100">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#3532#5155#0" expanded="false" />
+            <element signature="e#239#3437#0" expanded="false" />
             <element signature="e#5251#6888#0" expanded="false" />
             <element signature="e#6979#8616#0" expanded="false" />
             <element signature="e#8726#11125#0" expanded="false" />
             <element signature="e#11229#14693#0" expanded="false" />
+            <element signature="e#14802#25745#0" expanded="false" />
             <element signature="e#25828#26676#0" expanded="false" />
             <element signature="e#26764#27689#0" expanded="false" />
             <element signature="e#27782#30475#0" expanded="false" />
@@ -1448,6 +1472,9 @@
             <element signature="e#34210#35183#0" expanded="false" />
             <element signature="e#35244#35942#0" expanded="false" />
             <element signature="e#36027#37186#0" expanded="false" />
+            <element signature="e#37280#40195#0" expanded="false" />
+            <element signature="e#40287#41514#0" expanded="false" />
+            <element signature="e#41587#42829#0" expanded="false" />
             <element signature="e#42909#43772#0" expanded="false" />
             <element signature="e#43860#44793#0" expanded="false" />
             <element signature="e#44877#45708#0" expanded="false" />
@@ -1601,16 +1628,49 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.9230769" vertical-offset="0" max-vertical-offset="680">
+          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/default.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="102" max-vertical-offset="578">
+          <caret line="20" column="4" selection-start-line="20" selection-start-column="4" selection-end-line="20" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/custom-environment-variables.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="629">
+          <caret line="27" column="56" selection-start-line="27" selection-start-column="56" selection-end-line="27" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PbxExternalApiAccess.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="2975">
+          <caret line="140" column="17" selection-start-line="140" selection-start-column="17" selection-end-line="140" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/PbxBackendHandler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="8925">
-          <caret line="49" column="41" selection-start-line="49" selection-start-column="41" selection-end-line="49" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.17962466" vertical-offset="103" max-vertical-offset="2771">
+          <caret line="88" column="5" selection-start-line="88" selection-start-column="5" selection-end-line="88" selection-end-column="5" />
           <folding>
-            <element signature="e#3532#5155#0" expanded="false" />
+            <element signature="e#239#3437#0" expanded="false" />
             <element signature="e#5251#6888#0" expanded="false" />
             <element signature="e#6979#8616#0" expanded="false" />
             <element signature="e#8726#11125#0" expanded="false" />
             <element signature="e#11229#14693#0" expanded="false" />
+            <element signature="e#14802#25745#0" expanded="false" />
             <element signature="e#25828#26676#0" expanded="false" />
             <element signature="e#26764#27689#0" expanded="false" />
             <element signature="e#27782#30475#0" expanded="false" />
@@ -1620,6 +1680,9 @@
             <element signature="e#34210#35183#0" expanded="false" />
             <element signature="e#35244#35942#0" expanded="false" />
             <element signature="e#36027#37186#0" expanded="false" />
+            <element signature="e#37280#40195#0" expanded="false" />
+            <element signature="e#40287#41514#0" expanded="false" />
+            <element signature="e#41587#42829#0" expanded="false" />
             <element signature="e#42909#43772#0" expanded="false" />
             <element signature="e#43860#44793#0" expanded="false" />
             <element signature="e#44877#45708#0" expanded="false" />
@@ -1630,38 +1693,6 @@
             <element signature="e#49200#51083#0" expanded="false" />
             <element signature="e#51190#54422#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/custom-environment-variables.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
-          <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/default.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="544">
-          <caret line="20" column="23" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/PbxExternalApiAccess.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="2924">
-          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.51944447" vertical-offset="0" max-vertical-offset="680">
-          <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
-          <folding />
         </state>
       </provider>
     </entry>
