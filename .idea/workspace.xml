@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="591d8d77-912c-4906-970d-7906a668fb89" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PbxExternalApiAccess.js" afterPath="$PROJECT_DIR$/PbxExternalApiAccess.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/custom-environment-variables.js" afterPath="$PROJECT_DIR$/config/custom-environment-variables.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/default.js" afterPath="$PROJECT_DIR$/config/default.js" />
     </list>
     <ignored path="DVP-PBXService.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,10 +26,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1151" max-vertical-offset="3468">
+            <state vertical-scroll-proportion="0.60589814" vertical-offset="1049" max-vertical-offset="3468">
               <caret line="1331" column="39" selection-start-line="1331" selection-start-column="19" selection-end-line="1331" selection-end-column="49" />
               <folding>
                 <element signature="e#908#3947#0" expanded="false" />
@@ -115,11 +113,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PbxBackendHandler.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PbxBackendHandler.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/PbxBackendHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.17962466" vertical-offset="103" max-vertical-offset="2771">
-              <caret line="88" column="5" selection-start-line="88" selection-start-column="5" selection-end-line="88" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2771">
+              <caret line="90" column="45" selection-start-line="90" selection-start-column="45" selection-end-line="90" selection-end-column="45" />
               <folding>
                 <element signature="e#239#3437#0" expanded="false" />
                 <element signature="e#5251#6888#0" expanded="false" />
@@ -149,16 +147,6 @@
                 <element signature="e#49200#51083#0" expanded="false" />
                 <element signature="e#51190#54422#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PbxExternalApiAccess.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PbxExternalApiAccess.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="2975">
-              <caret line="140" column="17" selection-start-line="140" selection-start-column="17" selection-end-line="140" selection-end-column="17" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -395,12 +383,12 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32792208" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.49962825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.49962825" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32899022" sideWeight="0.49962825" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20446096" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39739415" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32899022" sideWeight="0.49962825" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.49962825" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.50037175" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1567,51 +1555,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1151" max-vertical-offset="3468">
-          <caret line="1331" column="39" selection-start-line="1331" selection-start-column="19" selection-end-line="1331" selection-end-column="49" />
-          <folding>
-            <element signature="e#908#3947#0" expanded="false" />
-            <element signature="e#4048#32317#0" expanded="false" />
-            <element signature="e#4867#15515#0" expanded="false" />
-            <element signature="e#6459#6833#0" expanded="false" />
-            <element signature="e#7097#10158#0" expanded="false" />
-            <element signature="e#10269#10859#0" expanded="false" />
-            <element signature="e#10937#11451#0" expanded="false" />
-            <element signature="e#17536#20339#0" expanded="false" />
-            <element signature="e#20434#21673#0" expanded="false" />
-            <element signature="e#21735#22910#0" expanded="false" />
-            <element signature="e#32437#35007#0" expanded="false" />
-            <element signature="e#35142#38237#0" expanded="false" />
-            <element signature="e#38374#41484#0" expanded="false" />
-            <element signature="e#41626#43748#0" expanded="false" />
-            <element signature="e#43891#45953#0" expanded="false" />
-            <element signature="e#46057#47951#0" expanded="false" />
-            <element signature="e#48062#50052#0" expanded="false" />
-            <element signature="e#50165#52615#0" expanded="false" />
-            <element signature="e#52713#54605#0" expanded="false" />
-            <element signature="e#54706#56619#0" expanded="false" />
-            <element signature="e#60312#62251#0" expanded="false" />
-            <element signature="e#62383#64879#0" expanded="false" />
-            <element signature="e#65009#66970#0" expanded="false" />
-            <element signature="e#67074#68963#0" expanded="false" />
-            <element signature="e#69074#71031#0" expanded="false" />
-            <element signature="e#71135#73022#0" expanded="false" />
-            <element signature="e#73120#75011#0" expanded="false" />
-            <element signature="e#75112#76988#0" expanded="false" />
-            <element signature="e#77099#79045#0" expanded="false" />
-            <element signature="e#79141#80970#0" expanded="false" />
-            <element signature="e#81062#82891#0" expanded="false" />
-            <element signature="e#82991#84882#0" expanded="false" />
-            <element signature="e#84992#86930#0" expanded="false" />
-            <element signature="e#87042#88976#0" expanded="false" />
-            <element signature="e#89074#90341#0" expanded="false" />
-            <element signature="e#90442#91711#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/DVP-DBModels/Forwarding.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.30829015" vertical-offset="0" max-vertical-offset="391">
@@ -1654,16 +1597,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/PbxExternalApiAccess.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="561" max-vertical-offset="2975">
-          <caret line="140" column="17" selection-start-line="140" selection-start-column="17" selection-end-line="140" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.7265416" vertical-offset="2602" max-vertical-offset="2975">
+          <caret line="169" column="37" selection-start-line="169" selection-start-column="37" selection-end-line="169" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/PbxBackendHandler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17962466" vertical-offset="103" max-vertical-offset="2771">
-          <caret line="88" column="5" selection-start-line="88" selection-start-column="5" selection-end-line="88" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2771">
+          <caret line="90" column="45" selection-start-line="90" selection-start-column="45" selection-end-line="90" selection-end-column="45" />
           <folding>
             <element signature="e#239#3437#0" expanded="false" />
             <element signature="e#5251#6888#0" expanded="false" />
@@ -1692,6 +1635,51 @@
             <element signature="e#48798#49104#0" expanded="false" />
             <element signature="e#49200#51083#0" expanded="false" />
             <element signature="e#51190#54422#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.60589814" vertical-offset="1049" max-vertical-offset="3468">
+          <caret line="1331" column="39" selection-start-line="1331" selection-start-column="19" selection-end-line="1331" selection-end-column="49" />
+          <folding>
+            <element signature="e#908#3947#0" expanded="false" />
+            <element signature="e#4048#32317#0" expanded="false" />
+            <element signature="e#4867#15515#0" expanded="false" />
+            <element signature="e#6459#6833#0" expanded="false" />
+            <element signature="e#7097#10158#0" expanded="false" />
+            <element signature="e#10269#10859#0" expanded="false" />
+            <element signature="e#10937#11451#0" expanded="false" />
+            <element signature="e#17536#20339#0" expanded="false" />
+            <element signature="e#20434#21673#0" expanded="false" />
+            <element signature="e#21735#22910#0" expanded="false" />
+            <element signature="e#32437#35007#0" expanded="false" />
+            <element signature="e#35142#38237#0" expanded="false" />
+            <element signature="e#38374#41484#0" expanded="false" />
+            <element signature="e#41626#43748#0" expanded="false" />
+            <element signature="e#43891#45953#0" expanded="false" />
+            <element signature="e#46057#47951#0" expanded="false" />
+            <element signature="e#48062#50052#0" expanded="false" />
+            <element signature="e#50165#52615#0" expanded="false" />
+            <element signature="e#52713#54605#0" expanded="false" />
+            <element signature="e#54706#56619#0" expanded="false" />
+            <element signature="e#60312#62251#0" expanded="false" />
+            <element signature="e#62383#64879#0" expanded="false" />
+            <element signature="e#65009#66970#0" expanded="false" />
+            <element signature="e#67074#68963#0" expanded="false" />
+            <element signature="e#69074#71031#0" expanded="false" />
+            <element signature="e#71135#73022#0" expanded="false" />
+            <element signature="e#73120#75011#0" expanded="false" />
+            <element signature="e#75112#76988#0" expanded="false" />
+            <element signature="e#77099#79045#0" expanded="false" />
+            <element signature="e#79141#80970#0" expanded="false" />
+            <element signature="e#81062#82891#0" expanded="false" />
+            <element signature="e#82991#84882#0" expanded="false" />
+            <element signature="e#84992#86930#0" expanded="false" />
+            <element signature="e#87042#88976#0" expanded="false" />
+            <element signature="e#89074#90341#0" expanded="false" />
+            <element signature="e#90442#91711#0" expanded="false" />
           </folding>
         </state>
       </provider>

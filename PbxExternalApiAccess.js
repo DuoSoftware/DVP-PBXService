@@ -15,7 +15,7 @@ var RemoteGetSipUserDetailsForUuid = function(reqId, sipUserUuid, securityToken,
 
         if(sipUacServiceHost && sipUacServicePort && sipUacServiceVersion)
         {
-            var httpUrl = util.format('http://%s:%s/DVP/%s/UACManagement/SipUserByUuid/%s', sipUacServiceHost, sipUacServicePort, sipUacServiceVersion, sipUserUuid);
+            var httpUrl = util.format('http://%s:%s/DVP/%s/SipUser/User/ByUUID/%s', sipUacServiceHost, sipUacServicePort, sipUacServiceVersion, sipUserUuid);
 
             var options = {
                 url: httpUrl,
