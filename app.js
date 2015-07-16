@@ -1315,7 +1315,7 @@ server.del('/DVP/API/' + hostVersion + '/PBXService/Forwarding/:fwdId', function
 
 });
 
-server.post('/DVP/API/' + hostVersion + '/PBXService/PbxUser', function(req, res, next)
+server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     try
@@ -1456,7 +1456,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PbxUserTemplate', function(
 
 });
 
-server.post('/DVP/API/' + hostVersion + '/PBXService/PbxUser/:pbxUser/SetPbxUserTemplate/:templateId', function(req, res, next)
+server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:pbxUser/SetPbxUserTemplate/:templateId', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     try
@@ -1519,7 +1519,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PbxUser/:pbxUser/SetPbxUser
 
 });
 
-server.post('/DVP/API/' + hostVersion + '/PBXService/PbxUser/:PbxUserUuid/PbxUserTemplate/UnAssign', function(req, res, next)
+server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/PbxUserTemplate/UnAssign', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     try
@@ -1570,7 +1570,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PbxUser/:PbxUserUuid/PbxUse
 
 });
 
-server.del('/DVP/API/' + hostVersion + '/PBXService/PbxUser/:PbxUserUuid', function(req, res, next)
+server.del('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     try
@@ -1674,7 +1674,7 @@ server.del('/DVP/API/' + hostVersion + '/PBXService/PbxUserTemplate/:templateId'
 
 });
 
-server.get('/DVP/API/' + hostVersion + '/PBXService/PbxUser/:PbxUserUuid', function(req, res, next)
+server.get('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     try
@@ -1933,7 +1933,7 @@ server.get('/DVP/API/' + hostVersion + '/PBXService/FeatureCodes', function(req,
 
 });
 
-server.get('/DVP/API/' + hostVersion + '/PBXService/PbxUsers', function(req, res, next)
+server.get('/DVP/API/' + hostVersion + '/PBXService/PBXUsers', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     var emptyArr = [];
@@ -2039,7 +2039,7 @@ server.get('/DVP/API/' + hostVersion + '/PBXService/PbxUserTemplates', function(
 
 });
 
-server.get('/DVP/API/' + hostVersion + '/PBXService/PbxUser/:userUuid/FollowMe', function(req, res, next)
+server.get('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:userUuid/FollowMe', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     var emptyArr = [];
@@ -2093,7 +2093,7 @@ server.get('/DVP/API/' + hostVersion + '/PBXService/PbxUser/:userUuid/FollowMe',
 
 });
 
-server.get('/DVP/API/' + hostVersion + '/PBXService/PbxUser/:userUuid/Forwarding', function(req, res, next)
+server.get('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:userUuid/Forwarding', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     var emptyArr = [];
