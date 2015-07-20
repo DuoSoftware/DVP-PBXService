@@ -5,8 +5,8 @@
   "main": "app.js",
   "dependencies": {
     "config": "^1.14.0",
-    "DVP-Common": "^0.0.0",
-    "DVP-DBModels": "^0.0.0",
+    "DVP-Common": "DuoSoftware/DVP-Common",
+    "DVP-DBModels": "DuoSoftware/DVP-DBModels",
     "moment": "^2.10.3",
     "node-uuid": "^1.4.3",
     "pg": "^4.4.0",

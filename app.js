@@ -9,6 +9,7 @@ var extApi = require('./PbxExternalApiAccess.js');
 var underscore = require('underscore');
 var xmlBuilder = require('./XmlDialplanBuilder.js');
 var moment = require('moment');
+var Q = require('q');
 
 var hostIp = config.Host.Ip;
 var hostPort = config.Host.Port;
@@ -129,24 +130,48 @@ var FeatureCodeHandler = function(reqId, dnis, companyId, tenantId, callback)
     }
 };
 
-var PickGreetingFilesMetadata = function(reqId, greetingFileType, filename, appId, securityToken)
+var PickGreetingFilesMetadata = function(reqId, nightGreetingFile, dayGreetingFile, appId, securityToken)
 {
-    //var deferred = Q.defer();
+    var deferred = Q.defer();
 
-    //if(greetingFileType ==)
+    var ngFileMetadata = undefined;
+    var dgFileMetadata = undefined;
 
-    extApi.RemoteGetFileMetadata(reqId, filename, appId, securityToken, function(err, resp)
+    if(nightGreetingFile)
     {
-        if(err)
+        extApi.RemoteGetFileMetadata(reqId, nightGreetingFile, appId, securityToken, function(err, resp)
         {
-            deferred.reject(err);
-        }
-        else
-        {
-            deferred.resolve(resp);
-        }
+            if(err)
+            {
+                deferred.reject(err);
+            }
+            else
+            {
+                ngFileMetadata = resp;
+                if(dayGreetingFile)
+                {
+                    extApi.RemoteGetFileMetadata(reqId, nightGreetingFile, appId, securityToken, function(err, resp)
+                    {
+                        if(err)
+                        {
+                            deferred.reject(err);
+                        }
+                        else
+                        {
+                            ngFileMetadata = resp;
+                            deferred.resolve(ngFileMetadata, dgFileMetadata);
+                        }
 
-    })
+                    })
+                    deferred.resolve(ngFileMetadata, dgFileMetadata);
+                }
+
+            }
+
+        })
+    }
+
+
 }
 
 
