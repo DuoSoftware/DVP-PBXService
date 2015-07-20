@@ -129,7 +129,25 @@ var FeatureCodeHandler = function(reqId, dnis, companyId, tenantId, callback)
     }
 };
 
-//var PickGreetingFilesMetadata = function(reqId, greetingFileType, filename, appId)
+var PickGreetingFilesMetadata = function(reqId, greetingFileType, filename, appId, securityToken)
+{
+    //var deferred = Q.defer();
+
+    //if(greetingFileType ==)
+
+    extApi.RemoteGetFileMetadata(reqId, filename, appId, securityToken, function(err, resp)
+    {
+        if(err)
+        {
+            deferred.reject(err);
+        }
+        else
+        {
+            deferred.resolve(resp);
+        }
+
+    })
+}
 
 
 server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', function(req, res, next)
