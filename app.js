@@ -129,6 +129,9 @@ var FeatureCodeHandler = function(reqId, dnis, companyId, tenantId, callback)
     }
 };
 
+//var PickGreetingFilesMetadata = function(reqId, greetingFileType, filename, appId)
+
+
 server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', function(req, res, next)
 {
     var pbxUserConf = {};
@@ -149,6 +152,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
         var fromUserUuid = '';
         var opType = undefined;
         var extExtraData = undefined;
+        var appId = '';
 
         if(extraData)
         {
@@ -156,6 +160,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
             fromUserUuid = extraData['FromUserUuid'];
             opType = extraData['OperationType'];
             extExtraData = extraData['ExtExtraData'];
+            appId = extraData['AppId'];
         }
 
         if(direction === 'IN')
@@ -185,8 +190,14 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
                                 var hours = serverOffSet.hour();
 
-                                if(hours>12)
+                                if(hours>=12)
                                 {
+                                    //get file meta data
+                                    if(pbxDetails.NightGreetingFile)
+                                    {
+
+                                    }
+                                    extApi.RemoteGetFileMetadata(reqId, pbx)
                                     pbxUserConf.PersonalGreeting = pbxDetails.NightGreetingFile;
                                 }
                                 else
@@ -393,7 +404,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
                             var hours = serverOffSet.hour();
 
-                            if(hours>12)
+                            if(hours>=12)
                             {
                                 pbxUserConf.PersonalGreeting = pbxDetails.NightGreetingFile;
                             }
@@ -775,7 +786,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/Allowe
 
 });
 
-server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/DayPersonalGreeting/:FileUuid', function(req, res, next)
+server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/DayPersonalGreeting/:Filename', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     try
@@ -783,46 +794,27 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/DayPer
         var securityToken = req.header('authorization');
         var pbxUserUuid = req.params.PbxUserUuid;
 
-        var fileUuid = req.params.FileUuid;
+        var filename = req.params.Filename;
 
         logger.debug('[DVP-PBXService.DayPersonalGreeting] - [%s] - HTTP Request Received - Req Params - PbxUserUuid : %s, FileUuid : %s', reqId, pbxUserUuid, fileUuid);
 
-        if(pbxUserUuid && fileUuid && securityToken)
+        if(pbxUserUuid && filename && securityToken)
         {
-            extApi.RemoteGetFileMetadata(reqId, fileUuid, securityToken, function (err, fileMetaData)
-            {
+
+            pbxBackendHandler.SetDayPersonalGreetingDB(reqId, pbxUserUuid, filename, 1, 1, function (err, assignResult) {
                 if (err)
                 {
-                    var jsonString = messageFormatter.FormatMessage(err, "Exception occurred", false, false);
+                    var jsonString = messageFormatter.FormatMessage(err, "Assign day personal greeting file failed", false, false);
                     logger.debug('[DVP-PBXService.DayPersonalGreeting] - [%s] - API RESPONSE : %s', reqId, jsonString);
                     res.end(jsonString);
-
-                }
-                else if (fileMetaData && fileMetaData.Filename)
-                {
-                    pbxBackendHandler.SetDayPersonalGreetingDB(reqId, pbxUserUuid, fileMetaData.Filename, 1, 1, function (err, assignResult) {
-                        if (err)
-                        {
-                            var jsonString = messageFormatter.FormatMessage(err, "Assign PBX User allowed numbers Failed", false, false);
-                            logger.debug('[DVP-PBXService.DayPersonalGreeting] - [%s] - API RESPONSE : %s', reqId, jsonString);
-                            res.end(jsonString);
-                        }
-                        else
-                        {
-                            var jsonString = messageFormatter.FormatMessage(err, "Assign PBX User allowed numbers Success", true, assignResult);
-                            logger.debug('[DVP-PBXService.DayPersonalGreeting] - [%s] - API RESPONSE : %s', reqId, jsonString);
-                            res.end(jsonString);
-                        }
-
-                    })
                 }
                 else
                 {
-                    var jsonString = messageFormatter.FormatMessage(new Error('File not found'), "Exception occurred", false, false);
+                    var jsonString = messageFormatter.FormatMessage(err, "Assign day personal greeting file success", true, assignResult);
                     logger.debug('[DVP-PBXService.DayPersonalGreeting] - [%s] - API RESPONSE : %s', reqId, jsonString);
                     res.end(jsonString);
-
                 }
+
             })
 
 
@@ -849,7 +841,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/DayPer
 
 });
 
-server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/NightPersonalGreeting/:FileUuid', function(req, res, next)
+server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/NightPersonalGreeting/:Filename', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     try
@@ -857,47 +849,30 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/NightP
         var securityToken = req.header('authorization');
 
         var pbxUserUuid = req.params.PbxUserUuid;
-        var fileUuid = req.params.FileUuid;
+        var filename = req.params.Filename;
 
         logger.debug('[DVP-PBXService.NightPersonalGreeting] - [%s] - HTTP Request Received - Req Params - PbxUserUuid : %s, FileUuid : %s', reqId, pbxUserUuid, fileUuid);
 
-        if(pbxUserUuid && fileUuid && securityToken)
+        if(pbxUserUuid && filename && securityToken)
         {
-            extApi.RemoteGetFileMetadata(reqId, fileUuid, securityToken, function (err, fileMetaData)
+
+            pbxBackendHandler.SetNightPersonalGreetingDB(reqId, pbxUserUuid, filename, 1, 1, function (err, assignResult)
             {
                 if (err)
                 {
-                    var jsonString = messageFormatter.FormatMessage(err, "Exception occurred", false, false);
+                    var jsonString = messageFormatter.FormatMessage(err, "Assign night personal greeting file failed", false, false);
                     logger.debug('[DVP-PBXService.NightPersonalGreeting] - [%s] - API RESPONSE : %s', reqId, jsonString);
                     res.end(jsonString);
-
-                }
-                else if (fileMetaData && fileMetaData.Filename)
-                {
-                    pbxBackendHandler.SetNightPersonalGreetingDB(reqId, pbxUserUuid, fileMetaData.Filename, 1, 1, function (err, assignResult) {
-                        if (err)
-                        {
-                            var jsonString = messageFormatter.FormatMessage(err, "Assign PBX User allowed numbers Failed", false, false);
-                            logger.debug('[DVP-PBXService.NightPersonalGreeting] - [%s] - API RESPONSE : %s', reqId, jsonString);
-                            res.end(jsonString);
-                        }
-                        else
-                        {
-                            var jsonString = messageFormatter.FormatMessage(err, "Assign PBX User allowed numbers Success", true, assignResult);
-                            logger.debug('[DVP-PBXService.NightPersonalGreeting] - [%s] - API RESPONSE : %s', reqId, jsonString);
-                            res.end(jsonString);
-                        }
-
-                    })
                 }
                 else
                 {
-                    var jsonString = messageFormatter.FormatMessage(new Error('File not found'), "Exception occurred", false, false);
+                    var jsonString = messageFormatter.FormatMessage(err, "Assign night personal greeting file success", true, assignResult);
                     logger.debug('[DVP-PBXService.NightPersonalGreeting] - [%s] - API RESPONSE : %s', reqId, jsonString);
                     res.end(jsonString);
-
                 }
+
             })
+
 
         }
         else

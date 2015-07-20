@@ -111,7 +111,7 @@ var RemoteGetSipUserDetailsForExtension = function(reqId, extension, securityTok
 };
 
 
-var RemoteGetFileMetadata = function(reqId, uuid, securityToken, callback)
+var RemoteGetFileMetadata = function(reqId, filename, appId, securityToken, callback)
 {
     try
     {
@@ -123,7 +123,7 @@ var RemoteGetFileMetadata = function(reqId, uuid, securityToken, callback)
 
         if(fileServiceHost && fileServicePort && fileServiceVersion)
         {
-            var httpUrl = util.format('http://%s:%s/DVP/API/%s/FileService/File/MetaData/%s', fileServiceHost, fileServicePort, fileServicePort, fileServiceVersion, uuid);
+            var httpUrl = util.format('http://%s:%s/DVP/API/%s/FileService/File/%s/ofApplication/%s', fileServiceHost, fileServicePort, fileServicePort, fileServiceVersion, filename, appId);
 
             var options = {
                 url: httpUrl,
