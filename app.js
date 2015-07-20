@@ -8,6 +8,7 @@ var dbModel = require('DVP-DBModels');
 var extApi = require('./PbxExternalApiAccess.js');
 var underscore = require('underscore');
 var xmlBuilder = require('./XmlDialplanBuilder.js');
+var moment = require('moment');
 
 var hostIp = config.Host.Ip;
 var hostPort = config.Host.Port;
@@ -24,7 +25,6 @@ server.use(restify.fullResponse());
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
-
 
 var FeatureCodeHandler = function(reqId, dnis, companyId, tenantId, callback)
 {
@@ -181,9 +181,9 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
                             if(pbxDetails.PersonalGreetingEnabled)
                             {
-                                var hours = new Date().getHours();
+                                var serverOffSet = moment().utcOffset('+0600');
 
-                                hours = (hours+24-2)%24;
+                                var hours = serverOffSet.hour();
 
                                 if(hours>12)
                                 {
@@ -261,16 +261,25 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                                     }
                                     else if(advancedMethod === 'FORWARD')
                                     {
-                                        pbxUserConf.OperationType = 'FORWARD';
-                                        pbxUserConf.UserRefId = userUuid;
-                                        pbxUserConf.Endpoints = undefined;
-                                        pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                        pbxUserConf.BypassMedia = bypassMedia;
+                                        pbxBackendHandler.GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, function(err, fwdList)
+                                        {
+                                            if(err)
+                                            {
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
+                                            }
+                                            else
+                                            {
+                                                pbxUserConf.OperationType = 'FORWARD';
+                                                pbxUserConf.UserRefId = userUuid;
+                                                pbxUserConf.Endpoints = fwdList;
+                                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                pbxUserConf.BypassMedia = bypassMedia;
 
-
-
-                                        var jsonResponse = JSON.stringify(pbxUserConf);
-                                        res.end(jsonResponse);
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
+                                            }
+                                        })
 
                                     }
                                     else
@@ -380,9 +389,9 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
                         if(pbxDetails.PersonalGreetingEnabled)
                         {
-                            var hours = new Date().getHours();
+                            var serverOffSet = moment().utcOffset('+0600');
 
-                            hours = (hours+24-2)%24;
+                            var hours = serverOffSet.hour();
 
                             if(hours>12)
                             {
@@ -461,31 +470,28 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                             }
                             else if(advancedMethod === 'FORWARD')
                             {
-                                pbxUserConf.OperationType = 'FORWARD';
-                                pbxUserConf.UserRefId = userUuid;
-                                pbxUserConf.Forward = undefined;
-                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                pbxUserConf.BypassMedia = bypassMedia;
 
-                                if(pbxDetails.PersonalGreetingEnabled)
+                                pbxBackendHandler.GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, function(err, fwdList)
                                 {
-                                    var hours = new Date().getHours();
-
-                                    hours = (hours+24-2)%24;
-
-                                    if(hours>12)
+                                    if(err)
                                     {
-                                        pbxUserConf.PersonalGreeting = pbxDetails.NightGreetingFile;
+                                        var jsonResponse = JSON.stringify(pbxUserConf);
+                                        res.end(jsonResponse);
                                     }
                                     else
                                     {
-                                        pbxUserConf.PersonalGreeting = pbxDetails.DayGreetingFile;
+                                        pbxUserConf.OperationType = 'FORWARD';
+                                        pbxUserConf.UserRefId = userUuid;
+                                        pbxUserConf.Endpoints = fwdList;
+                                        pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                        pbxUserConf.BypassMedia = bypassMedia;
+
+
+
+                                        var jsonResponse = JSON.stringify(pbxUserConf);
+                                        res.end(jsonResponse);
                                     }
-
-                                }
-
-                                var jsonResponse = JSON.stringify(pbxUserConf);
-                                res.end(jsonResponse);
+                                })
 
                             }
                             else
@@ -495,22 +501,6 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                                 pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                 pbxUserConf.BypassMedia = bypassMedia;
 
-                                if(pbxDetails.PersonalGreetingEnabled)
-                                {
-                                    var hours = new Date().getHours();
-
-                                    hours = (hours+24-2)%24;
-
-                                    if(hours>12)
-                                    {
-                                        pbxUserConf.PersonalGreeting = pbxDetails.NightGreetingFile;
-                                    }
-                                    else
-                                    {
-                                        pbxUserConf.PersonalGreeting = pbxDetails.DayGreetingFile;
-                                    }
-
-                                }
 
                                 var jsonResponse = JSON.stringify(pbxUserConf);
                                 res.end(jsonResponse);
@@ -739,7 +729,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/Allowe
 
             if(pbxUserUuid && allowedNumArr)
             {
-                pbxBackendHandler.AddPbxUserAllowedNumbersDB(reqId, pbxUserUuid, 1, 3, allowedNumArr, function(err, assignResult)
+                pbxBackendHandler.AddPbxUserAllowedNumbersDB(reqId, pbxUserUuid, 1, 1, allowedNumArr, function(err, assignResult)
                 {
                     if(err)
                     {
@@ -810,7 +800,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/DayPer
                 }
                 else if (fileMetaData && fileMetaData.Filename)
                 {
-                    pbxBackendHandler.SetDayPersonalGreetingDB(reqId, pbxUserUuid, fileMetaData.Filename, 1, 3, function (err, assignResult) {
+                    pbxBackendHandler.SetDayPersonalGreetingDB(reqId, pbxUserUuid, fileMetaData.Filename, 1, 1, function (err, assignResult) {
                         if (err)
                         {
                             var jsonString = messageFormatter.FormatMessage(err, "Assign PBX User allowed numbers Failed", false, false);
@@ -884,7 +874,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/NightP
                 }
                 else if (fileMetaData && fileMetaData.Filename)
                 {
-                    pbxBackendHandler.SetNightPersonalGreetingDB(reqId, pbxUserUuid, fileMetaData.Filename, 1, 3, function (err, assignResult) {
+                    pbxBackendHandler.SetNightPersonalGreetingDB(reqId, pbxUserUuid, fileMetaData.Filename, 1, 1, function (err, assignResult) {
                         if (err)
                         {
                             var jsonString = messageFormatter.FormatMessage(err, "Assign PBX User allowed numbers Failed", false, false);
@@ -1227,7 +1217,7 @@ server.del('/DVP/API/' + hostVersion + '/PBXService/FollowMe/:fmId', function(re
         if(fmId && securityToken)
         {
 
-            pbxBackendHandler.DeleteFollowMeDB(reqId, fmId, 1, 3, function (err, delResult)
+            pbxBackendHandler.DeleteFollowMeDB(reqId, fmId, 1, 1, function (err, delResult)
             {
                 if (err)
                 {
@@ -1279,7 +1269,7 @@ server.del('/DVP/API/' + hostVersion + '/PBXService/Forwarding/:fwdId', function
         if(fwdId && securityToken)
         {
 
-            pbxBackendHandler.DeleteForwardingDB(reqId, fwdId, 1, 3, function (err, delResult)
+            pbxBackendHandler.DeleteForwardingDB(reqId, fwdId, 1, 1, function (err, delResult)
             {
                 if (err)
                 {
@@ -1353,7 +1343,8 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser', function(req, res
                         ObjClass: 'PBX',
                         ObjType: 'PBXUSER',
                         ObjCategory: 'GENERAL',
-                        Pin: reqBody.Pin
+                        Pin: reqBody.Pin,
+                        TimeZone: reqBody.TimeZone
                     });
 
                     pbxBackendHandler.AddPbxUserDB(reqId, pbxUsrData, function(err, addResult)
@@ -1386,6 +1377,64 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser', function(req, res
         {
             var jsonString = messageFormatter.FormatMessage(new Error('Empty request body or no authorization token set'), "Empty request body or no authorization token set", false, false);
             logger.debug('[DVP-PBXService.NewPbxUser] - [%s] - API RESPONSE : %s', reqId, jsonString);
+            res.end(jsonString);
+
+        }
+
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.PbxUser] - [%s] - Exception Occurred', reqId, ex);
+        var jsonString = messageFormatter.FormatMessage(ex, "Exception occurred", false, false);
+        logger.debug('[DVP-PBXService.PbxUser] - [%s] - API RESPONSE : %s', reqId, jsonString);
+        res.end(jsonString);
+
+    }
+
+    return next();
+
+});
+
+server.put('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:userUuid', function(req, res, next)
+{
+    var reqId = nodeUuid.v1();
+    try
+    {
+        var securityToken = req.header('authorization');
+        var reqBody = req.body;
+        var uuidusr = req.params.userUuid;
+
+        logger.debug('[DVP-PBXService.UpdatePbxUser] - [%s] - HTTP Request Received - Req Body : ', reqId, reqBody);
+
+        if(reqBody && securityToken)
+        {
+
+            delete reqBody.UserUuid;
+            delete reqBody.CompanyId;
+            delete reqBody.TenantId;
+
+            pbxBackendHandler.UpdatePbxUserDB(reqId, uuidusr, reqBody, 1, 1, function(err, updateResult)
+            {
+                if(err || !updateResult)
+                {
+                    var jsonString = messageFormatter.FormatMessage(err, "Update PBX User Failed", false, false);
+                    logger.debug('[DVP-PBXService.UpdatePbxUser] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    res.end(jsonString);
+                }
+                else
+                {
+                    var jsonString = messageFormatter.FormatMessage(err, "Update PBX User Success", true, updateResult);
+                    logger.debug('[DVP-PBXService.UpdatePbxUser] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    res.end(jsonString);
+                }
+
+            })
+        }
+        else
+        {
+            var jsonString = messageFormatter.FormatMessage(new Error('Empty request body or no authorization token set'), "Empty request body or no authorization token set", false, false);
+            logger.debug('[DVP-PBXService.UpdatePbxUser] - [%s] - API RESPONSE : %s', reqId, jsonString);
             res.end(jsonString);
 
         }
@@ -1476,7 +1525,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:pbxUser/SetPbxUser
 
             if(pbxUserUuid && tempId)
             {
-                pbxBackendHandler.AssignTemplateToUserDB(reqId, pbxUserUuid, tempId, 1, 3, function(err, assignResult)
+                pbxBackendHandler.AssignTemplateToUserDB(reqId, pbxUserUuid, tempId, 1, 1, function(err, assignResult)
                 {
                     if(err)
                     {
@@ -1897,7 +1946,7 @@ server.get('/DVP/API/' + hostVersion + '/PBXService/FeatureCodes', function(req,
         if(securityToken)
         {
 
-            pbxBackendHandler.GetFeatureCodesForCompanyDB(reqId, 1, 3, function (err, fc)
+            pbxBackendHandler.GetFeatureCodesForCompanyDB(reqId, 1, 1, function (err, fc)
             {
                 if (err)
                 {
@@ -1950,7 +1999,7 @@ server.get('/DVP/API/' + hostVersion + '/PBXService/PBXUsers', function(req, res
         if(securityToken)
         {
 
-            pbxBackendHandler.GetPbxUsersForCompanyDB(reqId, 1, 3, function (err, pbxUserList)
+            pbxBackendHandler.GetPbxUsersForCompanyDB(reqId, 1, 1, function (err, pbxUserList)
             {
                 if (err)
                 {
@@ -2003,7 +2052,7 @@ server.get('/DVP/API/' + hostVersion + '/PBXService/PbxUserTemplates', function(
         if(securityToken)
         {
 
-            pbxBackendHandler.GetPbxUserTemplatesForCompanyDB(reqId, 1, 3, function (err, pbxTempList)
+            pbxBackendHandler.GetPbxUserTemplatesForCompanyDB(reqId, 1, 1, function (err, pbxTempList)
             {
                 if (err)
                 {
@@ -2057,7 +2106,7 @@ server.get('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:userUuid/FollowMe',
         if(securityToken)
         {
 
-            pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, 1, 3, function (err, fmList)
+            pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, 1, 1, function (err, fmList)
             {
                 if (err)
                 {
@@ -2198,7 +2247,7 @@ server.get('/DVP/API/' + hostVersion + '/PBXService/PbxMasterData/:id', function
 
         logger.debug('[DVP-PBXService.GetPbxMasterData] - [%s] - HTTP Request Received - Req Body : ', reqId, pbxId);
 
-        pbxBackendHandler.GetPbxMasterData(reqId, pbxId, 1, 3, function (err, result)
+        pbxBackendHandler.GetPbxMasterData(reqId, pbxId, 1, 1, function (err, result)
         {
             if (err)
             {

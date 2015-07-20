@@ -800,6 +800,46 @@ var GetFollowMeByUserDB = function(reqId, userUuid, companyId, tenantId, callbac
 
 };
 
+var UpdatePbxUserDB = function(reqId, userUuid, updateData, companyId, tenantId, callback)
+{
+    try
+    {
+        dbModel.PBXUser.find({where: [{UserUuid: userUuid},{CompanyId: companyId},{TenantId: tenantId}]})
+            .then(function (pbxUserToUpdate)
+            {
+                if(pbxUserToUpdate)
+                {
+                    logger.debug('[DVP-PBXService.UpdatePbxUserDB] - [%s] - PGSQL Get PBX User query success', reqId);
+                    pbxUserToUpdate.updateAttributes(pbxUserToUpdate).then(function(updateResult)
+                    {
+                        logger.debug('[DVP-PBXService.UpdatePbxUserDB] - [%s] - PGSQL Update PBX User query success', reqId);
+                        callback(undefined, true);
+                    })
+                    .catch(function(err)
+                    {
+                        logger.error('[DVP-PBXService.UpdatePbxUserDB] - [%s] - PGSQL Update Pbx User Failed', reqId, err);
+                        callback(err, false);
+                    })
+                }
+                else
+                {
+                    logger.error('[DVP-PBXService.UpdatePbxUserDB] - [%s] - PGSQL Update Pbx User Failed', reqId, err);
+                    callback(new Error('Cannot find pbx user with given id'), false);
+                }
+            })
+            .catch(function(err)
+            {
+                logger.error('[DVP-PBXService.UpdatePbxUserDB] - [%s] - PGSQL Get Pbx User Failed', reqId, err);
+                callback(err, false);
+            });
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.UpdatePbxUserDB] - [%s] - Exception occurred', reqId, ex);
+        callback(ex, false);
+    }
+};
+
 var AddPbxUserDB = function(reqId, pbxUserData, callback)
 {
     try
@@ -1344,3 +1384,4 @@ module.exports.AddForwardingDB = AddForwardingDB;
 module.exports.DeleteForwardingDB = DeleteForwardingDB;
 module.exports.GetForwardingByIdDB = GetForwardingByIdDB;
 module.exports.GetForwardingByUserDB = GetForwardingByUserDB;
+module.exports.UpdatePbxUserDB = UpdatePbxUserDB;

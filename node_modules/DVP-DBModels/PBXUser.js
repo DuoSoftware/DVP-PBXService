@@ -21,7 +21,8 @@ module.exports = function(sequelize, DataTypes)
             ObjCategory: DataTypes.STRING,
             PersonalGreetingEnabled: DataTypes.BOOLEAN,
             DayGreetingFile: DataTypes.STRING,
-            NightGreetingFile: DataTypes.STRING
+            NightGreetingFile: DataTypes.STRING,
+            TimeZone: DataTypes.STRING
         }
     );
 
