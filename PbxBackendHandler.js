@@ -430,33 +430,35 @@ var AddFollowMeDB = function(reqId, userUuid, companyId, tenantId, followMeData,
                                                         {
                                                             logger.debug('[DVP-PBXService.AddFollowMeDB] - [%s] - Insert Follow Me PGSQL query success', reqId);
 
-                                                            followMeConfig.addPBXUser(pbxUser, function(err, result)
-                                                            {
-                                                                if(err)
+                                                                followMeConfig.setPBXUser(pbxUser).complete(function(err)
                                                                 {
-                                                                    logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with PBXUser Uuid PGSQL query failed', reqId, err);
-                                                                    callback(new Error('FollowMe configuration added but error occurred while assigning it to user'), false, followMeConfig.id);
-                                                                }
-                                                                else
-                                                                {
-                                                                    logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with PBXUser Uuid PGSQL query sucess', reqId);
-
-                                                                    followMeConfig.addDestinationUser(dstUser, function(err, result)
+                                                                    if(err)
                                                                     {
-                                                                        if(err)
-                                                                        {
-                                                                            logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with Destination User Uuid PGSQL query failed', reqId, err);
-                                                                            callback(new Error('FollowMe configuration added but error occurred while assigning it to destination user'), false, followMeConfig.id);
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with Destination user Uuid PGSQL query sucess', reqId);
-                                                                            callback(undefined, true, followMeConfig.id);
-                                                                        }
-                                                                    });
+                                                                        logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with PBXUser Uuid PGSQL query failed', reqId, err);
+                                                                        callback(new Error('FollowMe configuration added but error occurred while assigning it to user'), false, followMeConfig.id);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with PBXUser Uuid PGSQL query sucess', reqId);
 
-                                                                }
-                                                            });
+                                                                        followMeConfig.setDestinationUser(dstUser).complete(function(err)
+                                                                        {
+                                                                            if(err)
+                                                                            {
+                                                                                logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with Destination User Uuid PGSQL query failed', reqId, err);
+                                                                                callback(new Error('FollowMe configuration added but error occurred while assigning it to destination user'), false, followMeConfig.id);
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with Destination user Uuid PGSQL query sucess', reqId);
+                                                                                callback(undefined, true, followMeConfig.id);
+                                                                            }
+                                                                        });
+
+                                                                    }
+                                                                });
+
+
                                                         }
 
                                                     })
@@ -508,7 +510,7 @@ var AddFollowMeDB = function(reqId, userUuid, companyId, tenantId, followMeData,
                                 {
                                     logger.debug('[DVP-PBXService.AddFollowMeDB] - [%s] - Insert Follow Me PGSQL query success', reqId);
 
-                                    followMeConfig.addPBXUser(pbxUser, function(err, result)
+                                    followMeConfig.setPBXUser(pbxUser).complete(function(err)
                                     {
                                         if(err)
                                         {
@@ -633,7 +635,7 @@ var AddForwardingDB = function(reqId, userUuid, companyId, tenantId, fwdConfig, 
                             {
                                 logger.debug('[DVP-PBXService.AddForwardingDB] - [%s] - Insert Forwarding PGSQL query success', reqId);
 
-                                fwdConfig.addPBXUser(pbxUser, function(err, result)
+                                fwdConfig.setPBXUser(pbxUser).complete(function(err)
                                 {
                                     if(err)
                                     {
@@ -810,7 +812,7 @@ var UpdatePbxUserDB = function(reqId, userUuid, updateData, companyId, tenantId,
                 if(pbxUserToUpdate)
                 {
                     logger.debug('[DVP-PBXService.UpdatePbxUserDB] - [%s] - PGSQL Get PBX User query success', reqId);
-                    pbxUserToUpdate.updateAttributes(pbxUserToUpdate).then(function(updateResult)
+                    pbxUserToUpdate.updateAttributes(updateData).then(function(updateResult)
                     {
                         logger.debug('[DVP-PBXService.UpdatePbxUserDB] - [%s] - PGSQL Update PBX User query success', reqId);
                         callback(undefined, true);

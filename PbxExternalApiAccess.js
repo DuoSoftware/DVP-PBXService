@@ -4,6 +4,8 @@ var util = require('util');
 var stringify = require('stringify');
 var logger = require('DVP-Common/LogHandler/CommonLogHandler.js').logger;
 
+
+
 var RemoteGetSipUserDetailsForUuid = function(reqId, sipUserUuid, securityToken, callback)
 {
     try
@@ -115,7 +117,7 @@ var RemoteGetFileMetadata = function(reqId, filename, appId, securityToken, call
 {
     try
     {
-        logger.debug('[DVP-PBXService.RemoteGetFileMetadata] - [%s] -  Trying to get file meta data from api - Params - uuid : %s', reqId, uuid);
+        logger.debug('[DVP-PBXService.RemoteGetFileMetadata] - [%s] -  Trying to get file meta data from api - Params - filename : %s, appId : %s', reqId, filename, appId);
 
         var fileServiceHost = config.Services.fileServiceHost;
         var fileServicePort = config.Services.fileServicePort;
@@ -123,7 +125,7 @@ var RemoteGetFileMetadata = function(reqId, filename, appId, securityToken, call
 
         if(fileServiceHost && fileServicePort && fileServiceVersion)
         {
-            var httpUrl = util.format('http://%s:%s/DVP/API/%s/FileService/File/%s/ofApplication/%s', fileServiceHost, fileServicePort, fileServicePort, fileServiceVersion, filename, appId);
+            var httpUrl = util.format('http://%s:%s/DVP/API/%s/FileService/File/%s/ofApplication/%s', fileServiceHost, fileServicePort, fileServiceVersion, filename, appId);
 
             var options = {
                 url: httpUrl,
@@ -163,7 +165,7 @@ var RemoteGetFileMetadata = function(reqId, filename, appId, securityToken, call
         logger.error('[DVP-PBXService.RemoteGetSipUserDetailsForExtension] - [%s] - Exception occurred', reqId, ex);
         callback(ex, undefined);
     }
-}
+};
 
 module.exports.RemoteGetSipUserDetailsForUuid = RemoteGetSipUserDetailsForUuid;
 module.exports.RemoteGetSipUserDetailsForExtension =RemoteGetSipUserDetailsForExtension;

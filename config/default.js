@@ -17,12 +17,12 @@ module.exports = {
   "Services":
   {
 
-    "fileServiceHost": "127.0.0.1",
-    "fileServicePort": 9093,
-    "fileServiceVersion":"1.0.0.0",
+    "fileServiceHost": "192.168.0.54",
+    "fileServicePort": 8081,
+    "fileServiceVersion":"6.0",
     "sipUacServiceHost": "127.0.0.1",
-    "sipUacServicePort": 9093,
-    "sipUacServiceVersion": "1.0.0.0"
+    "sipUacServicePort": 8085,
+    "sipUacServiceVersion": "6.0"
 
   }
 
