@@ -975,13 +975,13 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/Person
 
         var pbxUserUuid = req.params.PbxUserUuid;
 
-        var enableStatus = req.params.EnableStatus;
+        var enable = (req.params.EnableStatus === 'true');
 
-        logger.debug('[DVP-PBXService.PersonalGreetingStatus] - [%s] - HTTP Request Received - Req Params - PbxUserUuid : %s, EnableStatus : %s', reqId, pbxUserUuid, enableStatus);
+        logger.debug('[DVP-PBXService.PersonalGreetingStatus] - [%s] - HTTP Request Received - Req Params - PbxUserUuid : %s, EnableStatus : %s', reqId, pbxUserUuid, enable);
 
         if(pbxUserUuid && enableStatus && securityToken)
         {
-            pbxBackendHandler.EnablePersonalGreetingDB(reqId, pbxUserUuid, enableStatus, 1, 1, function (err, assignResult)
+            pbxBackendHandler.EnablePersonalGreetingDB(reqId, pbxUserUuid, enable, 1, 1, function (err, assignResult)
             {
                 if (err)
                 {
