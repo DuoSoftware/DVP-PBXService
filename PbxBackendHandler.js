@@ -83,7 +83,7 @@ var AddPbxMasterDataDB = function(reqId, pbxMasterData, callback)
 
 };
 
-var SetDayPersonalGreetingDB = function(reqId, userUuid, greetingFile, companyId, tenantId)
+var SetDayPersonalGreetingDB = function(reqId, userUuid, greetingFile, companyId, tenantId, callback)
 {
     try
     {
@@ -127,7 +127,7 @@ var SetDayPersonalGreetingDB = function(reqId, userUuid, greetingFile, companyId
     }
 }
 
-var SetNightPersonalGreetingDB = function(reqId, userUuid, greetingFile, companyId, tenantId)
+var SetNightPersonalGreetingDB = function(reqId, userUuid, greetingFile, companyId, tenantId, callback)
 {
     try
     {
@@ -171,7 +171,7 @@ var SetNightPersonalGreetingDB = function(reqId, userUuid, greetingFile, company
     }
 }
 
-var EnablePersonalGreetingDB = function(reqId, userUuid, isEnabled, companyId, tenantId)
+var EnablePersonalGreetingDB = function(reqId, userUuid, isEnabled, companyId, tenantId, callback)
 {
     try
     {
