@@ -865,7 +865,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/DayPer
 
         var filename = req.params.Filename;
 
-        logger.debug('[DVP-PBXService.DayPersonalGreeting] - [%s] - HTTP Request Received - Req Params - PbxUserUuid : %s, FileUuid : %s', reqId, pbxUserUuid, fileUuid);
+        logger.debug('[DVP-PBXService.DayPersonalGreeting] - [%s] - HTTP Request Received - Req Params - PbxUserUuid : %s, filename : %s', reqId, pbxUserUuid, filename);
 
         if(pbxUserUuid && filename && securityToken)
         {
@@ -920,7 +920,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid/NightP
         var pbxUserUuid = req.params.PbxUserUuid;
         var filename = req.params.Filename;
 
-        logger.debug('[DVP-PBXService.NightPersonalGreeting] - [%s] - HTTP Request Received - Req Params - PbxUserUuid : %s, FileUuid : %s', reqId, pbxUserUuid, fileUuid);
+        logger.debug('[DVP-PBXService.NightPersonalGreeting] - [%s] - HTTP Request Received - Req Params - PbxUserUuid : %s, FileUuid : %s', reqId, pbxUserUuid, filename);
 
         if(pbxUserUuid && filename && securityToken)
         {
