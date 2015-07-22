@@ -190,6 +190,8 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
             appId = extraData['AppId'];
         }
 
+        logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - HTTP REQUEST Received - ANI : %s, DNIS : %s, Context : %s, direction : %s, userUuid : %s, fromUserUuid : %s, opType : %s, extExtraData : %s, appId : %s', reqId, ani, dnis, context, direction, userUuid, fromUserUuid, opType, extExtraData, appId);
+
         if(direction === 'IN')
         {
             //try getting user for did
@@ -680,26 +682,34 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                 }
                 else
                 {
+                    logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Searching for feature codes', reqId);
                     FeatureCodeHandler(reqId, dnis, companyId, tenantId, function(err, feature, number)
                     {
                         if(feature)
                         {
+                            logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Feature code detected - Feature : %s', reqId, feature);
                             pbxUserConf.OperationType = feature;
                             pbxUserConf.ExtraData = number;
 
                             var jsonResponse = JSON.stringify(pbxUserConf);
+
+                            logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                             res.end(jsonResponse);
                         }
                         else
                         {
+                            logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Trying for a normal outbound call', reqId);
                             if(fromUserUuid)
                             {
+                                logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - From user provided checking for validity - fromUserUuid : %s', reqId, fromUserUuid);
                                 pbxBackendHandler.GetPbxUserByIdDB(reqId, fromUserUuid, companyId, tenantId, function (err, fromPbxUser)
                                 {
                                     if(fromPbxUser)
                                     {
+                                        logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - From pbx user is available in pbx app', reqId);
                                         if(!fromPbxUser.AllowOutbound)
                                         {
+                                            logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - From pbx user is restricted to outbound calls', reqId);
                                             var outNumArr = JSON.parse(fromPbxUser.AllowedNumbers);
 
                                             var outNum = underscore.find(outNumArr, function (num)
@@ -709,6 +719,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
                                             if (outNum)
                                             {
+                                                logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - From pbx user is restricted but allowed for out num : %s', reqId, dnis);
                                                 var endp =
                                                 {
                                                     DestinationNumber: outNum,
@@ -723,12 +734,12 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                                             }
                                             else
                                             {
-                                                var jsonResponse = JSON.stringify(pbxUserConf);
-                                                res.end(jsonResponse);
+                                                logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - From pbx user is restricted and not allowed for out num : %s', reqId, dnis);
                                             }
                                         }
                                         else
                                         {
+                                            logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - From pbx user is allowed for outbound calls', reqId);
                                             var endp =
                                             {
                                                 DestinationNumber: dnis,
@@ -743,15 +754,22 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                                         }
 
                                     }
+                                    else
+                                    {
+                                        logger.warn('[DVP-PBXService.GenerateDialplan] - [%s] - From pbx user not registered in pbx app', reqId);
+                                    }
 
                                     var jsonResponse = JSON.stringify(pbxUserConf);
+                                    logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                     res.end(jsonResponse);
 
                                 })
                             }
                             else
                             {
+                                logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - From user not provided cannot generate dialplan : %s', reqId);
                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                 res.end(jsonResponse);
                             }
                         }
