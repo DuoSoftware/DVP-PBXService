@@ -215,9 +215,10 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
                             var greetingFileToPlay = undefined;
 
-                            if(pbxDetails.PersonalGreetingEnabled)
+                            if(pbxDetails.PersonalGreetingEnabled && pbxDetails.TimeZone)
                             {
-                                var serverOffSet = moment().utcOffset('+0600');
+                                logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Personal greeting enabled, trying to get file', reqId);
+                                var serverOffSet = moment().utcOffset(pbxDetails.TimeZone);
 
                                 var hours = serverOffSet.hour();
 
@@ -232,12 +233,15 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
                             }
 
+                            logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Accessing greeting file metadata - filename : %s, appId : %s', reqId, greetingFileToPlay, appId);
+
                             PickGreetingFilesMetadata(reqId, greetingFileToPlay, appId, securityToken)
                                 .then(function(metadata)
                                 {
                                     pbxUserConf.PersonalGreeting = undefined;
                                     if(metadata && metadata.FileStructure && metadata.UniqueId)
                                     {
+                                        logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Greeting file metadata found - FileStructure : %s, UniqueId : %s', reqId,  metadata.FileStructure,  metadata.UniqueId);
                                         var fileStructArr = metadata.FileStructure.split('/', 2);
 
                                         if(fileStructArr.length === 2)
@@ -245,8 +249,17 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                                             var fileExt = fileStructArr[1];
 
                                             pbxUserConf.PersonalGreeting = metadata.UniqueId + '.' + fileExt;
+                                            logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Greeting file Generated : %s', reqId,  pbxUserConf.PersonalGreeting);
+                                        }
+                                        else
+                                        {
+                                            logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Invalid file structure : %s', reqId);
                                         }
 
+                                    }
+                                    else
+                                    {
+                                        logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - File Metadata Not Found : %s', reqId);
                                     }
 
                                     if(usrStatus === 'DND')
@@ -451,9 +464,9 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
                         var greetingFileToPlay = undefined;
 
-                        if(pbxDetails.PersonalGreetingEnabled)
+                        if(pbxDetails.PersonalGreetingEnabled && pbxDetails.TimeZone)
                         {
-                            var serverOffSet = moment().utcOffset('+0600');
+                            var serverOffSet = moment().utcOffset(pbxDetails.TimeZone);
 
                             var hours = serverOffSet.hour();
 
@@ -468,176 +481,214 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
                         }
 
-                        if(usrStatus === 'DND')
-                        {
-                            //xml DND response
-                            pbxUserConf.OperationType = 'DND';
-                            pbxUserConf.UserRefId = userUuid;
-                            var jsonResponse = JSON.stringify(pbxUserConf);
-                            res.end(jsonResponse);
-                        }
-                        else if(usrStatus === 'AVAILABLE')
-                        {
-                            //normal user xml
+                        logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Accessing greeting file metadata - filename : %s, appId : %s', reqId, greetingFileToPlay, appId);
 
-                            if(advancedMethod === 'FOLLOW_ME')
+                        PickGreetingFilesMetadata(reqId, greetingFileToPlay, appId, securityToken)
+                            .then(function(metadata)
                             {
-                                pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, function(err, fmList)
+                                pbxUserConf.PersonalGreeting = undefined;
+                                if(metadata && metadata.FileStructure && metadata.UniqueId)
                                 {
-                                    if(err)
+                                    logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Greeting file metadata found - FileStructure : %s, UniqueId : %s', reqId,  metadata.FileStructure,  metadata.UniqueId);
+                                    var fileStructArr = metadata.FileStructure.split('/', 2);
+
+                                    if(fileStructArr.length === 2)
                                     {
-                                        var jsonResponse = JSON.stringify(pbxUserConf);
-                                        res.end(jsonResponse);
+                                        var fileExt = fileStructArr[1];
+
+                                        pbxUserConf.PersonalGreeting = metadata.UniqueId + '.' + fileExt;
+                                        logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Greeting file Generated : %s', reqId,  pbxUserConf.PersonalGreeting);
                                     }
                                     else
                                     {
-                                        //Get follow me config and create xml
-                                        var tempEpList = [];
-                                        fmList.forEach(function(fmRec)
+                                        logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - Invalid file structure : %s', reqId);
+                                    }
+
+                                }
+                                else
+                                {
+                                    logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - File Metadata Not Found : %s', reqId);
+                                }
+
+                                if(usrStatus === 'DND')
+                                {
+                                    //xml DND response
+                                    pbxUserConf.OperationType = 'DND';
+                                    pbxUserConf.UserRefId = userUuid;
+                                    var jsonResponse = JSON.stringify(pbxUserConf);
+                                    res.end(jsonResponse);
+                                }
+                                else if(usrStatus === 'AVAILABLE')
+                                {
+                                    //normal user xml
+
+                                    if(advancedMethod === 'FOLLOW_ME')
+                                    {
+                                        pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, function(err, fmList)
                                         {
-                                            var tempEp =
+                                            if(err)
                                             {
-                                                DestinationNumber: fmRec.DestinationNumber,
-                                                RingTimeout: fmRec.RingTimeout,
-                                                Priority: fmRec.Priority,
-                                                ObjClass: fmRec.ObjClass,
-                                                ObjType: fmRec.ObjType,
-                                                ObjCategory: fmRec.ObjCategory
-                                            };
-
-
-                                            tempEp.BypassMedia = false;
-                                            if(fmRec.ObjCategory === 'PBXUSER' && fmRec.DestinationUser)
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
+                                            }
+                                            else
                                             {
-                                                if(fmRec.DestinationUser.BypassMedia)
+                                                //Get follow me config and create xml
+                                                var tempEpList = [];
+                                                fmList.forEach(function(fmRec)
                                                 {
-                                                    tempEp.BypassMedia = fmRec.DestinationUser.BypassMedia;
-                                                }
+                                                    var tempEp =
+                                                    {
+                                                        DestinationNumber: fmRec.DestinationNumber,
+                                                        RingTimeout: fmRec.RingTimeout,
+                                                        Priority: fmRec.Priority,
+                                                        ObjClass: fmRec.ObjClass,
+                                                        ObjType: fmRec.ObjType,
+                                                        ObjCategory: fmRec.ObjCategory
+                                                    };
+
+
+                                                    tempEp.BypassMedia = false;
+                                                    if(fmRec.ObjCategory === 'PBXUSER' && fmRec.DestinationUser)
+                                                    {
+                                                        if(fmRec.DestinationUser.BypassMedia)
+                                                        {
+                                                            tempEp.BypassMedia = fmRec.DestinationUser.BypassMedia;
+                                                        }
+                                                    }
+
+                                                    tempEpList.push(tempEp);
+
+                                                });
+                                                //Get follow me config and create xml
+                                                pbxUserConf.OperationType = 'FOLLOW_ME';
+                                                pbxUserConf.UserRefId = userUuid;
+                                                pbxUserConf.Endpoints = tempEpList;
+                                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                pbxUserConf.BypassMedia = bypassMedia;
+
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
                                             }
 
-                                            tempEpList.push(tempEp);
-
                                         });
-                                        //Get follow me config and create xml
-                                        pbxUserConf.OperationType = 'FOLLOW_ME';
-                                        pbxUserConf.UserRefId = userUuid;
-                                        pbxUserConf.Endpoints = tempEpList;
-                                        pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                        pbxUserConf.BypassMedia = bypassMedia;
 
-                                        var jsonResponse = JSON.stringify(pbxUserConf);
-                                        res.end(jsonResponse);
                                     }
-
-                                });
-
-                            }
-                            else if(advancedMethod === 'FORWARD')
-                            {
-
-                                pbxBackendHandler.GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, function(err, fwdList)
-                                {
-                                    if(err)
+                                    else if(advancedMethod === 'FORWARD')
                                     {
-                                        var jsonResponse = JSON.stringify(pbxUserConf);
-                                        res.end(jsonResponse);
+
+                                        pbxBackendHandler.GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, function(err, fwdList)
+                                        {
+                                            if(err)
+                                            {
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
+                                            }
+                                            else
+                                            {
+                                                pbxUserConf.OperationType = 'FORWARD';
+                                                pbxUserConf.UserRefId = userUuid;
+                                                pbxUserConf.Endpoints = fwdList;
+                                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                pbxUserConf.BypassMedia = bypassMedia;
+
+
+
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
+                                            }
+                                        })
+
                                     }
                                     else
                                     {
-                                        pbxUserConf.OperationType = 'FORWARD';
+                                        pbxUserConf.OperationType = 'USER_DIAL';
                                         pbxUserConf.UserRefId = userUuid;
-                                        pbxUserConf.Endpoints = fwdList;
                                         pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                         pbxUserConf.BypassMedia = bypassMedia;
-
 
 
                                         var jsonResponse = JSON.stringify(pbxUserConf);
                                         res.end(jsonResponse);
                                     }
-                                })
-
-                            }
-                            else
-                            {
-                                pbxUserConf.OperationType = 'USER_DIAL';
-                                pbxUserConf.UserRefId = userUuid;
-                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                pbxUserConf.BypassMedia = bypassMedia;
-
-
-                                var jsonResponse = JSON.stringify(pbxUserConf);
-                                res.end(jsonResponse);
-                            }
-                        }
-                        else if(userStatus === 'CALL_DIVERT')
-                        {
-                            if(pbxDetails.PBXUserTemplate)
-                            {
-                                var endp =
+                                }
+                                else if(userStatus === 'CALL_DIVERT')
                                 {
-                                    DestinationNumber: pbxDetails.PBXUserTemplate.CallDivertNumber,
-                                    ObjCategory: pbxDetails.PBXUserTemplate.ObjCategory
-                                };
-
-                                pbxUserConf.OperationType = 'CALL_DIVERT';
-                                pbxUserConf.Endpoints = endp;
-                                pbxUserConf.UserRefId = userUuid;
-                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                pbxUserConf.BypassMedia = bypassMedia;
-
-                                if(pbxDetails.PBXUserTemplate.ObjCategory === 'PBXUSER' && pbxDetails.PBXUserTemplate.DestinationUser)
-                                {
-                                    pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.PBXUserTemplate.DestinationUser, 1, 1, function(err, pbxUserObj)
+                                    if(pbxDetails.PBXUserTemplate)
                                     {
-                                        if(err)
+                                        var endp =
                                         {
-                                            var jsonResponse = JSON.stringify(pbxUserConf);
-                                            res.end(jsonResponse);
-                                        }
-                                        else if(pbxUserObj)
-                                        {
+                                            DestinationNumber: pbxDetails.PBXUserTemplate.CallDivertNumber,
+                                            ObjCategory: pbxDetails.PBXUserTemplate.ObjCategory
+                                        };
 
-                                            endp.BypassMedia = pbxUserObj.BypassMedia;
-                                            endp.VoicemailEnabled = pbxUserObj.VoicemailEnabled;
-                                            var jsonResponse = JSON.stringify(pbxUserConf);
-                                            res.end(jsonResponse);
+                                        pbxUserConf.OperationType = 'CALL_DIVERT';
+                                        pbxUserConf.Endpoints = endp;
+                                        pbxUserConf.UserRefId = userUuid;
+                                        pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                        pbxUserConf.BypassMedia = bypassMedia;
+
+                                        if(pbxDetails.PBXUserTemplate.ObjCategory === 'PBXUSER' && pbxDetails.PBXUserTemplate.DestinationUser)
+                                        {
+                                            pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.PBXUserTemplate.DestinationUser, 1, 1, function(err, pbxUserObj)
+                                            {
+                                                if(err)
+                                                {
+                                                    var jsonResponse = JSON.stringify(pbxUserConf);
+                                                    res.end(jsonResponse);
+                                                }
+                                                else if(pbxUserObj)
+                                                {
+
+                                                    endp.BypassMedia = pbxUserObj.BypassMedia;
+                                                    endp.VoicemailEnabled = pbxUserObj.VoicemailEnabled;
+                                                    var jsonResponse = JSON.stringify(pbxUserConf);
+                                                    res.end(jsonResponse);
+                                                }
+                                                else
+                                                {
+                                                    var jsonResponse = JSON.stringify(pbxUserConf);
+                                                    res.end(jsonResponse);
+                                                }
+                                            })
                                         }
                                         else
                                         {
                                             var jsonResponse = JSON.stringify(pbxUserConf);
                                             res.end(jsonResponse);
                                         }
-                                    })
+
+
+                                    }
+                                    else
+                                    {
+                                        pbxUserConf = null;
+                                        var jsonResponse = JSON.stringify(pbxUserConf);
+                                        res.end(jsonResponse);
+
+                                    }
+
                                 }
                                 else
                                 {
+                                    pbxUserConf.OperationType = 'USER_DIAL';
+                                    pbxUserConf.UserRefId = userUuid;
+                                    pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                    pbxUserConf.BypassMedia = bypassMedia;
+
+
                                     var jsonResponse = JSON.stringify(pbxUserConf);
                                     res.end(jsonResponse);
                                 }
-
-
-                            }
-                            else
+                            })
+                            .catch(function(err)
                             {
-                                pbxUserConf = null;
+                                logger.error('[DVP-PBXService.GenerateDialplan] - [%s] - Error Occurred', reqId, err);
                                 var jsonResponse = JSON.stringify(pbxUserConf);
                                 res.end(jsonResponse);
-
-                            }
-
-                        }
-                        else
-                        {
-                            pbxUserConf.OperationType = 'USER_DIAL';
-                            pbxUserConf.UserRefId = userUuid;
-                            pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                            pbxUserConf.BypassMedia = bypassMedia;
+                            })
 
 
-                            var jsonResponse = JSON.stringify(pbxUserConf);
-                            res.end(jsonResponse);
-                        }
 
                     }
                 })
