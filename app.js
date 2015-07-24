@@ -343,6 +343,8 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                                                     pbxUserConf.BypassMedia = bypassMedia;
 
                                                     var jsonResponse = JSON.stringify(pbxUserConf);
+
+                                                    logger.debug('[DVP-PBXService.GenerateDialplan] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                                     res.end(jsonResponse);
                                                 }
                                             })
