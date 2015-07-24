@@ -1380,7 +1380,7 @@ module.exports.RemovePbxUserAllowedNumberDB = RemovePbxUserAllowedNumberDB;
 module.exports.AddFeatureCodesDB = AddFeatureCodesDB;
 module.exports.GetFeatureCodesForCompanyDB = GetFeatureCodesForCompanyDB;
 module.exports.SetDayPersonalGreetingDB = SetDayPersonalGreetingDB;
-module.exports.SetNightPersonalGreetingDB - SetNightPersonalGreetingDB;
+module.exports.SetNightPersonalGreetingDB = SetNightPersonalGreetingDB;
 module.exports.EnablePersonalGreetingDB = EnablePersonalGreetingDB;
 module.exports.AddForwardingDB = AddForwardingDB;
 module.exports.DeleteForwardingDB = DeleteForwardingDB;

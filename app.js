@@ -470,7 +470,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
                             var hours = serverOffSet.hour();
 
-                            if(hours>=12)
+                            if(hours >= 12)
                             {
                                 greetingFileToPlay = pbxDetails.NightGreetingFile;
                             }
