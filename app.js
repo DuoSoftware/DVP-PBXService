@@ -341,6 +341,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                                                     pbxUserConf.Endpoints = fwdList;
                                                     pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                                     pbxUserConf.BypassMedia = bypassMedia;
+                                                    pbxUserConf.RingTimeout = pbxDetails.RingTimeout;
 
                                                     var jsonResponse = JSON.stringify(pbxUserConf);
 
@@ -356,6 +357,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                                             pbxUserConf.UserRefId = userUuid;
                                             pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                             pbxUserConf.BypassMedia = bypassMedia;
+                                            pbxUserConf.RingTimeout = pbxDetails.RingTimeout;
 
                                             var jsonResponse = JSON.stringify(pbxUserConf);
                                             res.end(jsonResponse);
