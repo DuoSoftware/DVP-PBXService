@@ -1495,7 +1495,7 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PBXUser', function(req, res
 
 });
 
-server.put('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:userUuid', function(req, res, next)
+server.put('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     try
