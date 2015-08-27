@@ -261,13 +261,68 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                                     }
                                     else if(advancedMethod === 'FORWARD')
                                     {
-                                        pbxUserConf.OperationType = 'FORWARD';
-                                        pbxUserConf.UserRefId = userUuid;
-                                        pbxUserConf.Endpoints = undefined;
-                                        pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                        pbxUserConf.BypassMedia = bypassMedia;
+                                        pbxBackendHandler.GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, function(err, fwdList)
+                                        {
+                                            if(err)
+                                            {
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                res.end(jsonResponse);
+                                            }
+                                            else
+                                            {
+                                                var tempEpList = [];
+                                                fwdList.forEach(function(fwdRec)
+                                                {
+                                                    var tempEp =
+                                                    {
+                                                        DestinationNumber: fwdRec.DestinationNumber,
+                                                        RingTimeout: fwdRec.RingTimeout,
+                                                        DisconnectReason: fwdRec.DisconnectReason,
+                                                        ObjClass: fwdRec.ObjClass,
+                                                        ObjType: fwdRec.ObjType,
+                                                        ObjCategory: fwdRec.ObjCategory
+                                                    };
 
 
+                                                    tempEp.BypassMedia = false;
+                                                    if(fwdRec.ObjCategory === 'PBXUSER' && fwdRec.DestinationUser)
+                                                    {
+                                                        if(fwdRec.DestinationUser.BypassMedia)
+                                                        {
+                                                            tempEp.BypassMedia = fwdRec.DestinationUser.BypassMedia;
+                                                        }
+                                                    }
+
+                                                    tempEpList.push(tempEp);
+
+                                                });
+                                                //Get follow me config and create xml
+
+                                                pbxUserConf.OperationType = 'FORWARD';
+                                                pbxUserConf.UserRefId = userUuid;
+                                                pbxUserConf.Endpoints = tempEpList;
+                                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                                pbxUserConf.BypassMedia = bypassMedia;
+
+                                            }
+                                        });
+
+                                        if(pbxDetails.PersonalGreetingEnabled)
+                                        {
+                                            var hours = new Date().getHours();
+
+                                            hours = (hours+24-2)%24;
+
+                                            if(hours>12)
+                                            {
+                                                pbxUserConf.PersonalGreeting = pbxDetails.NightGreetingFile;
+                                            }
+                                            else
+                                            {
+                                                pbxUserConf.PersonalGreeting = pbxDetails.DayGreetingFile;
+                                            }
+
+                                        }
 
                                         var jsonResponse = JSON.stringify(pbxUserConf);
                                         res.end(jsonResponse);
@@ -461,11 +516,51 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                             }
                             else if(advancedMethod === 'FORWARD')
                             {
-                                pbxUserConf.OperationType = 'FORWARD';
-                                pbxUserConf.UserRefId = userUuid;
-                                pbxUserConf.Forward = undefined;
-                                pbxUserConf.VoicemailEnabled = voicemailEnabled;
-                                pbxUserConf.BypassMedia = bypassMedia;
+                                pbxBackendHandler.GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, function(err, fwdList)
+                                {
+                                    if(err)
+                                    {
+                                        var jsonResponse = JSON.stringify(pbxUserConf);
+                                        res.end(jsonResponse);
+                                    }
+                                    else
+                                    {
+                                        var tempEpList = [];
+                                        fwdList.forEach(function(fwdRec)
+                                        {
+                                            var tempEp =
+                                            {
+                                                DestinationNumber: fwdRec.DestinationNumber,
+                                                RingTimeout: fwdRec.RingTimeout,
+                                                DisconnectReason: fwdRec.DisconnectReason,
+                                                ObjClass: fwdRec.ObjClass,
+                                                ObjType: fwdRec.ObjType,
+                                                ObjCategory: fwdRec.ObjCategory
+                                            };
+
+
+                                            tempEp.BypassMedia = false;
+                                            if(fwdRec.ObjCategory === 'PBXUSER' && fwdRec.DestinationUser)
+                                            {
+                                                if(fwdRec.DestinationUser.BypassMedia)
+                                                {
+                                                    tempEp.BypassMedia = fwdRec.DestinationUser.BypassMedia;
+                                                }
+                                            }
+
+                                            tempEpList.push(tempEp);
+
+                                        });
+                                        //Get follow me config and create xml
+
+                                        pbxUserConf.OperationType = 'FORWARD';
+                                        pbxUserConf.UserRefId = userUuid;
+                                        pbxUserConf.Endpoints = tempEpList;
+                                        pbxUserConf.VoicemailEnabled = voicemailEnabled;
+                                        pbxUserConf.BypassMedia = bypassMedia;
+
+                                    }
+                                });
 
                                 if(pbxDetails.PersonalGreetingEnabled)
                                 {
@@ -1227,7 +1322,7 @@ server.del('/DVP/API/' + hostVersion + '/PBXService/FollowMe/:fmId', function(re
         if(fmId && securityToken)
         {
 
-            pbxBackendHandler.DeleteFollowMeDB(reqId, fmId, 1, 3, function (err, delResult)
+            pbxBackendHandler.DeleteFollowMeDB(reqId, fmId, 1, 1, function (err, delResult)
             {
                 if (err)
                 {
@@ -1405,7 +1500,6 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/PbxUser', function(req, res
 
 });
 
-<<<<<<< HEAD
 server.put('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
@@ -1464,8 +1558,6 @@ server.put('/DVP/API/' + hostVersion + '/PBXService/PBXUser/:PbxUserUuid', funct
 
 });
 
-=======
->>>>>>> 727a69283c9a67195434c2bbcaa00dbac4135ccc
 server.post('/DVP/API/' + hostVersion + '/PBXService/PbxUserTemplate', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
