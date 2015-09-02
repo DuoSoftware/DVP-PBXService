@@ -8,6 +8,7 @@ var dbModel = require('DVP-DBModels');
 var extApi = require('./PbxExternalApiAccess.js');
 var underscore = require('underscore');
 var xmlBuilder = require('./XmlDialplanBuilder.js');
+var moment = require('moment');
 
 var hostIp = config.Host.Ip;
 var hostPort = config.Host.Port;
@@ -152,11 +153,12 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
         if(extraData)
         {
-            userUuid = extraData['UserUuid'];
+            userUuid = "12345";
             fromUserUuid = extraData['FromUserUuid'];
             opType = extraData['OperationType'];
             extExtraData = extraData['ExtExtraData'];
         }
+
 
         if(direction === 'IN')
         {
@@ -179,9 +181,11 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
                                 var voicemailEnabled = pbxDetails.VoicemailEnabled;
                                 var bypassMedia = pbxDetails.BypassMedia;
 
-                            if(pbxDetails.PersonalGreetingEnabled)
+                            if(pbxDetails.PersonalGreetingEnabled && pbxDetails.TimeZone)
                             {
-                                var hours = new Date().getHours();
+                                var utcTime = toISOString();
+                                var localTime = moment(utcTime).utcOffset(pbxDetails.TimeZone);
+                                var hours = localTime.hour();
 
                                 hours = (hours+24-2)%24;
 
@@ -435,7 +439,9 @@ server.post('/DVP/API/' + hostVersion + '/PBXService/GeneratePBXConfig', functio
 
                         if(pbxDetails.PersonalGreetingEnabled)
                         {
-                            var hours = new Date().getHours();
+                            var utcTime = toISOString();
+                            var localTime = moment(utcTime).utcOffset(pbxDetails.TimeZone);
+                            var hours = localTime.hour();
 
                             hours = (hours+24-2)%24;
 
