@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="591d8d77-912c-4906-970d-7906a668fb89" name="Default" comment="">
-      <change type="DELETED" beforePath="D:\DVP\DVP-PBXService\package.json" afterPath="" />
-    </list>
+    <list default="true" id="591d8d77-912c-4906-970d-7906a668fb89" name="Default" comment="" />
     <ignored path="DVP-PBXService.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,10 +24,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.045698926" vertical-offset="51" max-vertical-offset="28407">
+            <state vertical-scroll-proportion="0.68" vertical-offset="51" max-vertical-offset="28407">
               <caret line="2" column="42" selection-start-line="2" selection-start-column="42" selection-end-line="2" selection-end-column="42" />
               <folding>
                 <element signature="e#68405#70344#0" expanded="false" />
@@ -100,10 +98,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="XmlDialplanBuilder.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="XmlDialplanBuilder.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/XmlDialplanBuilder.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2975">
+            <state vertical-scroll-proportion="0.085642315" vertical-offset="0" max-vertical-offset="2975">
               <caret line="2" column="32" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
               <folding />
             </state>
@@ -177,20 +175,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="DVP-PBXService" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DVP-PBXService" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DVP-PBXService" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="node_modules" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1155,6 +1139,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.68" vertical-offset="51" max-vertical-offset="28407">
+          <caret line="2" column="42" selection-start-line="2" selection-start-column="42" selection-end-line="2" selection-end-column="42" />
+          <folding>
+            <element signature="e#68405#70344#0" expanded="false" />
+            <element signature="e#70476#72972#0" expanded="false" />
+            <element signature="e#73102#75063#0" expanded="false" />
+            <element signature="e#75167#77056#0" expanded="false" />
+            <element signature="e#77167#79124#0" expanded="false" />
+            <element signature="e#81213#83104#0" expanded="false" />
+            <element signature="e#83205#85081#0" expanded="false" />
+            <element signature="e#85192#87138#0" expanded="false" />
+            <element signature="e#87234#89063#0" expanded="false" />
+            <element signature="e#89155#90984#0" expanded="false" />
+            <element signature="e#91084#92975#0" expanded="false" />
+            <element signature="e#93085#95023#0" expanded="false" />
+            <element signature="e#95135#97069#0" expanded="false" />
+            <element signature="e#97167#98434#0" expanded="false" />
+            <element signature="e#98535#99804#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/PbxBackendHandler.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.68" vertical-offset="0" max-vertical-offset="17918">
@@ -1181,33 +1189,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/XmlDialplanBuilder.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2975">
+        <state vertical-scroll-proportion="0.085642315" vertical-offset="0" max-vertical-offset="2975">
           <caret line="2" column="32" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.045698926" vertical-offset="51" max-vertical-offset="28407">
-          <caret line="2" column="42" selection-start-line="2" selection-start-column="42" selection-end-line="2" selection-end-column="42" />
-          <folding>
-            <element signature="e#68405#70344#0" expanded="false" />
-            <element signature="e#70476#72972#0" expanded="false" />
-            <element signature="e#73102#75063#0" expanded="false" />
-            <element signature="e#75167#77056#0" expanded="false" />
-            <element signature="e#77167#79124#0" expanded="false" />
-            <element signature="e#81213#83104#0" expanded="false" />
-            <element signature="e#83205#85081#0" expanded="false" />
-            <element signature="e#85192#87138#0" expanded="false" />
-            <element signature="e#87234#89063#0" expanded="false" />
-            <element signature="e#89155#90984#0" expanded="false" />
-            <element signature="e#91084#92975#0" expanded="false" />
-            <element signature="e#93085#95023#0" expanded="false" />
-            <element signature="e#95135#97069#0" expanded="false" />
-            <element signature="e#97167#98434#0" expanded="false" />
-            <element signature="e#98535#99804#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
