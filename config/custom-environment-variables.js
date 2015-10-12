@@ -15,7 +15,7 @@ module.exports = {
 
     "Host":{
         "Port":"HOST_PBXSERVICE_PORT",
-        "Version":"HOST_VERSION"
+        "Version":"HOST_PBXSERVICE_VERSION"
     },
 
     "Services":
@@ -24,9 +24,9 @@ module.exports = {
         "fileServiceHost": "SYS_FILESERVICE_HOST",
         "fileServicePort": "SYS_FILESERVICE_PORT",
         "fileServiceVersion":"SYS_FILESERVICE_VERSION",
-        "sipUacServiceHost": "SYS_SIPUSERENDPOINT_HOST",
-        "sipUacServicePort": "SYS_SIPUSERENDPOINT_PORT",
-        "sipUacServiceVersion": "SYS_SIPUSERENDPOINT_VERSION"
+        "sipUacServiceHost": "SYS_SIPUSERENDPOINTSERVICE_HOST",
+        "sipUacServicePort": "SYS_SIPUSERENDPOINTSERVICE_PORT",
+        "sipUacServiceVersion": "SYS_SIPUSERENDPOINTSERVICE_VERSION"
 
     }
 };
