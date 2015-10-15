@@ -3,6 +3,7 @@ var config = require('config');
 var util = require('util');
 var stringify = require('stringify');
 var logger = require('dvp-common/LogHandler/CommonLogHandler.js').logger;
+var validator = require('validator');
 
 
 
@@ -15,9 +16,14 @@ var RemoteGetSipUserDetailsForUuid = function(reqId, sipUserUuid, securityToken,
         var sipUacServicePort = config.Services.sipUacServicePort;
         var sipUacServiceVersion = config.Services.sipUacServiceVersion;
 
-        if(sipUacServiceHost && sipUacServicePort && sipUacServiceVersion)
+        if(sipUacServiceHost && sipUacServiceVersion)
         {
-            var httpUrl = util.format('http://%s:%s/DVP/API/%s/SipUser/User/ByUUID/%s', sipUacServiceHost, sipUacServicePort, sipUacServiceVersion, sipUserUuid);
+            var httpUrl = util.format('http://%s/DVP/API/%s/SipUser/User/ByUUID/%s', sipUacServiceHost, sipUacServiceVersion, sipUserUuid);
+
+            if(validator.isIP(sipUacServiceHost))
+            {
+                httpUrl = util.format('http://%s:%s/DVP/API/%s/SipUser/User/ByUUID/%s', sipUacServiceHost, sipUacServicePort, sipUacServiceVersion, sipUserUuid);
+            }
 
             var options = {
                 url: httpUrl,
@@ -68,9 +74,14 @@ var RemoteGetSipUserDetailsForExtension = function(reqId, extension, securityTok
         var sipUacServicePort = config.Services.sipUacServicePort;
         var sipUacServiceVersion = config.Services.sipUacServiceVersion;
 
-        if(sipUacServiceHost && sipUacServicePort && sipUacServiceVersion)
+        if(sipUacServiceHost && sipUacServiceVersion)
         {
-            var httpUrl = util.format('http://%s:%s/DVP/API/%s/ExtensionManagement/FullExtensionDetails/%s', sipUacServiceHost, sipUacServicePort, sipUacServiceVersion, extension);
+            var httpUrl = util.format('http://%s/DVP/API/%s/ExtensionManagement/FullExtensionDetails/%s', sipUacServiceHost, sipUacServiceVersion, extension);
+
+            if(validator.isIP(sipUacServiceHost))
+            {
+                httpUrl = util.format('http://%s:%s/DVP/API/%s/ExtensionManagement/FullExtensionDetails/%s', sipUacServiceHost, sipUacServicePort, sipUacServiceVersion, extension);
+            }
 
             var options = {
                 url: httpUrl,
@@ -125,7 +136,12 @@ var RemoteGetFileMetadata = function(reqId, filename, appId, securityToken, call
 
         if(fileServiceHost && fileServicePort && fileServiceVersion)
         {
-            var httpUrl = util.format('http://%s:%s/DVP/API/%s/FileService/File/%s/ofApplication/%s', fileServiceHost, fileServicePort, fileServiceVersion, filename, appId);
+            var httpUrl = util.format('http://%s/DVP/API/%s/FileService/File/%s/ofApplication/%s', fileServiceHost, fileServiceVersion, filename, appId);
+
+            if(validator.isIP(fileServiceHost))
+            {
+                httpUrl = util.format('http://%s:%s/DVP/API/%s/FileService/File/%s/ofApplication/%s', fileServiceHost, fileServicePort, fileServiceVersion, filename, appId);
+            }
 
             var options = {
                 url: httpUrl,
