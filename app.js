@@ -153,7 +153,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
 
         if(extraData)
         {
-            userUuid = "12345";
+            userUuid = extraData['UserUuid'];
             fromUserUuid = extraData['FromUserUuid'];
             opType = extraData['OperationType'];
             extExtraData = extraData['ExtExtraData'];
