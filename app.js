@@ -344,6 +344,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                         pbxUserConf.UserRefId = userUuid;
                                         pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                         pbxUserConf.BypassMedia = bypassMedia;
+                                        pbxUserConf.RingTimeout = pbxDetails.RingTimeout;
 
                                         var jsonResponse = JSON.stringify(pbxUserConf);
                                         logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
@@ -365,6 +366,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                         pbxUserConf.UserRefId = userUuid;
                                         pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                         pbxUserConf.BypassMedia = bypassMedia;
+                                        pbxUserConf.RingTimeout = 60;
 
                                         if(pbxDetails.PBXUserTemplate.ObjCategory === 'PBXUSER' && pbxDetails.PBXUserTemplate.DestinationUser)
                                         {
@@ -421,6 +423,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                     pbxUserConf.UserRefId = userUuid;
                                     pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                     pbxUserConf.BypassMedia = bypassMedia;
+                                    pbxUserConf.RingTimeout = pbxDetails.RingTimeout;
 
                                     var jsonResponse = JSON.stringify(pbxUserConf);
                                     logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
@@ -614,6 +617,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                 pbxUserConf.UserRefId = userUuid;
                                 pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                 pbxUserConf.BypassMedia = bypassMedia;
+                                pbxUserConf.RingTimeout = pbxDetails.RingTimeout;
 
                                 if(pbxDetails.PersonalGreetingEnabled)
                                 {
@@ -705,6 +709,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                             pbxUserConf.UserRefId = userUuid;
                             pbxUserConf.VoicemailEnabled = voicemailEnabled;
                             pbxUserConf.BypassMedia = bypassMedia;
+                            pbxUserConf.RingTimeout = pbxDetails.RingTimeout;
 
 
                             var jsonResponse = JSON.stringify(pbxUserConf);
