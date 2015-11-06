@@ -171,6 +171,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                         {
                             pbxUserConf = null;
                             var jsonResponse = JSON.stringify(pbxUserConf);
+                            logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                             res.end(jsonResponse);
                         }
                         else
@@ -206,6 +207,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                     pbxUserConf.OperationType = 'DND';
                                     pbxUserConf.UserRefId = userUuid;
                                     var jsonResponse = JSON.stringify(pbxUserConf);
+                                    logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                     res.end(jsonResponse);
                                 }
                                 else if(usrStatus === 'AVAILABLE')
@@ -219,6 +221,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                             if(err)
                                             {
                                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                                 res.end(jsonResponse);
                                             }
                                             else
@@ -257,6 +260,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                                 pbxUserConf.BypassMedia = bypassMedia;
 
                                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                                 res.end(jsonResponse);
                                             }
 
@@ -270,6 +274,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                             if(err)
                                             {
                                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                                 res.end(jsonResponse);
                                             }
                                             else
@@ -329,6 +334,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                         }
 
                                         var jsonResponse = JSON.stringify(pbxUserConf);
+                                        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                         res.end(jsonResponse);
 
                                     }
@@ -340,6 +346,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                         pbxUserConf.BypassMedia = bypassMedia;
 
                                         var jsonResponse = JSON.stringify(pbxUserConf);
+                                        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                         res.end(jsonResponse);
                                     }
                                 }
@@ -366,6 +373,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                                 if(err)
                                                 {
                                                     var jsonResponse = JSON.stringify(pbxUserConf);
+                                                    logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                                     res.end(jsonResponse);
                                                 }
                                                 else if(pbxUserObj)
@@ -374,11 +382,13 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                                     endp.BypassMedia = pbxUserObj.BypassMedia;
                                                     endp.VoicemailEnabled = pbxUserObj.VoicemailEnabled;
                                                     var jsonResponse = JSON.stringify(pbxUserConf);
+                                                    logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                                     res.end(jsonResponse);
                                                 }
                                                 else
                                                 {
                                                     var jsonResponse = JSON.stringify(pbxUserConf);
+                                                    logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                                     res.end(jsonResponse);
                                                 }
                                             })
@@ -386,6 +396,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                         else
                                         {
                                             var jsonResponse = JSON.stringify(pbxUserConf);
+                                            logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                             res.end(jsonResponse);
                                         }
 
@@ -395,6 +406,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                     {
                                         pbxUserConf = null;
                                         var jsonResponse = JSON.stringify(pbxUserConf);
+                                        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                         res.end(jsonResponse);
 
                                     }
@@ -411,6 +423,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                     pbxUserConf.BypassMedia = bypassMedia;
 
                                     var jsonResponse = JSON.stringify(pbxUserConf);
+                                    logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                     res.end(jsonResponse);
                                 }
 
@@ -428,6 +441,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                     {
                         pbxUserConf = null;
                         var jsonResponse = JSON.stringify(pbxUserConf);
+                        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                         res.end(jsonResponse);
                     }
                     else
@@ -462,6 +476,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                             pbxUserConf.OperationType = 'DND';
                             pbxUserConf.UserRefId = userUuid;
                             var jsonResponse = JSON.stringify(pbxUserConf);
+                            logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                             res.end(jsonResponse);
                         }
                         else if(usrStatus === 'AVAILABLE')
@@ -475,6 +490,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                     if(err)
                                     {
                                         var jsonResponse = JSON.stringify(pbxUserConf);
+                                        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                         res.end(jsonResponse);
                                     }
                                     else
@@ -514,6 +530,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                         pbxUserConf.BypassMedia = bypassMedia;
 
                                         var jsonResponse = JSON.stringify(pbxUserConf);
+                                        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                         res.end(jsonResponse);
                                     }
 
@@ -527,6 +544,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                     if(err)
                                     {
                                         var jsonResponse = JSON.stringify(pbxUserConf);
+                                        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                         res.end(jsonResponse);
                                     }
                                     else
@@ -586,6 +604,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                 }
 
                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                 res.end(jsonResponse);
 
                             }
@@ -614,6 +633,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                 }
 
                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                 res.end(jsonResponse);
                             }
                         }
@@ -640,6 +660,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                         if(err)
                                         {
                                             var jsonResponse = JSON.stringify(pbxUserConf);
+                                            logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                             res.end(jsonResponse);
                                         }
                                         else if(pbxUserObj)
@@ -648,11 +669,13 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                             endp.BypassMedia = pbxUserObj.BypassMedia;
                                             endp.VoicemailEnabled = pbxUserObj.VoicemailEnabled;
                                             var jsonResponse = JSON.stringify(pbxUserConf);
+                                            logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                             res.end(jsonResponse);
                                         }
                                         else
                                         {
                                             var jsonResponse = JSON.stringify(pbxUserConf);
+                                            logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                             res.end(jsonResponse);
                                         }
                                     })
@@ -660,6 +683,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                 else
                                 {
                                     var jsonResponse = JSON.stringify(pbxUserConf);
+                                    logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                     res.end(jsonResponse);
                                 }
 
@@ -669,6 +693,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                             {
                                 pbxUserConf = null;
                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                 res.end(jsonResponse);
 
                             }
@@ -683,6 +708,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
 
 
                             var jsonResponse = JSON.stringify(pbxUserConf);
+                            logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                             res.end(jsonResponse);
                         }
 
@@ -701,6 +727,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                             if(err)
                             {
                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                 res.end(jsonResponse);
                             }
                             else if(fromUsrDetails)
@@ -711,11 +738,13 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                 pbxUserConf.Dialplan = xml;
 
                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                 res.end(jsonResponse);
                             }
                             else
                             {
                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                 res.end(jsonResponse);
                             }
                         })
@@ -723,6 +752,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                     else
                     {
                         var jsonResponse = JSON.stringify(pbxUserConf);
+                        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                         res.end(jsonResponse);
                     }
 
@@ -737,6 +767,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                             pbxUserConf.ExtraData = number;
 
                             var jsonResponse = JSON.stringify(pbxUserConf);
+                            logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                             res.end(jsonResponse);
                         }
                         else
@@ -773,6 +804,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                             else
                                             {
                                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                                 res.end(jsonResponse);
                                             }
                                         }
@@ -794,6 +826,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                     }
 
                                     var jsonResponse = JSON.stringify(pbxUserConf);
+                                    logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                     res.end(jsonResponse);
 
                                 })
@@ -801,6 +834,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                             else
                             {
                                 var jsonResponse = JSON.stringify(pbxUserConf);
+                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                 res.end(jsonResponse);
                             }
                         }
