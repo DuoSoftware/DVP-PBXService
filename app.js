@@ -184,7 +184,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
 
                             if(pbxDetails.PersonalGreetingEnabled && pbxDetails.TimeZone)
                             {
-                                var utcTime = toISOString();
+                                var utcTime = new Date().toISOString();
                                 var localTime = moment(utcTime).utcOffset(pbxDetails.TimeZone);
                                 var hours = localTime.hour();
 
@@ -313,29 +313,31 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                                 pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                                 pbxUserConf.BypassMedia = bypassMedia;
 
+                                                if(pbxDetails.PersonalGreetingEnabled && pbxDetails.TimeZone)
+                                                {
+                                                    var utcTime = new Date().toISOString();
+                                                    var localTime = moment(utcTime).utcOffset(pbxDetails.TimeZone);
+                                                    var hours = localTime.hour();
+
+                                                    hours = (hours+24-2)%24;
+
+                                                    if(hours>12)
+                                                    {
+                                                        pbxUserConf.PersonalGreeting = pbxDetails.NightGreetingFile;
+                                                    }
+                                                    else
+                                                    {
+                                                        pbxUserConf.PersonalGreeting = pbxDetails.DayGreetingFile;
+                                                    }
+
+                                                }
+
+                                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
+                                                res.end(jsonResponse);
+
                                             }
                                         });
-
-                                        if(pbxDetails.PersonalGreetingEnabled)
-                                        {
-                                            var hours = new Date().getHours();
-
-                                            hours = (hours+24-2)%24;
-
-                                            if(hours>12)
-                                            {
-                                                pbxUserConf.PersonalGreeting = pbxDetails.NightGreetingFile;
-                                            }
-                                            else
-                                            {
-                                                pbxUserConf.PersonalGreeting = pbxDetails.DayGreetingFile;
-                                            }
-
-                                        }
-
-                                        var jsonResponse = JSON.stringify(pbxUserConf);
-                                        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
-                                        res.end(jsonResponse);
 
                                     }
                                     else
