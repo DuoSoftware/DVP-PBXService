@@ -952,10 +952,10 @@ var GetPbxUsersForCompanyDB = function(reqId, companyId, tenantId, callback)
     try
     {
         dbModel.PBXUser.findAll({where: [{CompanyId: companyId},{TenantId: tenantId}]})
-            .then(function (err, pbxUsers)
+            .then(function (pbxUsers)
             {
                 logger.debug('[DVP-PBXService.GetPbxUsersForCompanyDB] - [%s] - PGSQL get pbx user by company query success', reqId);
-                callback(err, pbxUsers);
+                callback(undefined, pbxUsers);
 
             }).catch(function(err)
             {
