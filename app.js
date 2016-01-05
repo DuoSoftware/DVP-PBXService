@@ -1483,6 +1483,7 @@ server.post('/DVP/API/:version/PBXService/PbxUser', function(req, res, next)
                     var pbxUsrData = dbModel.PBXUser.build({
 
                         UserUuid: apiResp.SipUserUuid,
+                        UserName: reqBody.UserName,
                         BypassMedia: reqBody.BypassMedia,
                         IgnoreEarlyMedia: reqBody.IgnoreEarlyMedia,
                         VoicemailEnabled: reqBody.VoicemailEnabled,
