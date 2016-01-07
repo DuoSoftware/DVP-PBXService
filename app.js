@@ -356,12 +356,12 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                 }
                                 else if(usrStatus === 'CALL_DIVERT')
                                 {
-                                    if(pbxDetails.PBXUserTemplate)
+                                    if(pbxDetails.ActiveTemplate)
                                     {
                                         var endp =
                                         {
-                                            DestinationNumber: pbxDetails.PBXUserTemplate.CallDivertNumber,
-                                            ObjCategory: pbxDetails.PBXUserTemplate.ObjCategory
+                                            DestinationNumber: pbxDetails.ActiveTemplate.CallDivertNumber,
+                                            ObjCategory: pbxDetails.ActiveTemplate.ObjCategory
                                         };
 
                                         pbxUserConf.OperationType = 'CALL_DIVERT';
@@ -371,9 +371,9 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                         pbxUserConf.BypassMedia = bypassMedia;
                                         pbxUserConf.RingTimeout = 60;
 
-                                        if(pbxDetails.PBXUserTemplate.ObjCategory === 'PBXUSER' && pbxDetails.PBXUserTemplate.DestinationUser)
+                                        if(pbxDetails.ActiveTemplate.ObjCategory === 'PBXUSER' && pbxDetails.ActiveTemplate.DestinationUser)
                                         {
-                                            pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.PBXUserTemplate.DestinationUser, 1, 1, function(err, pbxUserObj)
+                                            pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.ActiveTemplate.DestinationUser, 1, 1, function(err, pbxUserObj)
                                             {
                                                 if(err)
                                                 {
@@ -646,12 +646,12 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                         }
                         else if(userStatus === 'CALL_DIVERT')
                         {
-                            if(pbxDetails.PBXUserTemplate)
+                            if(pbxDetails.ActiveTemplate)
                             {
                                 var endp =
                                 {
-                                    DestinationNumber: pbxDetails.PBXUserTemplate.CallDivertNumber,
-                                    ObjCategory: pbxDetails.PBXUserTemplate.ObjCategory
+                                    DestinationNumber: pbxDetails.ActiveTemplate.CallDivertNumber,
+                                    ObjCategory: pbxDetails.ActiveTemplate.ObjCategory
                                 };
 
                                 pbxUserConf.OperationType = 'CALL_DIVERT';
@@ -660,9 +660,9 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                 pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                 pbxUserConf.BypassMedia = bypassMedia;
 
-                                if(pbxDetails.PBXUserTemplate.ObjCategory === 'PBXUSER' && pbxDetails.PBXUserTemplate.DestinationUser)
+                                if(pbxDetails.ActiveTemplate.ObjCategory === 'PBXUSER' && pbxDetails.ActiveTemplate.DestinationUser)
                                 {
-                                    pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.PBXUserTemplate.DestinationUser, 1, 1, function(err, pbxUserObj)
+                                    pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.ActiveTemplate.DestinationUser, 1, 1, function(err, pbxUserObj)
                                     {
                                         if(err)
                                         {
@@ -1607,21 +1607,22 @@ server.put('/DVP/API/:version/PBXService/PBXUser/:PbxUserUuid', function(req, re
 
 });
 
-server.post('/DVP/API/:version/PBXService/PbxUserTemplate', function(req, res, next)
+server.post('/DVP/API/:version/PBXService/PBXUser/:PbxUserUuid/PbxUserTemplate', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     try
     {
         var securityToken = req.header('authorization');
         var reqBody = req.body;
+        var pbxUserUuid = req.params.PBXUserUuid;
 
-        logger.debug('[DVP-PBXService.NewPbxUserTemplate] - [%s] - HTTP Request Received - Req Body : ', reqId, reqBody);
+        logger.debug('[DVP-PBXService.NewPbxUserTemplate] - [%s] - HTTP Request Received - User : [%s] - Req Body : ', reqId, pbxUserUuid, reqBody);
 
         if(reqBody && securityToken)
         {
 
 
-                pbxBackendHandler.AddPbxUserTemplateDB(reqId, reqBody, function(err, addResult)
+                pbxBackendHandler.AddPbxUserTemplateDB(reqId, pbxUserUuid, reqBody, function(err, addResult)
                 {
                     if(err)
                     {
@@ -1661,7 +1662,7 @@ server.post('/DVP/API/:version/PBXService/PbxUserTemplate', function(req, res, n
 
 });
 
-server.post('/DVP/API/:version/PBXService/PbxUser/:pbxUser/SetPbxUserTemplate/:templateId', function(req, res, next)
+server.post('/DVP/API/:version/PBXService/PbxUser/:pbxUser/SetActiveTemplate/:templateId', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     try
@@ -1724,7 +1725,7 @@ server.post('/DVP/API/:version/PBXService/PbxUser/:pbxUser/SetPbxUserTemplate/:t
 
 });
 
-server.post('/DVP/API/:version/PBXService/PbxUser/:PbxUserUuid/PbxUserTemplate/UnAssign', function(req, res, next)
+server.post('/DVP/API/:version/PBXService/PbxUser/:PbxUserUuid/ActiveTemplate/UnAssign', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     try
@@ -2191,13 +2192,14 @@ server.get('/DVP/API/:version/PBXService/PbxUsers', function(req, res, next)
 
 });
 
-server.get('/DVP/API/:version/PBXService/PbxUserTemplates', function(req, res, next)
+server.get('/DVP/API/:version/PBXService/PbxUser/:pbxUserUuid/PbxUserTemplates', function(req, res, next)
 {
     var reqId = nodeUuid.v1();
     var emptyArr = [];
     try
     {
         var securityToken = req.header('authorization');
+        var pbxUserUuid = req.params.pbxUserUuid;
 
 
         logger.debug('[DVP-PBXService.PbxUserTemplatesByCompany] - [%s] - HTTP Request Received : %s', reqId);
@@ -2205,7 +2207,7 @@ server.get('/DVP/API/:version/PBXService/PbxUserTemplates', function(req, res, n
         if(securityToken)
         {
 
-            pbxBackendHandler.GetPbxUserTemplatesForCompanyDB(reqId, 1, 3, function (err, pbxTempList)
+            pbxBackendHandler.GetPbxUserTemplatesForUser(reqId, pbxUserUuid, 1, 1, function (err, pbxTempList)
             {
                 if (err)
                 {

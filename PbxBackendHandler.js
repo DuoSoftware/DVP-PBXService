@@ -903,7 +903,7 @@ var DeletePbxUserTemplateDB = function(reqId, templateId, companyId, tenantId, c
 
 };
 
-var AddPbxUserTemplateDB = function(reqId, pbxUserTemplate, callback)
+var AddPbxUserTemplateDB = function(reqId, pbxUserUuid, pbxUserTemplate, callback)
 {
     try
     {
@@ -921,7 +921,8 @@ var AddPbxUserTemplateDB = function(reqId, pbxUserTemplate, callback)
             TenantId: 1,
             ObjClass: 'PBX',
             ObjType: 'PBXUSER',
-            ObjCategory: pbxUserTemplate.ObjCategory
+            ObjCategory: pbxUserTemplate.ObjCategory,
+            PBXUserUuid: pbxUserUuid
         });
 
         pbxUsrTemplate
@@ -971,12 +972,12 @@ var GetPbxUsersForCompanyDB = function(reqId, companyId, tenantId, callback)
 
 };
 
-var GetPbxUserTemplatesForCompanyDB = function(reqId, companyId, tenantId, callback)
+var GetPbxUserTemplatesForUser = function(reqId, userUuid, companyId, tenantId, callback)
 {
     var emptyArr = [];
     try
     {
-        dbModel.PBXUserTemplate.findAll({where: [{CompanyId: companyId},{TenantId: tenantId}]})
+        dbModel.PBXUserTemplate.findAll({where: [{CompanyId: companyId},{TenantId: tenantId}], include:[{model:dbModel.PBXUser, as:"PBXUser", where:[{UserUuid: userUuid}]}]})
             .then(function (pbxUsersTemplates)
             {
                 logger.debug('[DVP-PBXService.GetPbxUserTemplatesForCompanyDB] - [%s] - PGSQL get pbx user templates by company query success', reqId);
@@ -1047,7 +1048,7 @@ var GetAllPbxUserDetailsByIdDB = function(reqId, pbxUserUuid, companyId, tenantI
 {
     try
     {
-        dbModel.PBXUser.find({where: [{UserUuid: pbxUserUuid},{CompanyId: companyId},{TenantId: tenantId}], include:[{model: dbModel.PBXUserTemplate, as:'PBXUserTemplate'},{model: dbModel.Forwarding, as:'Forwarding'}]})
+        dbModel.PBXUser.find({where: [{UserUuid: pbxUserUuid},{CompanyId: companyId},{TenantId: tenantId}], include:[{model: dbModel.PBXUserTemplate, as:'PBXUserTemplateActive'},{model: dbModel.Forwarding, as:'Forwarding'}]})
             .then(function (pbxUserDetails)
             {
                 logger.debug('[DVP-PBXService.GetAllPbxUserDetailsByIdDB] - [%s] - PGSQL get all pbx user details by uuid query success', reqId);
@@ -1122,7 +1123,7 @@ var UnAssignTemplateFromUserDB = function(reqId, pbxUserUuid, companyId, tenantI
                 if(pbxUsr)
                 {
                     logger.debug('[DVP-PBXService.UnAssignTemplateFromUserDB] - [%s] - PGSQL Get Template query success', reqId);
-                    pbxUsr.setPBXUserTemplate(null).then(function (upresult)
+                    pbxUsr.setPBXUserTemplateActive(null).then(function (upresult)
                     {
                         logger.debug('[DVP-PBXService.UnAssignTemplateFromUserDB] - [%s] - PGSQL Update pbx user with template id query success', reqId);
                         callback(undefined, true);
@@ -1171,7 +1172,7 @@ var AssignTemplateToUserDB = function(reqId, pbxUserUuid, pbxTemplateId, company
                             if(pbxUsrTemp)
                             {
                                 logger.debug('[DVP-PBXService.AssignTemplateToUserDB] - [%s] - PGSQL Get Template query success', reqId);
-                                pbxUsr.setPBXUserTemplate(pbxUsrTemp).then(function (result)
+                                pbxUsr.setPBXUserTemplateActive(pbxUsrTemp).then(function (result)
                                 {
                                     logger.debug('[DVP-PBXService.AssignTemplateToUserDB] - [%s] - PGSQL Update pbx user with template id query success', reqId);
                                     callback(undefined, true);
