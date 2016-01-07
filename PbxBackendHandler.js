@@ -930,6 +930,8 @@ var AddPbxUserTemplateDB = function(reqId, pbxUserUuid, pbxUserTemplate, callbac
             .then(function (saveRes)
             {
                 logger.debug('[DVP-PBXService.AddPbxUserTemplateDB] - [%s] - PGSQL query success', reqId);
+
+
                 callback(undefined, true);
 
             }).catch(function(err)

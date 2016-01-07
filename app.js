@@ -1614,19 +1614,18 @@ server.post('/DVP/API/:version/PBXService/PBXUser/:PbxUserUuid/PbxUserTemplate',
     {
         var securityToken = req.header('authorization');
         var reqBody = req.body;
-        var pbxUserUuid = req.params.PBXUserUuid;
+        var pbxUserUuid = req.params.PbxUserUuid;
 
         logger.debug('[DVP-PBXService.NewPbxUserTemplate] - [%s] - HTTP Request Received - User : [%s] - Req Body : ', reqId, pbxUserUuid, reqBody);
 
         if(reqBody && securityToken)
         {
 
-
                 pbxBackendHandler.AddPbxUserTemplateDB(reqId, pbxUserUuid, reqBody, function(err, addResult)
                 {
                     if(err)
                     {
-                        var jsonString = messageFormatter.FormatMessage(err, "Add PBX User Template Failed", false, false);
+                        var jsonString = messageFormatter.FormatMessage(err, "Add PBX User Template Success", false, false);
                         logger.debug('[DVP-PBXService.NewPbxUserTemplate] - [%s] - API RESPONSE : %s', reqId, jsonString);
                         res.end(jsonString);
                     }
