@@ -882,7 +882,7 @@ server.post('/DVP/API/:version/PBXService/PBXUser/:PbxUserUuid/AllowedNumbers', 
 
             if(pbxUserUuid && allowedNumArr)
             {
-                pbxBackendHandler.AddPbxUserAllowedNumbersDB(reqId, pbxUserUuid, 1, 3, allowedNumArr, function(err, assignResult)
+                pbxBackendHandler.AddPbxUserAllowedNumbersDB(reqId, pbxUserUuid, 1, 1, allowedNumArr, function(err, assignResult)
                 {
                     if(err)
                     {

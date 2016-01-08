@@ -264,52 +264,23 @@ var AddPbxUserAllowedNumbersDB = function(reqId, userUuid, companyId, tenantId, 
                 {
                     logger.debug('[DVP-PBXService.AddPbxUserAllowedNumbersDB] - [%s] - PGSQL get pbx user by uuid query success', reqId);
 
-                    if(pbxUser.AllowedNumbers)
+                    var allowedNumberArr = [];
+
+                    numberArr.forEach(function(num)
                     {
-                        var allowedNumberArr = JSON.parse(pbxUser.AllowedNumbers);
+                        allowedNumberArr.push(num);
+                    });
 
-                        numberArr.forEach(function(num)
-                        {
-                            var index = allowedNumberArr.indexOf(num);
-
-                            if(index <= -1)
-                            {
-                                allowedNumberArr.push(num);
-                            }
-                        })
-
-                        pbxUser.updateAttributes({AllowedNumbers: JSON.stringify(allowedNumberArr)}).then(function (resp)
-                        {
-                            logger.info('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query success');
-                            callback(undefined, true);
-
-                        }).catch(function(err)
-                        {
-                            logger.error('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query failed', err);
-                            callback(err, false);
-                        });
-
-                    }
-                    else
+                    pbxUser.updateAttributes({AllowedNumbers: JSON.stringify(allowedNumberArr)}).then(function (rsp)
                     {
-                        var allowedNumberArr = [];
+                        logger.info('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query success');
+                        callback(undefined, true);
 
-                        numberArr.forEach(function(num)
-                        {
-                            allowedNumberArr.push(num);
-                        });
-
-                        pbxUser.updateAttributes({AllowedNumbers: JSON.stringify(allowedNumberArr)}).then(function (rsp)
-                        {
-                            logger.info('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query success');
-                            callback(undefined, true);
-
-                        }).catch(function(err)
-                        {
-                            logger.error('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query failed', err);
-                            callback(err, false);
-                        });
-                    }
+                    }).catch(function(err)
+                    {
+                        logger.error('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query failed', err);
+                        callback(err, false);
+                    });
                 }
                 else
                 {
