@@ -2152,7 +2152,7 @@ server.get('/DVP/API/:version/PBXService/PbxUsers', function(req, res, next)
         if(securityToken)
         {
 
-            pbxBackendHandler.GetPbxUsersForCompanyDB(reqId, 1, 3, function (err, pbxUserList)
+            pbxBackendHandler.GetPbxUsersForCompanyDB(reqId, 1, 1, function (err, pbxUserList)
             {
                 if (err)
                 {
