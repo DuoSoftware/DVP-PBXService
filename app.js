@@ -1559,7 +1559,7 @@ server.put('/DVP/API/:version/PBXService/PBXUser/:PbxUserUuid', function(req, re
     {
         var securityToken = req.header('authorization');
         var reqBody = req.body;
-        var uuidusr = req.params.userUuid;
+        var uuidusr = req.params.PbxUserUuid;
 
         logger.debug('[DVP-PBXService.UpdatePbxUser] - [%s] - HTTP Request Received - Req Body : ', reqId, reqBody);
 
