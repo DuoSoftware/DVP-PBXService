@@ -1003,7 +1003,7 @@ var GetPbxUserByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, callbac
             {
                 if(pbxUser)
                 {
-                    pbxUser.AllowedNumbers = json.parse(pbxUser.AllowedNumbers);
+                    pbxUser.AllowedNumbers = JSON.parse(pbxUser.AllowedNumbers);
                 }
                 logger.debug('[DVP-PBXService.GetPbxUserByIdDB] - [%s] - PGSQL get pbx user by uuid query success', reqId);
                 callback(undefined, pbxUser);

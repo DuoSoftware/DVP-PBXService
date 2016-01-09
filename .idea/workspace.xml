@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="591d8d77-912c-4906-970d-7906a668fb89" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PbxBackendHandler.js" afterPath="$PROJECT_DIR$/PbxBackendHandler.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DVP-PBXService.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,17 +27,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2234957" vertical-offset="1384" max-vertical-offset="4709">
-              <caret line="1881" column="30" selection-start-line="1881" selection-start-column="30" selection-end-line="1881" selection-end-column="61" />
+            <state vertical-scroll-proportion="-3.24" vertical-offset="11649" max-vertical-offset="17136">
+              <caret line="790" column="64" selection-start-line="790" selection-start-column="60" selection-end-line="790" selection-end-column="64" />
               <folding>
                 <element signature="e#1054#4093#0" expanded="false" />
-                <element signature="e#4183#43810#0" expanded="false" />
-                <element signature="e#23961#32479#0" expanded="false" />
-                <element signature="e#24101#27182#0" expanded="false" />
-                <element signature="e#27277#31003#0" expanded="false" />
                 <element signature="e#43919#46489#0" expanded="false" />
                 <element signature="e#46613#49708#0" expanded="false" />
                 <element signature="e#49834#52944#0" expanded="false" />
@@ -71,7 +67,7 @@
       <file leaf-file-name="ClientMessageJsonFormatter.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/node_modules/dvp-common/CommonMessageGenerator/ClientMessageJsonFormatter.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
+            <state vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="493">
               <caret line="2" column="4" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="4" />
               <folding />
             </state>
@@ -81,7 +77,7 @@
       <file leaf-file-name="PBXUserTemplate.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/node_modules/dvp-dbmodels/PBXUserTemplate.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="323">
+            <state vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="323">
               <caret line="8" column="23" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="23" />
               <folding />
             </state>
@@ -91,7 +87,7 @@
       <file leaf-file-name="PBXUser.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/node_modules/dvp-dbmodels/PBXUser.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="612">
+            <state vertical-scroll-proportion="0.0" vertical-offset="340" max-vertical-offset="612">
               <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
               <folding />
             </state>
@@ -111,24 +107,23 @@
       <file leaf-file-name="default.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/config/default.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
+            <state vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="578">
               <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PbxBackendHandler.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PbxBackendHandler.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/PbxBackendHandler.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4524" max-vertical-offset="7820">
-              <caret line="1004" column="16" selection-start-line="1004" selection-start-column="16" selection-end-line="1004" selection-end-column="16" />
+            <state vertical-scroll-proportion="0.2090909" vertical-offset="463" max-vertical-offset="8772">
+              <caret line="214" column="25" selection-start-line="214" selection-start-column="25" selection-end-line="214" selection-end-column="25" />
               <folding>
                 <element signature="e#239#3056#0" expanded="false" />
                 <element signature="e#3161#4632#0" expanded="false" />
                 <element signature="e#4738#6224#0" expanded="false" />
                 <element signature="e#6325#7809#0" expanded="false" />
-                <element signature="e#7919#10148#0" expanded="false" />
                 <element signature="e#12222#21992#0" expanded="false" />
                 <element signature="e#19158#21185#0" expanded="false" />
                 <element signature="e#22075#22836#0" expanded="false" />
@@ -162,7 +157,7 @@
       <file leaf-file-name="latest.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/node_modules/moment-timezone/data/meta/latest.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="3265.577" vertical-offset="84905" max-vertical-offset="85289">
+            <state vertical-scroll-proportion="0.0" vertical-offset="84905" max-vertical-offset="85289">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -172,7 +167,7 @@
       <file leaf-file-name="latest.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/node_modules/moment-timezone/data/packed/latest.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="10098">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10098">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -231,7 +226,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -298,6 +292,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -327,14 +322,10 @@
       <ConfigurationWrapper RunnerId="debuggableProgram" />
       <method />
     </configuration>
-    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
-      <method />
-    </configuration>
     <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
       <method />
     </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
-      <envs />
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <method />
     </configuration>
     <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
@@ -342,6 +333,10 @@
       <setting name="settingsFile" value="" />
       <setting name="serverType" value="INTERNAL" />
       <setting name="preferredDebugBrowser" value="Chrome" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
@@ -417,21 +412,21 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3155416" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32899022" sideWeight="0.49962825" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32736155" sideWeight="0.49962825" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20223048" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39576548" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.60912055" sideWeight="0.49926794" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.61067504" sideWeight="0.50073206" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32736155" sideWeight="0.49962825" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39576548" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.60912055" sideWeight="0.49926794" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1024,10 +1019,6 @@
           <caret line="23" column="35" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
           <folding>
             <element signature="e#1054#4093#0" expanded="false" />
-            <element signature="e#4183#43810#0" expanded="false" />
-            <element signature="e#23961#32479#0" expanded="false" />
-            <element signature="e#24101#27182#0" expanded="false" />
-            <element signature="e#27277#31003#0" expanded="false" />
             <element signature="e#43919#46489#0" expanded="false" />
             <element signature="e#46613#49708#0" expanded="false" />
             <element signature="e#49834#52944#0" expanded="false" />
@@ -1069,7 +1060,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="18" max-vertical-offset="629">
           <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1082,7 +1072,6 @@
             <element signature="e#3161#4632#0" expanded="false" />
             <element signature="e#4738#6224#0" expanded="false" />
             <element signature="e#6325#7809#0" expanded="false" />
-            <element signature="e#7919#10148#0" expanded="false" />
             <element signature="e#12222#21992#0" expanded="false" />
             <element signature="e#19158#21185#0" expanded="false" />
             <element signature="e#22075#22836#0" expanded="false" />
@@ -1124,10 +1113,6 @@
           <caret line="23" column="35" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
           <folding>
             <element signature="e#1054#4093#0" expanded="false" />
-            <element signature="e#4183#43810#0" expanded="false" />
-            <element signature="e#23961#32479#0" expanded="false" />
-            <element signature="e#24101#27182#0" expanded="false" />
-            <element signature="e#27277#31003#0" expanded="false" />
             <element signature="e#43919#46489#0" expanded="false" />
             <element signature="e#46613#49708#0" expanded="false" />
             <element signature="e#49834#52944#0" expanded="false" />
@@ -1169,7 +1154,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="18" max-vertical-offset="629">
           <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1182,7 +1166,6 @@
             <element signature="e#3161#4632#0" expanded="false" />
             <element signature="e#4738#6224#0" expanded="false" />
             <element signature="e#6325#7809#0" expanded="false" />
-            <element signature="e#7919#10148#0" expanded="false" />
             <element signature="e#12222#21992#0" expanded="false" />
             <element signature="e#19158#21185#0" expanded="false" />
             <element signature="e#22075#22836#0" expanded="false" />
@@ -1224,10 +1207,6 @@
           <caret line="2" column="42" selection-start-line="2" selection-start-column="42" selection-end-line="2" selection-end-column="42" />
           <folding>
             <element signature="e#1054#4093#0" expanded="false" />
-            <element signature="e#4183#43810#0" expanded="false" />
-            <element signature="e#23961#32479#0" expanded="false" />
-            <element signature="e#24101#27182#0" expanded="false" />
-            <element signature="e#27277#31003#0" expanded="false" />
             <element signature="e#43919#46489#0" expanded="false" />
             <element signature="e#46613#49708#0" expanded="false" />
             <element signature="e#49834#52944#0" expanded="false" />
@@ -1269,7 +1248,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="18" max-vertical-offset="629">
           <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1282,7 +1260,6 @@
             <element signature="e#3161#4632#0" expanded="false" />
             <element signature="e#4738#6224#0" expanded="false" />
             <element signature="e#6325#7809#0" expanded="false" />
-            <element signature="e#7919#10148#0" expanded="false" />
             <element signature="e#12222#21992#0" expanded="false" />
             <element signature="e#19158#21185#0" expanded="false" />
             <element signature="e#22075#22836#0" expanded="false" />
@@ -1324,10 +1301,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#1054#4093#0" expanded="false" />
-            <element signature="e#4183#43810#0" expanded="false" />
-            <element signature="e#23961#32479#0" expanded="false" />
-            <element signature="e#24101#27182#0" expanded="false" />
-            <element signature="e#27277#31003#0" expanded="false" />
             <element signature="e#43919#46489#0" expanded="false" />
             <element signature="e#46613#49708#0" expanded="false" />
             <element signature="e#49834#52944#0" expanded="false" />
@@ -1390,7 +1363,6 @@
             <element signature="e#3161#4632#0" expanded="false" />
             <element signature="e#4738#6224#0" expanded="false" />
             <element signature="e#6325#7809#0" expanded="false" />
-            <element signature="e#7919#10148#0" expanded="false" />
             <element signature="e#12222#21992#0" expanded="false" />
             <element signature="e#19158#21185#0" expanded="false" />
             <element signature="e#22075#22836#0" expanded="false" />
@@ -1416,10 +1388,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#1054#4093#0" expanded="false" />
-            <element signature="e#4183#43810#0" expanded="false" />
-            <element signature="e#23961#32479#0" expanded="false" />
-            <element signature="e#24101#27182#0" expanded="false" />
-            <element signature="e#27277#31003#0" expanded="false" />
             <element signature="e#43919#46489#0" expanded="false" />
             <element signature="e#46613#49708#0" expanded="false" />
             <element signature="e#49834#52944#0" expanded="false" />
@@ -1458,7 +1426,6 @@
             <element signature="e#3161#4632#0" expanded="false" />
             <element signature="e#4738#6224#0" expanded="false" />
             <element signature="e#6325#7809#0" expanded="false" />
-            <element signature="e#7919#10148#0" expanded="false" />
             <element signature="e#12222#21992#0" expanded="false" />
             <element signature="e#19158#21185#0" expanded="false" />
             <element signature="e#22075#22836#0" expanded="false" />
@@ -1484,10 +1451,6 @@
           <caret line="31" column="7" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="7" />
           <folding>
             <element signature="e#1054#4093#0" expanded="false" />
-            <element signature="e#4183#43810#0" expanded="false" />
-            <element signature="e#23961#32479#0" expanded="false" />
-            <element signature="e#24101#27182#0" expanded="false" />
-            <element signature="e#27277#31003#0" expanded="false" />
             <element signature="e#43919#46489#0" expanded="false" />
             <element signature="e#46613#49708#0" expanded="false" />
             <element signature="e#49834#52944#0" expanded="false" />
@@ -1533,7 +1496,6 @@
             <element signature="e#3161#4632#0" expanded="false" />
             <element signature="e#4738#6224#0" expanded="false" />
             <element signature="e#6325#7809#0" expanded="false" />
-            <element signature="e#7919#10148#0" expanded="false" />
             <element signature="e#12222#21992#0" expanded="false" />
             <element signature="e#19158#21185#0" expanded="false" />
             <element signature="e#22075#22836#0" expanded="false" />
@@ -1567,10 +1529,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#1054#4093#0" expanded="false" />
-            <element signature="e#4183#43810#0" expanded="false" />
-            <element signature="e#23961#32479#0" expanded="false" />
-            <element signature="e#24101#27182#0" expanded="false" />
-            <element signature="e#27277#31003#0" expanded="false" />
             <element signature="e#43919#46489#0" expanded="false" />
             <element signature="e#46613#49708#0" expanded="false" />
             <element signature="e#49834#52944#0" expanded="false" />
@@ -1616,7 +1574,6 @@
             <element signature="e#3161#4632#0" expanded="false" />
             <element signature="e#4738#6224#0" expanded="false" />
             <element signature="e#6325#7809#0" expanded="false" />
-            <element signature="e#7919#10148#0" expanded="false" />
             <element signature="e#12222#21992#0" expanded="false" />
             <element signature="e#19158#21185#0" expanded="false" />
             <element signature="e#22075#22836#0" expanded="false" />
@@ -1642,10 +1599,6 @@
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding>
             <element signature="e#1054#4093#0" expanded="false" />
-            <element signature="e#4183#43810#0" expanded="false" />
-            <element signature="e#23961#32479#0" expanded="false" />
-            <element signature="e#24101#27182#0" expanded="false" />
-            <element signature="e#27277#31003#0" expanded="false" />
             <element signature="e#43919#46489#0" expanded="false" />
             <element signature="e#46613#49708#0" expanded="false" />
             <element signature="e#49834#52944#0" expanded="false" />
@@ -1684,7 +1637,6 @@
             <element signature="e#3161#4632#0" expanded="false" />
             <element signature="e#4738#6224#0" expanded="false" />
             <element signature="e#6325#7809#0" expanded="false" />
-            <element signature="e#7919#10148#0" expanded="false" />
             <element signature="e#12222#21992#0" expanded="false" />
             <element signature="e#19158#21185#0" expanded="false" />
             <element signature="e#22075#22836#0" expanded="false" />
@@ -1730,7 +1682,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="171" max-vertical-offset="629">
           <caret line="25" column="35" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1738,15 +1689,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4998">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/moment-timezone/data/meta/latest.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="3265.577" vertical-offset="84905" max-vertical-offset="85289">
+        <state vertical-scroll-proportion="0.0" vertical-offset="84905" max-vertical-offset="85289">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
@@ -1764,9 +1712,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.3324937" vertical-offset="529" max-vertical-offset="7344">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1774,7 +1719,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.31648937" vertical-offset="0" max-vertical-offset="714">
           <caret line="7" column="27" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1826,45 +1770,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/PbxBackendHandler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4524" max-vertical-offset="7820">
-          <caret line="1004" column="16" selection-start-line="1004" selection-start-column="16" selection-end-line="1004" selection-end-column="16" />
-          <folding>
-            <element signature="e#239#3056#0" expanded="false" />
-            <element signature="e#3161#4632#0" expanded="false" />
-            <element signature="e#4738#6224#0" expanded="false" />
-            <element signature="e#6325#7809#0" expanded="false" />
-            <element signature="e#7919#10148#0" expanded="false" />
-            <element signature="e#12222#21992#0" expanded="false" />
-            <element signature="e#19158#21185#0" expanded="false" />
-            <element signature="e#22075#22836#0" expanded="false" />
-            <element signature="e#22924#23762#0" expanded="false" />
-            <element signature="e#23855#26227#0" expanded="false" />
-            <element signature="e#26309#27431#0" expanded="false" />
-            <element signature="e#27510#28610#0" expanded="false" />
-            <element signature="e#28690#29438#0" expanded="false" />
-            <element signature="e#32159#32769#0" expanded="false" />
-            <element signature="e#32854#33832#0" expanded="false" />
-            <element signature="e#33926#36554#0" expanded="false" />
-            <element signature="e#36646#37677#0" expanded="false" />
-            <element signature="e#40918#41662#0" expanded="false" />
-            <element signature="e#43760#44564#0" expanded="false" />
-            <element signature="e#44650#45044#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2234957" vertical-offset="1384" max-vertical-offset="4709">
-          <caret line="1881" column="30" selection-start-line="1881" selection-start-column="30" selection-end-line="1881" selection-end-column="61" />
+        <state vertical-scroll-proportion="-3.24" vertical-offset="11649" max-vertical-offset="17136">
+          <caret line="790" column="64" selection-start-line="790" selection-start-column="60" selection-end-line="790" selection-end-column="64" />
           <folding>
             <element signature="e#1054#4093#0" expanded="false" />
-            <element signature="e#4183#43810#0" expanded="false" />
-            <element signature="e#23961#32479#0" expanded="false" />
-            <element signature="e#24101#27182#0" expanded="false" />
-            <element signature="e#27277#31003#0" expanded="false" />
             <element signature="e#43919#46489#0" expanded="false" />
             <element signature="e#46613#49708#0" expanded="false" />
             <element signature="e#49834#52944#0" expanded="false" />
@@ -1890,6 +1801,34 @@
             <element signature="e#100607#102541#0" expanded="false" />
             <element signature="e#102628#103895#0" expanded="false" />
             <element signature="e#103985#105254#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PbxBackendHandler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2090909" vertical-offset="463" max-vertical-offset="8772">
+          <caret line="214" column="25" selection-start-line="214" selection-start-column="25" selection-end-line="214" selection-end-column="25" />
+          <folding>
+            <element signature="e#239#3056#0" expanded="false" />
+            <element signature="e#3161#4632#0" expanded="false" />
+            <element signature="e#4738#6224#0" expanded="false" />
+            <element signature="e#6325#7809#0" expanded="false" />
+            <element signature="e#12222#21992#0" expanded="false" />
+            <element signature="e#19158#21185#0" expanded="false" />
+            <element signature="e#22075#22836#0" expanded="false" />
+            <element signature="e#22924#23762#0" expanded="false" />
+            <element signature="e#23855#26227#0" expanded="false" />
+            <element signature="e#26309#27431#0" expanded="false" />
+            <element signature="e#27510#28610#0" expanded="false" />
+            <element signature="e#28690#29438#0" expanded="false" />
+            <element signature="e#32159#32769#0" expanded="false" />
+            <element signature="e#32854#33832#0" expanded="false" />
+            <element signature="e#33926#36554#0" expanded="false" />
+            <element signature="e#36646#37677#0" expanded="false" />
+            <element signature="e#40918#41662#0" expanded="false" />
+            <element signature="e#43760#44564#0" expanded="false" />
+            <element signature="e#44650#45044#0" expanded="false" />
           </folding>
         </state>
       </provider>
