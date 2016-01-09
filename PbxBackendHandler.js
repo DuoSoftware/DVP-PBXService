@@ -709,7 +709,7 @@ var UpdatePbxUserDB = function(reqId, userUuid, updateData, companyId, tenantId,
                 }
                 else
                 {
-                    logger.error('[DVP-PBXService.UpdatePbxUserDB] - [%s] - PGSQL Update Pbx User Failed', reqId, err);
+                    logger.debug('[DVP-PBXService.UpdatePbxUserDB] - [%s] - PGSQL Get Pbx User success', reqId);
                     callback(new Error('Cannot find pbx user with given id'), false);
                 }
             })
