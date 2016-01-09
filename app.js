@@ -2258,23 +2258,23 @@ server.get('/DVP/API/:version/PBXService/PbxUser/:userUuid/FollowMe', function(r
         var userUuid = req.params.userUuid;
 
 
-        logger.debug('[DVP-PBXService.PbxUserTemplatesByCompany] - [%s] - HTTP Request Received - params - userUuid : %s', reqId, userUuid);
+        logger.debug('[DVP-PBXService.FollowMeConfigList] - [%s] - HTTP Request Received - params - userUuid : %s', reqId, userUuid);
 
         if(securityToken)
         {
 
-            pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, 1, 3, function (err, fmList)
+            pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, 1, 1, function (err, fmList)
             {
                 if (err)
                 {
                     var jsonString = messageFormatter.FormatMessage(err, "Get follow me config for user failed", false, fmList);
-                    logger.debug('[DVP-PBXService.PbxUserTemplatesByCompany] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    logger.debug('[DVP-PBXService.FollowMeConfigList] - [%s] - API RESPONSE : %s', reqId, jsonString);
                     res.end(jsonString);
                 }
                 else
                 {
                     var jsonString = messageFormatter.FormatMessage(err, "Get follow me config for user success", true, fmList);
-                    logger.debug('[DVP-PBXService.PbxUserTemplatesByCompany] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    logger.debug('[DVP-PBXService.FollowMeConfigList] - [%s] - API RESPONSE : %s', reqId, jsonString);
                     res.end(jsonString);
                 }
 
@@ -2284,7 +2284,7 @@ server.get('/DVP/API/:version/PBXService/PbxUser/:userUuid/FollowMe', function(r
         else
         {
             var jsonString = messageFormatter.FormatMessage(new Error('No authorization token set'), "No authorization token set", false, emptyArr);
-            logger.debug('[DVP-PBXService.PbxUserTemplatesByCompany] - [%s] - API RESPONSE : %s', reqId, jsonString);
+            logger.debug('[DVP-PBXService.FollowMeConfigList] - [%s] - API RESPONSE : %s', reqId, jsonString);
             res.end(jsonString);
 
         }
