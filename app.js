@@ -1492,6 +1492,9 @@ server.post('/DVP/API/:version/PBXService/PbxUser', function(req, res, next)
                         UserStatus: reqBody.UserStatus, //DND, CALL_DIVERT, AVAILABLE
                         AdvancedRouteMethod: reqBody.AdvancedRouteMethod, //FORWARD, FOLLOW_ME
                         FollowMeMechanism: reqBody.FollowMeMechanism,
+                        PersonalGreetingEnabled: reqBody.PersonalGreetingEnabled,
+                        DayGreetingFile: reqBody.DayGreetingFile,
+                        NightGreetingFile: reqBody.NightGreetingFile,
                         CompanyId: 1,
                         TenantId: 1,
                         ObjClass: 'PBX',
