@@ -614,7 +614,7 @@ var DeleteFollowMeDB = function(reqId, fmId, companyId, tenantId, callback)
             logger.debug('[DVP-PBXService.DeleteFollowMeDB] - [%s] - PGSQL Get Follow Me by Id query success', reqId);
                 fmRec.destroy().then(function (result)
                 {
-                    logger.error('[DVP-RuleService.DeleteFollowMeDB] PGSQL Delete pbx user query success', err);
+                    logger.debug('[DVP-RuleService.DeleteFollowMeDB] PGSQL Delete pbx user query success');
                     callback(undefined, true);
 
                 }).catch(function(err)

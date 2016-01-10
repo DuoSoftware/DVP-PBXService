@@ -1422,7 +1422,7 @@ server.del('/DVP/API/:version/PBXService/Forwarding/:fwdId', function(req, res, 
         if(fwdId && securityToken)
         {
 
-            pbxBackendHandler.DeleteForwardingDB(reqId, fwdId, 1, 3, function (err, delResult)
+            pbxBackendHandler.DeleteForwardingDB(reqId, fwdId, 1, 1, function (err, delResult)
             {
                 if (err)
                 {
