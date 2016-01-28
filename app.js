@@ -2376,8 +2376,9 @@ server.post('/DVP/API/:version/PBXService/PbxMasterData', function(req, res, nex
             }
             else
             {
-                logger.debug('[DVP-PBXService.AddPbxMasterData] - [%s] - Pbx master data added successfully - Returned : %s', reqId, result);
                 var jsonString = messageFormatter.FormatMessage(err, "Pbx master data added successfully", result, undefined);
+                logger.debug('[DVP-PBXService.AddPbxMasterData] - [%s] - Pbx master data added successfully - Returned : %s', reqId, jsonString);
+
                 res.end(jsonString);
             }
         })
@@ -2400,9 +2401,9 @@ server.get('/DVP/API/:version/PBXService/PbxMasterData', function(req, res, next
 
     try
     {
-        var pbxId = req.params.id;
+        //var pbxId = req.params.id;
 
-        logger.debug('[DVP-PBXService.GetPbxMasterData] - [%s] - HTTP Request Received - Req Body : ', reqId, pbxId);
+        logger.debug('[DVP-PBXService.GetPbxMasterData] - [%s] - HTTP Request Received : ', reqId);
 
         pbxBackendHandler.GetPbxMasterData(reqId, 1, 1, function (err, result)
         {
@@ -2414,8 +2415,9 @@ server.get('/DVP/API/:version/PBXService/PbxMasterData', function(req, res, next
             }
             else
             {
-                logger.debug('[DVP-PBXService.GetPbxMasterData] - [%s] - Pbx master data added successfully - Returned : %s', reqId, result);
                 var jsonString = messageFormatter.FormatMessage(err, "Pbx master data retrieved successfully", true, result);
+                logger.debug('[DVP-PBXService.GetPbxMasterData] - [%s] - Pbx master data added successfully - Returned : %s', reqId, jsonString);
+
                 res.end(jsonString);
             }
         })
