@@ -1074,7 +1074,7 @@ var GetPbxMasterData = function(reqId, pbxMasterId, companyId, tenantId, callbac
 {
     try
     {
-        dbModel.PBXMasterData.find({where: [{id: pbxMasterId},{CompanyId: companyId},{TenantId: tenantId}]})
+        dbModel.PBXMasterData.find({where: [{CompanyId: companyId},{TenantId: tenantId}]})
             .then(function (pbxMData)
             {
                 callback(undefined, pbxMData);

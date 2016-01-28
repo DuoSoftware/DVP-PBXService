@@ -2394,7 +2394,7 @@ server.post('/DVP/API/:version/PBXService/PbxMasterData', function(req, res, nex
 
 });
 
-server.get('/DVP/API/:version/PBXService/PbxMasterData/:id', function(req, res, next)
+server.get('/DVP/API/:version/PBXService/PbxMasterData', function(req, res, next)
 {
     var reqId = uuid.v1();
 
@@ -2404,7 +2404,7 @@ server.get('/DVP/API/:version/PBXService/PbxMasterData/:id', function(req, res, 
 
         logger.debug('[DVP-PBXService.GetPbxMasterData] - [%s] - HTTP Request Received - Req Body : ', reqId, pbxId);
 
-        pbxBackendHandler.GetPbxMasterData(reqId, pbxId, 1, 3, function (err, result)
+        pbxBackendHandler.GetPbxMasterData(reqId, 1, 1, function (err, result)
         {
             if (err)
             {
