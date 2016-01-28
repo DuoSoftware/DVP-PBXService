@@ -2396,7 +2396,7 @@ server.post('/DVP/API/:version/PBXService/PbxMasterData', function(req, res, nex
 
 server.get('/DVP/API/:version/PBXService/PbxMasterData', function(req, res, next)
 {
-    var reqId = uuid.v1();
+    var reqId = nodeUuid.v1();
 
     try
     {

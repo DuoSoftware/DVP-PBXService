@@ -1070,7 +1070,7 @@ var GetPbxUserTemplateByIdDB = function(reqId, templateId, companyId, tenantId, 
 
 };
 
-var GetPbxMasterData = function(reqId, pbxMasterId, companyId, tenantId, callback)
+var GetPbxMasterData = function(reqId, companyId, tenantId, callback)
 {
     try
     {
