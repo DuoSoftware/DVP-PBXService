@@ -6,14 +6,12 @@ var AddPbxMasterDataDB = function(reqId, pbxMasterData, callback)
 {
     try
     {
-        dbModel.PBXMasterData.find({where: [{id: pbxMasterData.id}]})
+        dbModel.PBXMasterData.find({where: [{CompanyId: 1},{TenantId: 1}]})
             .then(function (pbxMData)
             {
 
                     if(pbxMData)
                     {
-                        if(pbxMData.CompanyId == pbxMasterData.CompanyId && pbxMData.TenantId == pbxMasterData.TenantId)
-                        {
                             //allow update
                             pbxMData.updateAttributes({BypassMedia: pbxMasterData.BypassMedia, IgnoreEarlyMedia: pbxMasterData.IgnoreEarlyMedia, VoicemailEnabled: pbxMasterData.VoicemailEnabled}).then(function (rslt)
                             {
@@ -26,11 +24,6 @@ var AddPbxMasterDataDB = function(reqId, pbxMasterData, callback)
                                 logger.error('[DVP-PBXService.AddPbxMasterData] PGSQL Update call rule with trunk number query failed', err);
                                 callback(err, false);
                             });
-                        }
-                        else
-                        {
-                            callback(new Error('Id provided does not belong to your company'), false);
-                        }
                     }
                     else
                     {
