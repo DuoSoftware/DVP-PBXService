@@ -2102,7 +2102,7 @@ server.get('/DVP/API/:version/PBXService/FeatureCodes', function(req, res, next)
         if(securityToken)
         {
 
-            pbxBackendHandler.GetFeatureCodesForCompanyDB(reqId, 1, 3, function (err, fc)
+            pbxBackendHandler.GetFeatureCodesForCompanyDB(reqId, 1, 1, function (err, fc)
             {
                 if (err)
                 {
