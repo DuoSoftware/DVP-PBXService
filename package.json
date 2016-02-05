@@ -17,19 +17,20 @@
   },
   "homepage": "https://github.com/DuoSoftware/DVP-PBXService#readme",
   "dependencies": {
+    "config": "^1.14.0",
     "dvp-common": "^0.0.16",
-    "dvp-dbmodels": "^0.0.35",
-    "moment": "^2.11.2",
-    "moment-timezone": "^0.5.0",
-    "node-uuid": "^1.4.7",
+    "dvp-dbmodels": "^0.0.26",
+    "moment-timezone": "^0.4.0",
+    "node-uuid": "^1.4.3",
+    "moment": "^2.10.3",
     "q": "^1.4.1",
-    "request": "^2.69.0",
-    "restify": "^4.0.3",
-    "stringify": "^3.2.0",
+    "request": "^2.58.0",
+    "restify": "^3.0.3",
+    "stringify": "^3.1.0",
     "underscore": "^1.8.3",
     "util": "^0.10.3",
-    "validator": "^4.7.0",
-    "xmlbuilder": "^4.2.1"
+    "validator": "^4.1.0",
+    "xmlbuilder": "^2.6.4"
   },
   "devDependencies": {}
 }
