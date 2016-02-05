@@ -1,36 +1,35 @@
 {
-  "name": "DVP-PBXService",
+  "name": "dvp-pbxservice",
   "version": "1.0.0",
   "description": "DVP-PBXService\r ==============",
-  "main": "app.js",
-  "dependencies": {
-    "config": "^1.14.0",
-    "dvp-common": "^0.0.2",
-    "dvp-dbmodels": "^0.0.26",
-    "moment-timezone": "^0.4.0",
-    "node-uuid": "^1.4.3",
-    "moment": "^2.10.3",
-    "q": "^1.4.1",
-    "request": "^2.58.0",
-    "restify": "^3.0.3",
-    "stringify": "^3.1.0",
-    "underscore": "^1.8.3",
-    "util": "^0.10.3",
-    "validator": "^4.1.0",
-    "xmlbuilder": "^2.6.4"
-  },
-  "devDependencies": {},
+  "main": "PbxBackendHandler.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DuoSoftware/DVP-PBXService.git"
+    "url": "git+https://github.com/DuoSoftware/DVP-PBXService.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/DuoSoftware/DVP-PBXService/issues"
   },
-  "homepage": "https://github.com/DuoSoftware/DVP-PBXService"
+  "homepage": "https://github.com/DuoSoftware/DVP-PBXService#readme",
+  "dependencies": {
+    "dvp-common": "^0.0.16",
+    "dvp-dbmodels": "^0.0.35",
+    "moment": "^2.11.2",
+    "moment-timezone": "^0.5.0",
+    "node-uuid": "^1.4.7",
+    "q": "^1.4.1",
+    "request": "^2.69.0",
+    "restify": "^4.0.3",
+    "stringify": "^3.2.0",
+    "underscore": "^1.8.3",
+    "util": "^0.10.3",
+    "validator": "^4.7.0",
+    "xmlbuilder": "^4.2.1"
+  },
+  "devDependencies": {}
 }
