@@ -1500,7 +1500,8 @@ server.post('/DVP/API/:version/PBXService/PbxUser', function(req, res, next)
                         ObjClass: 'PBX',
                         ObjType: 'PBXUSER',
                         ObjCategory: 'GENERAL',
-                        Pin: reqBody.Pin
+                        Pin: reqBody.Pin,
+                        TimeZone: reqBody.TimeZone
                     });
 
                     pbxBackendHandler.AddPbxUserDB(reqId, pbxUsrData, function(err, addResult)
@@ -1670,18 +1671,17 @@ server.post('/DVP/API/:version/PBXService/PbxUser/:pbxUser/SetActiveTemplate/:te
     try
     {
         var securityToken = req.header('authorization');
-        var reqBody = req.body;
 
         logger.debug('[DVP-PBXService.AssignPbxTemplate] - [%s] - HTTP Request Received - Req Body : ', reqId, reqBody);
 
-        if(reqBody && securityToken)
+        if(securityToken)
         {
             var pbxUserUuid = req.params.pbxUser;
             var tempId = req.params.templateId;
 
             if(pbxUserUuid && tempId)
             {
-                pbxBackendHandler.AssignTemplateToUserDB(reqId, pbxUserUuid, tempId, 1, 3, function(err, assignResult)
+                pbxBackendHandler.AssignTemplateToUserDB(reqId, pbxUserUuid, tempId, 1, 1, function(err, assignResult)
                 {
                     if(err)
                     {
@@ -1707,7 +1707,7 @@ server.post('/DVP/API/:version/PBXService/PbxUser/:pbxUser/SetActiveTemplate/:te
         }
         else
         {
-            var jsonString = messageFormatter.FormatMessage(new Error('Empty request body or no authorization token set'), "Empty request body or no authorization token set", false, false);
+            var jsonString = messageFormatter.FormatMessage(new Error('No authorization token set'), "No authorization token set", false, false);
             logger.debug('[DVP-PBXService.AssignPbxTemplate] - [%s] - API RESPONSE : %s', reqId, jsonString);
             res.end(jsonString);
 
