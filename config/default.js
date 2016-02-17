@@ -14,6 +14,18 @@ module.exports = {
     "Version":"1.0.0.0"
   },
 
+  "Security":
+  {
+    "ip" : "45.55.142.207",
+    "port": 6379
+  },
+  "Redis":
+  {
+    "ip": "45.55.142.207",
+    "port": 6379
+
+  },
+
   "Services":
   {
 

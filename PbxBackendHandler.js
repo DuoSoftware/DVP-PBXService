@@ -2,11 +2,11 @@ var dbModel = require('dvp-dbmodels');
 var logger = require('dvp-common/LogHandler/CommonLogHandler.js').logger;
 var externAccessor = require('./PbxExternalApiAccess.js');
 
-var AddPbxMasterDataDB = function(reqId, pbxMasterData, callback)
+var AddPbxMasterDataDB = function(reqId, pbxMasterData, companyId, tenantId, callback)
 {
     try
     {
-        dbModel.PBXMasterData.find({where: [{CompanyId: 1},{TenantId: 1}]})
+        dbModel.PBXMasterData.find({where: [{CompanyId: companyId},{TenantId: tenantId}]})
             .then(function (pbxMData)
             {
 
@@ -32,8 +32,8 @@ var AddPbxMasterDataDB = function(reqId, pbxMasterData, callback)
                             BypassMedia: pbxMasterData.BypassMedia,
                             IgnoreEarlyMedia: pbxMasterData.IgnoreEarlyMedia,
                             VoicemailEnabled: pbxMasterData.VoicemailEnabled,
-                            CompanyId: 1,
-                            TenantId: 1,
+                            CompanyId: companyId,
+                            TenantId: companyId,
                             ObjClass: "PBX",
                             ObjType: "PBXMASTERDATA",
                             ObjCategory: "DEFAULT"
@@ -329,8 +329,8 @@ var AddFollowMeDB = function(reqId, userUuid, companyId, tenantId, followMeData,
                                                     DestinationNumber: sipUsrObj.SipExtension,
                                                     RingTimeout: followMeData.RingTimeout,
                                                     Priority: followMeData.Priority,
-                                                    CompanyId: 1,
-                                                    TenantId: 1,
+                                                    CompanyId: companyId,
+                                                    TenantId: tenantId,
                                                     ObjClass: 'PBX',
                                                     ObjType: 'FOLLOW_ME',
                                                     ObjCategory: followMeData.ObjCategory
@@ -403,8 +403,8 @@ var AddFollowMeDB = function(reqId, userUuid, companyId, tenantId, followMeData,
                             DestinationNumber: followMeData.DestinationNumber,
                             RingTimeout: followMeData.RingTimeout,
                             Priority: followMeData.Priority,
-                            CompanyId: 1,
-                            TenantId: 1,
+                            CompanyId: companyId,
+                            TenantId: tenantId,
                             ObjClass: 'PBX',
                             ObjType: 'FOLLOW_ME',
                             ObjCategory: followMeData.ObjCategory
@@ -803,7 +803,7 @@ var AddFeatureCodesDB = function(reqId, featureCodeProfile, companyId, tenantId,
                 {
                     logger.debug('[DVP-PBXService.AddFeatureCodesDB] - [%s] - PGSQL get feature code by company query success', reqId);
 
-                    var fc = dbModel.FeatureCode.build({PickUp: featureCodeProfile.PickUp, Intercept: featureCodeProfile.Intercept, Park: featureCodeProfile.Park, VoiceMail: featureCodeProfile.Voicemail, Barge: featureCodeProfile.Barge, CompanyId: 1, TenantId: 1, ObjClass: 'PBX', ObjType: 'FeatureCodes', ObjCategory: 'FeatureCodes'});
+                    var fc = dbModel.FeatureCode.build({PickUp: featureCodeProfile.PickUp, Intercept: featureCodeProfile.Intercept, Park: featureCodeProfile.Park, VoiceMail: featureCodeProfile.Voicemail, Barge: featureCodeProfile.Barge, CompanyId: companyId, TenantId: tenantId, ObjClass: 'PBX', ObjType: 'FeatureCodes', ObjCategory: 'FeatureCodes'});
 
                     fc
                         .save()
@@ -867,7 +867,7 @@ var DeletePbxUserTemplateDB = function(reqId, templateId, companyId, tenantId, c
 
 };
 
-var AddPbxUserTemplateDB = function(reqId, pbxUserUuid, pbxUserTemplate, callback)
+var AddPbxUserTemplateDB = function(reqId, pbxUserUuid, pbxUserTemplate, companyId, tenantId, callback)
 {
     try
     {
@@ -881,8 +881,8 @@ var AddPbxUserTemplateDB = function(reqId, pbxUserUuid, pbxUserTemplate, callbac
 
             CallDivertNumber: pbxUserTemplate.CallDivertNumber,
             CallDivertUser: callDivertUser,
-            CompanyId: 1,
-            TenantId: 1,
+            CompanyId: companyId,
+            TenantId: tenantId,
             ObjClass: 'PBX',
             ObjType: 'PBXUSER',
             ObjCategory: pbxUserTemplate.ObjCategory,
