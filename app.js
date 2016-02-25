@@ -790,6 +790,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                 {
                                     if(fromPbxUser)
                                     {
+                                        pbxUserConf.AllowIDD = fromPbxUser.AllowIDD;
                                         if(!fromPbxUser.AllowOutbound)
                                         {
                                             var outNumArr = JSON.parse(fromPbxUser.AllowedNumbers);
@@ -813,26 +814,32 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                                 pbxUserConf.VoicemailEnabled = false;
                                                 pbxUserConf.BypassMedia = false;
                                             }
-                                            else
-                                            {
-                                                var jsonResponse = JSON.stringify(pbxUserConf);
-                                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
-                                                res.end(jsonResponse);
-                                            }
                                         }
                                         else
                                         {
-                                            var endp =
-                                            {
-                                                DestinationNumber: dnis,
-                                                ObjCategory: 'GATEWAY'
-                                            };
 
-                                            pbxUserConf.OperationType = 'GATEWAY';
-                                            pbxUserConf.Endpoints = endp;
-                                            pbxUserConf.UserRefId = userUuid;
-                                            pbxUserConf.VoicemailEnabled = false;
-                                            pbxUserConf.BypassMedia = false;
+                                            var outNumArr = JSON.parse(fromPbxUser.DeniedNumbers);
+
+                                            var outNum = underscore.find(outNumArr, function (num)
+                                            {
+                                                return num == dnis;
+                                            });
+
+                                            if(!outNum)
+                                            {
+                                                var endp =
+                                                {
+                                                    DestinationNumber: dnis,
+                                                    ObjCategory: 'GATEWAY'
+                                                };
+
+                                                pbxUserConf.OperationType = 'GATEWAY';
+                                                pbxUserConf.Endpoints = endp;
+                                                pbxUserConf.UserRefId = userUuid;
+                                                pbxUserConf.VoicemailEnabled = false;
+                                                pbxUserConf.BypassMedia = false;
+                                            }
+
                                         }
 
                                     }
@@ -932,6 +939,76 @@ server.post('/DVP/API/:version/PBXService/PBXUser/:PbxUserUuid/AllowedNumbers', 
         logger.error('[DVP-PBXService.AssignAllowedNumber] - [%s] - Exception Occurred', reqId, ex);
         var jsonString = messageFormatter.FormatMessage(ex, "Exception occurred", false, false);
         logger.debug('[DVP-PBXService.AssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+        res.end(jsonString);
+
+    }
+    return next();
+
+});
+
+server.post('/DVP/API/:version/PBXService/PBXUser/:PbxUserUuid/DeniedNumbers', authorization({resource:"pbxadmin", action:"write"}), function(req, res, next)
+{
+    var reqId = nodeUuid.v1();
+    try
+    {
+        var reqBody = req.body;
+
+        logger.debug('[DVP-PBXService.ReplaceDeniedNumberList] - [%s] - HTTP Request Received - Req Body : ', reqId, reqBody);
+
+        var companyId = req.user.company;
+        var tenantId = req.user.tenant;
+
+        if (!companyId || !tenantId)
+        {
+            throw new Error("Invalid company or tenant");
+        }
+
+        if(reqBody)
+        {
+            var pbxUserUuid = req.params.PbxUserUuid;
+
+            var deniedNumArr = req.body.DeniedNumbers;
+
+            if(pbxUserUuid && deniedNumArr)
+            {
+                pbxBackendHandler.AddPbxUserDeniedNumbersDB(reqId, pbxUserUuid, companyId, tenantId, deniedNumArr, function(err, assignResult)
+                {
+                    if(err)
+                    {
+                        var jsonString = messageFormatter.FormatMessage(err, "Assign PBX User denied numbers Failed", false, false);
+                        logger.debug('[DVP-PBXService.ReplaceDeniedNumberList] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                        res.end(jsonString);
+                    }
+                    else
+                    {
+                        var jsonString = messageFormatter.FormatMessage(err, "Assign PBX User denied numbers Success", true, assignResult);
+                        logger.debug('[DVP-PBXService.ReplaceDeniedNumberList] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                        res.end(jsonString);
+                    }
+
+                })
+            }
+            else
+            {
+                var jsonString = messageFormatter.FormatMessage(new Error('Pbx user id or denied number list not given'), "Pbx user id or denied number list not given", false, false);
+                logger.debug('[DVP-PBXService.ReplaceDeniedNumberList] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                res.end(jsonString);
+            }
+        }
+        else
+        {
+            var jsonString = messageFormatter.FormatMessage(new Error('Empty request body'), "Empty request body", false, false);
+            logger.debug('[DVP-PBXService.ReplaceDeniedNumberList] - [%s] - API RESPONSE : %s', reqId, jsonString);
+            res.end(jsonString);
+
+        }
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.ReplaceDeniedNumberList] - [%s] - Exception Occurred', reqId, ex);
+        var jsonString = messageFormatter.FormatMessage(ex, "Exception occurred", false, false);
+        logger.debug('[DVP-PBXService.ReplaceDeniedNumberList] - [%s] - API RESPONSE : %s', reqId, jsonString);
         res.end(jsonString);
 
     }
@@ -1213,6 +1290,64 @@ server.post('/DVP/API/:version/PBXService/PBXUser/:PbxUserUuid/AllowedNumber/:Al
         logger.error('[DVP-PBXService.UnAssignAllowedNumber] - [%s] - Exception Occurred', reqId, ex);
         var jsonString = messageFormatter.FormatMessage(ex, "Exception occurred", false, false);
         logger.debug('[DVP-PBXService.UnAssignAllowedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+        res.end(jsonString);
+
+    }
+    return next();
+
+});
+
+server.post('/DVP/API/:version/PBXService/PBXUser/:PbxUserUuid/DeniedNumber/:DeniedNumber/UnAssign', authorization({resource:"pbxadmin", action:"write"}), function(req, res, next)
+{
+    var reqId = nodeUuid.v1();
+    try
+    {
+        var pbxUserUuid = req.params.PbxUserUuid;
+        var deniedNum = req.params.DeniedNumber;
+
+        logger.debug('[DVP-PBXService.UnAssignDeniedNumber] - [%s] - HTTP Request Received - Req Params : ', reqId, pbxUserUuid, deniedNum);
+
+        var companyId = req.user.company;
+        var tenantId = req.user.tenant;
+
+        if (!companyId || !tenantId)
+        {
+            throw new Error("Invalid company or tenant");
+        }
+
+        if(pbxUserUuid && deniedNum)
+        {
+            pbxBackendHandler.RemovePbxUserDeniedNumberDB(reqId, pbxUserUuid, companyId, tenantId, deniedNum, function (err, assignResult)
+            {
+                if (err)
+                {
+                    var jsonString = messageFormatter.FormatMessage(err, "Un Assign PBX User denied number Failed", false, false);
+                    logger.debug('[DVP-PBXService.UnAssignDeniedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    res.end(jsonString);
+                }
+                else
+                {
+                    var jsonString = messageFormatter.FormatMessage(err, "Un Assign PBX User denied number Success", true, assignResult);
+                    logger.debug('[DVP-PBXService.UnAssignDeniedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    res.end(jsonString);
+                }
+
+            })
+        }
+        else
+        {
+            var jsonString = messageFormatter.FormatMessage(new Error('Empty request params'), "Empty request params", false, false);
+            logger.debug('[DVP-PBXService.UnAssignDeniedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
+            res.end(jsonString);
+
+        }
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.UnAssignDeniedNumber] - [%s] - Exception Occurred', reqId, ex);
+        var jsonString = messageFormatter.FormatMessage(ex, "Exception occurred", false, false);
+        logger.debug('[DVP-PBXService.UnAssignDeniedNumber] - [%s] - API RESPONSE : %s', reqId, jsonString);
         res.end(jsonString);
 
     }
@@ -1574,6 +1709,7 @@ server.post('/DVP/API/:version/PBXService/PbxUser', authorization({resource:"pbx
                         VoicemailEnabled: reqBody.VoicemailEnabled,
                         ScheduleId: reqBody.ScheduleId,
                         AllowOutbound: reqBody.AllowOutbound,
+                        AllowIDD: reqBody.AllowIDD,
                         UserStatus: reqBody.UserStatus, //DND, CALL_DIVERT, AVAILABLE
                         AdvancedRouteMethod: reqBody.AdvancedRouteMethod, //FORWARD, FOLLOW_ME
                         FollowMeMechanism: reqBody.FollowMeMechanism,

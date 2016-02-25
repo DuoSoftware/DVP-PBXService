@@ -246,6 +246,61 @@ var RemovePbxUserAllowedNumberDB = function(reqId, userUuid, companyId, tenantId
 
 };
 
+var RemovePbxUserDeniedNumberDB = function(reqId, userUuid, companyId, tenantId, numberToRemove, callback)
+{
+    try
+    {
+        dbModel.PBXUser.find({where: [{UserUuid: userUuid},{CompanyId: companyId},{TenantId: tenantId}]})
+            .then(function (pbxUser)
+            {
+                if(pbxUser)
+                {
+                    if(pbxUser.DeniedNumbers)
+                    {
+                        var deniedNumberArr = JSON.parse(pbxUser.DeniedNumbers);
+
+                        var index = deniedNumberArr.indexOf(numberToRemove);
+
+                        if(index > -1)
+                        {
+                            deniedNumberArr.splice(index, 1);
+                        }
+
+                        pbxUser.updateAttributes({DeniedNumbers: JSON.stringify(deniedNumberArr)}).then(function (rsp)
+                        {
+                            callback(undefined, true);
+
+                        }).catch(function(err)
+                        {
+                            logger.error('[DVP-PBXService.RemovePbxUserDeniedNumberDB] PGSQL Update pbx user with denied numbers query failed', err);
+                            callback(err, false);
+                        });
+
+                    }
+                    else
+                    {
+                        callback(undefined, true);
+                    }
+                }
+                else
+                {
+                    callback(new Error('User not found'), false);
+                }
+            }).catch(function(err)
+            {
+                logger.error('[DVP-PBXService.RemovePbxUserDeniedNumberDB] - [%s] - PGSQL get pbx user by uuid query failed', reqId, err);
+                callback(err, false);
+            });
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.RemovePbxUserDeniedNumberDB] - [%s] - Exception occurred', reqId, ex);
+        callback(ex, false);
+    }
+
+};
+
 var AddPbxUserAllowedNumbersDB = function(reqId, userUuid, companyId, tenantId, numberArr, callback)
 {
     try
@@ -290,6 +345,52 @@ var AddPbxUserAllowedNumbersDB = function(reqId, userUuid, companyId, tenantId, 
     catch(ex)
     {
         logger.error('[DVP-PBXService.AddPbxUserAllowedNumbersDB] - [%s] - Exception occurred', reqId, ex);
+        callback(ex, false);
+    }
+
+};
+
+var AddPbxUserDeniedNumbersDB = function(reqId, userUuid, companyId, tenantId, numberArr, callback)
+{
+    try
+    {
+        dbModel.PBXUser.find({where: [{UserUuid: userUuid},{CompanyId: companyId},{TenantId: tenantId}]})
+            .then(function (pbxUser)
+            {
+                if(pbxUser)
+                {
+
+                    var deniedNumberArr = [];
+
+                    numberArr.forEach(function(num)
+                    {
+                        deniedNumberArr.push(num);
+                    });
+
+                    pbxUser.updateAttributes({DeniedNumbers: JSON.stringify(deniedNumberArr)}).then(function (rsp)
+                    {
+                        callback(undefined, true);
+
+                    }).catch(function(err)
+                    {
+                        logger.error('[DVP-PBXService.AddPbxUserDeniedNumbersDB] PGSQL Update pbx user with denied numbers query failed', err);
+                        callback(err, false);
+                    });
+                }
+                else
+                {
+                    callback(new Error('User not found'), false);
+                }
+            }).then(function(err)
+            {
+                logger.error('[DVP-PBXService.AddPbxUserDeniedNumbersDB] - [%s] - PGSQL get pbx user by uuid query failed', reqId, err);
+                callback(err, false);
+            });
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.AddPbxUserDeniedNumbersDB] - [%s] - Exception occurred', reqId, ex);
         callback(ex, false);
     }
 
@@ -1204,7 +1305,9 @@ module.exports.DeleteFollowMeDB = DeleteFollowMeDB;
 module.exports.GetFollowMeByIdDB = GetFollowMeByIdDB;
 module.exports.GetFollowMeByUserDB = GetFollowMeByUserDB;
 module.exports.AddPbxUserAllowedNumbersDB = AddPbxUserAllowedNumbersDB;
+module.exports.AddPbxUserDeniedNumbersDB = AddPbxUserDeniedNumbersDB;
 module.exports.RemovePbxUserAllowedNumberDB = RemovePbxUserAllowedNumberDB;
+module.exports.RemovePbxUserDeniedNumberDB = RemovePbxUserDeniedNumberDB;
 module.exports.AddFeatureCodesDB = AddFeatureCodesDB;
 module.exports.GetFeatureCodesForCompanyDB = GetFeatureCodesForCompanyDB;
 module.exports.SetDayPersonalGreetingDB = SetDayPersonalGreetingDB;
