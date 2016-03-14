@@ -24,6 +24,7 @@
     "moment-timezone": "^0.4.0",
     "node-uuid": "^1.4.3",
     "q": "^1.4.1",
+    "redis": "^2.5.0-1",
     "request": "^2.58.0",
     "restify": "^3.0.3",
     "restify-jwt": "^0.4.0",
