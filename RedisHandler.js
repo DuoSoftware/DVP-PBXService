@@ -8,8 +8,8 @@ var redisPassword = Config.Redis.Password;
 
 var client = redis.createClient(redisPort, redisIp);
 
-client.auth(redisPassword, function (err) {
-    console.log("Error Authenticating Redis : " + err);
+client.auth(redisPassword, function (redisResp) {
+    console.log("Redis Auth Response : " + redisResp);
 });
 
 

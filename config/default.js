@@ -17,7 +17,9 @@ module.exports = {
   "Security":
   {
     "ip" : "45.55.142.207",
-    "port": 6379
+    "port": 6379,
+    "user": "45.55.142.207",
+    "password": "123"
   },
 
   "Redis": {
