@@ -178,7 +178,7 @@ var RetrieveCacheData = function(companyId, tenantId, callback)
 
 };
 
-server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({resource:"all", action:"read"}), function(req, res, next)
+server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({resource:"pbxadmin", action:"read"}), function(req, res, next)
 {
     var pbxUserConf = {};
     var reqId = nodeUuid.v1();
