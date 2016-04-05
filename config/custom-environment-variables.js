@@ -28,5 +28,12 @@ module.exports = {
         "sipUacServicePort": "SYS_SIPUSERENDPOINTSERVICE_PORT",
         "sipUacServiceVersion": "SYS_SIPUSERENDPOINTSERVICE_VERSION"
 
-    }
+    },
+
+    "Redis":
+    {
+        "IpAddress": "SYS_REDIS_HOST",
+        "Port": "SYS_REDIS_PORT",
+        "Password": "SYS_REDIS_PASSWORD"
+    },
 };

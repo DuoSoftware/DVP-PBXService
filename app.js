@@ -9,8 +9,8 @@ var extApi = require('./PbxExternalApiAccess.js');
 var underscore = require('underscore');
 var xmlBuilder = require('./XmlDialplanBuilder.js');
 var moment = require('moment');
-//var jwt = require('restify-jwt');
-//var secret = require('dvp-common/Authentication/Secret.js');
+var jwt = require('restify-jwt');
+var secret = require('dvp-common/Authentication/Secret.js');
 var authorization = require('dvp-common/Authentication/Authorization.js');
 var redisHandler = require('./RedisHandler.js');
 
@@ -40,7 +40,7 @@ server.use(restify.fullResponse());
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
-//server.use(jwt({secret: secret.Secret}));
+server.use(jwt({secret: secret.Secret}));
 
 
 var FeatureCodeHandler = function(reqId, dnis, companyId, tenantId, cacheObj, callback)
@@ -178,7 +178,7 @@ var RetrieveCacheData = function(companyId, tenantId, callback)
 
 };
 
-server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res, next)
+server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({resource:"all", action:"read"}), function(req, res, next)
 {
     var pbxUserConf = {};
     var reqId = nodeUuid.v1();
@@ -2854,3 +2854,32 @@ server.get('/DVP/API/:version/PBXService/PbxMasterData', authorization({resource
 server.listen(hostPort, hostIp, function () {
     console.log('%s listening at %s', server.name, server.url);
 });
+
+function Crossdomain(req,res,next){
+
+
+    var xml='<?xml version=""1.0""?><!DOCTYPE cross-domain-policy SYSTEM ""http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd""> <cross-domain-policy>    <allow-access-from domain=""*"" />        </cross-domain-policy>';
+
+    /*var xml='<?xml version="1.0"?>\n';
+
+     xml+= '<!DOCTYPE cross-domain-policy SYSTEM "/xml/dtds/cross-domain-policy.dtd">\n';
+     xml+='';
+     xml+=' \n';
+     xml+='\n';
+     xml+='';*/
+    req.setEncoding('utf8');
+    res.end(xml);
+
+}
+
+function Clientaccesspolicy(req,res,next){
+
+
+    var xml='<?xml version="1.0" encoding="utf-8" ?>       <access-policy>        <cross-domain-access>        <policy>        <allow-from http-request-headers="*">        <domain uri="*"/>        </allow-from>        <grant-to>        <resource include-subpaths="true" path="/"/>        </grant-to>        </policy>        </cross-domain-access>        </access-policy>';
+    req.setEncoding('utf8');
+    res.end(xml);
+
+}
+
+server.get("/crossdomain.xml",Crossdomain);
+server.get("/clientaccesspolicy.xml",Clientaccesspolicy);
