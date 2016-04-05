@@ -1088,7 +1088,7 @@ var GetFeatureCodesForCompanyDB = function(reqId, companyId, tenantId, data, cal
 
 };
 
-var GetPbxUserByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, callback)
+var GetPbxUserByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, data, callback)
 {
     try
     {

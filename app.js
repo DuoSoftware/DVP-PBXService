@@ -9,8 +9,8 @@ var extApi = require('./PbxExternalApiAccess.js');
 var underscore = require('underscore');
 var xmlBuilder = require('./XmlDialplanBuilder.js');
 var moment = require('moment');
-var jwt = require('restify-jwt');
-var secret = require('dvp-common/Authentication/Secret.js');
+//var jwt = require('restify-jwt');
+//var secret = require('dvp-common/Authentication/Secret.js');
 var authorization = require('dvp-common/Authentication/Authorization.js');
 var redisHandler = require('./RedisHandler.js');
 
@@ -40,10 +40,10 @@ server.use(restify.fullResponse());
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
-server.use(jwt({secret: secret.Secret}));
+//server.use(jwt({secret: secret.Secret}));
 
 
-var FeatureCodeHandler = function(reqId, dnis, companyId, tenantId, callback)
+var FeatureCodeHandler = function(reqId, dnis, companyId, tenantId, cacheObj, callback)
 {
     try
     {
@@ -178,7 +178,7 @@ var RetrieveCacheData = function(companyId, tenantId, callback)
 
 };
 
-server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({resource:"all", action:"write"}), function(req, res, next)
+server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res, next)
 {
     var pbxUserConf = {};
     var reqId = nodeUuid.v1();
@@ -192,12 +192,12 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
         var context = reqBody.Context;
         var direction = reqBody.Direction;
         var extraData = reqBody.ExtraData;
-        var companyId = reqBody.CompanyId;
-        var tenantId = reqBody.TenantId;
         var userUuid = '';
         var fromUserUuid = '';
         var opType = undefined;
         var extExtraData = undefined;
+        var companyId = null;
+        var tenantId = null;
 
         if(extraData)
         {
@@ -205,6 +205,8 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
             fromUserUuid = extraData['FromUserUuid'];
             opType = extraData['OperationType'];
             extExtraData = extraData['ExtExtraData'];
+            companyId = extraData['CompanyId'];
+            tenantId = extraData['TenantId'];
         }
 
 
@@ -213,7 +215,6 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
             if(direction === 'IN')
             {
                 //try getting user for did
-
 
                 pbxBackendHandler.GetAllPbxUserDetailsByIdDB(reqId, userUuid, companyId, tenantId, cacheData, function(err, pbxDetails)
                 {
@@ -831,7 +832,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                     }
                     else
                     {
-                        FeatureCodeHandler(reqId, dnis, companyId, tenantId, function(err, feature, number)
+                        FeatureCodeHandler(reqId, dnis, companyId, tenantId, cacheData, function(err, feature, number)
                         {
                             if(feature)
                             {
