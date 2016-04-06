@@ -808,6 +808,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                             {
                                 if(err)
                                 {
+                                    pbxUserConf = null;
                                     var jsonResponse = JSON.stringify(pbxUserConf);
                                     logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                     res.end(jsonResponse);
@@ -825,6 +826,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                 }
                                 else
                                 {
+                                    pbxUserConf = null;
                                     var jsonResponse = JSON.stringify(pbxUserConf);
                                     logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                     res.end(jsonResponse);
@@ -833,6 +835,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                         }
                         else
                         {
+                            pbxUserConf = null;
                             var jsonResponse = JSON.stringify(pbxUserConf);
                             logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                             res.end(jsonResponse);
@@ -913,6 +916,10 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                             }
 
                                         }
+                                        else
+                                        {
+                                            pbxUserConf = null;
+                                        }
 
                                         var jsonResponse = JSON.stringify(pbxUserConf);
                                         logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
@@ -922,6 +929,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                 }
                                 else
                                 {
+                                    pbxUserConf = null;
                                     var jsonResponse = JSON.stringify(pbxUserConf);
                                     logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                     res.end(jsonResponse);
