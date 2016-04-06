@@ -422,12 +422,12 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                             }
                             else if (usrStatus === 'CALL_DIVERT')
                             {
-                                if (pbxDetails.ActiveTemplate)
+                                if (pbxDetails.PBXUserTemplateActive)
                                 {
                                     var endp =
                                     {
-                                        DestinationNumber: pbxDetails.ActiveTemplate.CallDivertNumber,
-                                        ObjCategory: pbxDetails.ActiveTemplate.ObjCategory
+                                        DestinationNumber: pbxDetails.PBXUserTemplateActive.CallDivertNumber,
+                                        ObjCategory: pbxDetails.PBXUserTemplateActive.ObjCategory
                                     };
 
                                     pbxUserConf.OperationType = 'CALL_DIVERT';
@@ -437,10 +437,10 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                     pbxUserConf.BypassMedia = bypassMedia;
                                     pbxUserConf.RingTimeout = 60;
 
-                                    if (pbxDetails.ActiveTemplate.ObjCategory === 'PBXUSER' && pbxDetails.ActiveTemplate.CallDivertUser)
+                                    if (pbxDetails.PBXUserTemplateActive.ObjCategory === 'PBXUSER' && pbxDetails.PBXUserTemplateActive.CallDivertUser)
                                     {
 
-                                        pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.ActiveTemplate.CallDivertUser, companyId, tenantId, cacheData, function (err, pbxUserObjDivert)
+                                        pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.PBXUserTemplateActive.CallDivertUser, companyId, tenantId, cacheData, function (err, pbxUserObjDivert)
                                         {
                                             if (err)
                                             {
@@ -718,12 +718,12 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                 }
                                 else if(usrStatus === 'CALL_DIVERT')
                                 {
-                                    if(pbxDetails.ActiveTemplate)
+                                    if(pbxDetails.PBXUserTemplateActive)
                                     {
                                         var endp =
                                         {
-                                            DestinationNumber: pbxDetails.ActiveTemplate.CallDivertNumber,
-                                            ObjCategory: pbxDetails.ActiveTemplate.ObjCategory
+                                            DestinationNumber: pbxDetails.PBXUserTemplateActive.CallDivertNumber,
+                                            ObjCategory: pbxDetails.PBXUserTemplateActive.ObjCategory
                                         };
 
                                         pbxUserConf.OperationType = 'CALL_DIVERT';
@@ -732,10 +732,10 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                         pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                         pbxUserConf.BypassMedia = bypassMedia;
 
-                                        if(pbxDetails.ActiveTemplate.ObjCategory === 'PBXUSER' && pbxDetails.ActiveTemplate.DestinationUser)
+                                        if(pbxDetails.PBXUserTemplateActive.ObjCategory === 'PBXUSER' && pbxDetails.PBXUserTemplateActive.DestinationUser)
                                         {
 
-                                            pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.ActiveTemplate.CallDivertUser, companyId, tenantId, cacheData, function(err, pbxUserObjDivert)
+                                            pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.PBXUserTemplateActive.CallDivertUser, companyId, tenantId, cacheData, function(err, pbxUserObjDivert)
                                             {
                                                 if(err)
                                                 {
