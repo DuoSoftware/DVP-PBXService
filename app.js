@@ -716,7 +716,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                         res.end(jsonResponse);
                                     }
                                 }
-                                else if(userStatus === 'CALL_DIVERT')
+                                else if(usrStatus === 'CALL_DIVERT')
                                 {
                                     if(pbxDetails.ActiveTemplate)
                                     {
