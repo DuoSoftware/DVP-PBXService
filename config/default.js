@@ -31,12 +31,12 @@ module.exports = {
   "Services":
   {
 
-    "fileServiceHost": "192.168.0.54",
+    "fileServiceHost": "fileservice.104.131.67.21.xip.io",
     "fileServicePort": 8081,
     "fileServiceVersion":"6.0",
-    "sipUacServiceHost": "127.0.0.1",
+    "sipUacServiceHost": "sipuserendpointservice.104.131.67.21.xip.io",
     "sipUacServicePort": 8085,
-    "sipUacServiceVersion": "6.0"
+    "sipUacServiceVersion": "1.0.0.0"
 
   },
 

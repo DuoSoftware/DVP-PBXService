@@ -593,16 +593,35 @@ var GetForwardingByUserDB = function(reqId, userUuid, companyId, tenantId, data,
     var emptyList = [];
     try
     {
-        var fwdConfList = data.Forwarding;
-
-        if(fwdConfList)
+        if(data)
         {
-            callback(undefined, fwdConfList);
+            var fwdConfList = data.Forwarding;
+
+            if(fwdConfList)
+            {
+                callback(undefined, fwdConfList);
+            }
+            else
+            {
+                callback(undefined, emptyList);
+            }
         }
         else
         {
-            callback(undefined, emptyList);
+            dbModel.Forwarding.findAll({where: [{PBXUserUuid: userUuid},{CompanyId: companyId},{TenantId: tenantId}]})
+                .then(function (fwdConfList)
+                {
+                    logger.debug('[DVP-PBXService.GetForwardingByUserDB] - [%s] - PGSQL get forwarding config list by user uuid query success', reqId);
+                    callback(undefined, fwdConfList);
+
+                }).catch(function(err)
+                {
+                    logger.error('[DVP-PBXService.GetForwardingByUserDB] - [%s] - PGSQL get forwarding config list by user uuid query failed', reqId, err);
+                    callback(err, emptyList);
+                });
         }
+
+
 
     }
     catch(ex)
@@ -763,23 +782,30 @@ var GetFollowMeByUserDB = function(reqId, userUuid, companyId, tenantId, data, c
     var emptyList = [];
     try
     {
-        if(data.PBXUser)
+        if(data)
         {
-            var usr = data.PBXUser[userUuid];
-
-            if(usr)
+            if(data.PBXUser)
             {
-                var fmConfList = usr.FollowMe;
+                var usr = data.PBXUser[userUuid];
 
-                for(i=0; i<fmConfList.length; i++)
+                if(usr)
                 {
-                    if(fmConfList[i].DestinationUserUuid)
-                    {
-                        fmConfList[i].DestinationUser = data.PBXUser[fmConfList[i].DestinationUserUuid];
-                    }
-                }
+                    var fmConfList = usr.FollowMe;
 
-                callback(undefined, fmConfList);
+                    for(i=0; i<fmConfList.length; i++)
+                    {
+                        if(fmConfList[i].DestinationUserUuid)
+                        {
+                            fmConfList[i].DestinationUser = data.PBXUser[fmConfList[i].DestinationUserUuid];
+                        }
+                    }
+
+                    callback(undefined, fmConfList);
+                }
+                else
+                {
+                    callback(undefined, emptyList);
+                }
             }
             else
             {
@@ -788,8 +814,19 @@ var GetFollowMeByUserDB = function(reqId, userUuid, companyId, tenantId, data, c
         }
         else
         {
-            callback(undefined, emptyList);
+            dbModel.FollowMe.findAll({where: [{PBXUserUuid: userUuid},{CompanyId: companyId},{TenantId: tenantId}], include: [{model: dbModel.PBXUser, as: 'DestinationUser'}]})
+                .then(function (fmConfList)
+                {
+                    logger.debug('[DVP-PBXService.GetFollowMeByUserDB] - [%s] - PGSQL get follow me config list by user uuid query success', reqId);
+                    callback(undefined, fmConfList);
+
+                }).catch(function(err)
+                {
+                    logger.error('[DVP-PBXService.GetFollowMeByUserDB] - [%s] - PGSQL get follow me config list by user uuid query failed', reqId, err);
+                    callback(err, emptyList);
+                });
         }
+
 
     }
     catch(ex)

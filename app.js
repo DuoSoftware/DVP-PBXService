@@ -2667,7 +2667,7 @@ server.get('/DVP/API/:version/PBXService/PBXUser/:userUuid/FollowMe', authorizat
         if(securityToken)
         {
 
-            pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, function (err, fmList)
+            pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, null, function (err, fmList)
             {
                 if (err)
                 {
@@ -2729,7 +2729,7 @@ server.get('/DVP/API/:version/PBXService/PBXUser/:userUuid/Forwarding', authoriz
         if(securityToken)
         {
 
-            pbxBackendHandler.GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, function (err, fmList)
+            pbxBackendHandler.GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, null, function (err, fmList)
             {
                 if (err)
                 {
