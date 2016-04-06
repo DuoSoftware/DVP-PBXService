@@ -24,9 +24,9 @@ module.exports = {
         "fileServiceHost": "SYS_FILESERVICE_HOST",
         "fileServicePort": "SYS_FILESERVICE_PORT",
         "fileServiceVersion":"SYS_FILESERVICE_VERSION",
-        "sipUacServiceHost": "SYS_SIPUSERENDPOINTSERVICE_HOST",
-        "sipUacServicePort": "SYS_SIPUSERENDPOINTSERVICE_PORT",
-        "sipUacServiceVersion": "SYS_SIPUSERENDPOINTSERVICE_VERSION"
+        "sipUacServiceHost": "SYS_SIPUSERSERVICE_HOST",
+        "sipUacServicePort": "SYS_SIPUSERSERVICE_PORT",
+        "sipUacServiceVersion": "SYS_SIPUSERSERVICE_VERSION"
 
     },
 
