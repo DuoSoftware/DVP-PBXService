@@ -159,6 +159,10 @@ var ValidateVoicemailStatus = function(companyMasterData, userVoicemailStatus)
             return false;
         }
     }
+    else
+    {
+        return userVoicemailStatus;
+    }
 
 };
 
@@ -1801,7 +1805,8 @@ server.post('/DVP/API/:version/PBXService/PBXUser', authorization({resource:"pbx
                         ObjType: 'PBXUSER',
                         ObjCategory: 'GENERAL',
                         Pin: reqBody.Pin,
-                        TimeZone: reqBody.TimeZone
+                        TimeZone: reqBody.TimeZone,
+                        RingTimeout: reqBody.RingTimeout
                     });
 
                     pbxBackendHandler.AddPbxUserDB(reqId, pbxUsrData, function(err, addResult)
