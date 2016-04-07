@@ -662,28 +662,30 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                                 pbxUserConf.BypassMedia = bypassMedia;
 
                                             }
+
+                                            if(pbxDetails.PersonalGreetingEnabled)
+                                            {
+                                                var hours = new Date().getHours();
+
+                                                hours = (hours+24-2)%24;
+
+                                                if(hours>12)
+                                                {
+                                                    pbxUserConf.PersonalGreeting = pbxDetails.NightGreetingFile;
+                                                }
+                                                else
+                                                {
+                                                    pbxUserConf.PersonalGreeting = pbxDetails.DayGreetingFile;
+                                                }
+
+                                            }
+
+                                            var jsonResponse = JSON.stringify(pbxUserConf);
+                                            logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
+                                            res.end(jsonResponse);
                                         });
 
-                                        if(pbxDetails.PersonalGreetingEnabled)
-                                        {
-                                            var hours = new Date().getHours();
 
-                                            hours = (hours+24-2)%24;
-
-                                            if(hours>12)
-                                            {
-                                                pbxUserConf.PersonalGreeting = pbxDetails.NightGreetingFile;
-                                            }
-                                            else
-                                            {
-                                                pbxUserConf.PersonalGreeting = pbxDetails.DayGreetingFile;
-                                            }
-
-                                        }
-
-                                        var jsonResponse = JSON.stringify(pbxUserConf);
-                                        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
-                                        res.end(jsonResponse);
 
                                     }
                                     else
