@@ -522,6 +522,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                 {
                                     if(fromPbxUser)
                                     {
+
                                         pbxUserConf.AllowIDD = fromPbxUser.AllowIDD;
                                         if(!fromPbxUser.AllowOutbound)
                                         {
@@ -603,17 +604,6 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                             }
 
 
-
-
-
-
-
-
-
-                            pbxUserConf = null;
-                            var jsonResponse = JSON.stringify(pbxUserConf);
-                            logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
-                            res.end(jsonResponse);
                         }
                         else
                         {
