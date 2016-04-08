@@ -515,6 +515,101 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                     {
                         if(err || !pbxDetails)
                         {
+
+                            if(fromUserUuid)
+                            {
+                                pbxBackendHandler.GetPbxUserByIdDB(reqId, fromUserUuid, companyId, tenantId, cacheData, function (err, fromPbxUser)
+                                {
+                                    if(fromPbxUser)
+                                    {
+                                        pbxUserConf.AllowIDD = fromPbxUser.AllowIDD;
+                                        if(!fromPbxUser.AllowOutbound)
+                                        {
+                                            var outNumArr = fromPbxUser.AllowedNumbers;
+
+                                            var outNum = underscore.find(outNumArr, function (num)
+                                            {
+                                                return num == dnis;
+                                            });
+
+                                            if (outNum)
+                                            {
+                                                var endp =
+                                                {
+                                                    DestinationNumber: outNum,
+                                                    ObjCategory: 'USER'
+                                                };
+
+                                                pbxUserConf.OperationType = 'USER';
+                                                pbxUserConf.Endpoints = endp;
+                                                pbxUserConf.UserRefId = userUuid;
+                                                pbxUserConf.VoicemailEnabled = false;
+                                                pbxUserConf.BypassMedia = false;
+                                            }
+                                            else
+                                            {
+                                                pbxUserConf = null;
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                            var outNumArr = fromPbxUser.DeniedNumbers;
+
+                                            var outNum = underscore.find(outNumArr, function (num)
+                                            {
+                                                return num == dnis;
+                                            });
+
+                                            if(!outNum)
+                                            {
+                                                var endp =
+                                                {
+                                                    DestinationNumber: dnis,
+                                                    ObjCategory: 'USER'
+                                                };
+
+                                                pbxUserConf.OperationType = 'USER';
+                                                pbxUserConf.Endpoints = endp;
+                                                pbxUserConf.UserRefId = userUuid;
+                                                pbxUserConf.VoicemailEnabled = false;
+                                                pbxUserConf.BypassMedia = false;
+                                            }
+                                            else
+                                            {
+                                                pbxUserConf = null;
+                                            }
+
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        pbxUserConf = null;
+                                    }
+
+                                    var jsonResponse = JSON.stringify(pbxUserConf);
+                                    logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
+                                    res.end(jsonResponse);
+
+                                })
+                            }
+                            else
+                            {
+                                pbxUserConf = null;
+                                var jsonResponse = JSON.stringify(pbxUserConf);
+                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
+                                res.end(jsonResponse);
+                            }
+
+
+
+
+
+
+
+
+
                             pbxUserConf = null;
                             var jsonResponse = JSON.stringify(pbxUserConf);
                             logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
@@ -872,7 +967,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                             pbxUserConf.AllowIDD = fromPbxUser.AllowIDD;
                                             if(!fromPbxUser.AllowOutbound)
                                             {
-                                                var outNumArr = JSON.parse(fromPbxUser.AllowedNumbers);
+                                                var outNumArr = fromPbxUser.AllowedNumbers;
 
                                                 var outNum = underscore.find(outNumArr, function (num)
                                                 {
@@ -901,7 +996,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                             else
                                             {
 
-                                                var outNumArr = JSON.parse(fromPbxUser.DeniedNumbers);
+                                                var outNumArr = fromPbxUser.DeniedNumbers;
 
                                                 var outNum = underscore.find(outNumArr, function (num)
                                                 {
