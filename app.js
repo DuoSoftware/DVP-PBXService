@@ -893,6 +893,10 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                                     pbxUserConf.VoicemailEnabled = false;
                                                     pbxUserConf.BypassMedia = false;
                                                 }
+                                                else
+                                                {
+                                                    pbxUserConf = null;
+                                                }
                                             }
                                             else
                                             {
@@ -917,6 +921,10 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                                     pbxUserConf.UserRefId = userUuid;
                                                     pbxUserConf.VoicemailEnabled = false;
                                                     pbxUserConf.BypassMedia = false;
+                                                }
+                                                else
+                                                {
+                                                    pbxUserConf = null;
                                                 }
 
                                             }
