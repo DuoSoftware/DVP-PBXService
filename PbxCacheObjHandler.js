@@ -4,6 +4,7 @@
 var dbModel = require('dvp-dbmodels');
 var logger = require('dvp-common/LogHandler/CommonLogHandler.js').logger;
 var externAccessor = require('./PbxExternalApiAccess.js');
+var redisHandler = require('./RedisHandler.js');
 
 var AddPbxMasterDataDB = function(reqId, pbxMasterData, companyId, tenantId, callback)
 {
@@ -588,14 +589,14 @@ var GetForwardingByIdDB = function(reqId, fwdId, companyId, tenantId, callback)
 
 };
 
-var GetForwardingByUserDB = function(reqId, userUuid, companyId, tenantId, data, callback)
+var GetForwardingByUserDB = function(reqId, userUuid, companyId, tenantId, user, useDbStrict, callback)
 {
     var emptyList = [];
     try
     {
-        if(data)
+        if(!useDbStrict)
         {
-            var fwdConfList = data.Forwarding;
+            var fwdConfList = user.Forwarding;
 
             if(fwdConfList)
             {
@@ -777,40 +778,16 @@ var GetFollowMeByIdDB = function(reqId, fmId, companyId, tenantId, callback)
 
 };
 
-var GetFollowMeByUserDB = function(reqId, userUuid, companyId, tenantId, data, callback)
+var GetFollowMeByUserDB = function(reqId, userUuid, companyId, tenantId, user, useDbStrict, callback)
 {
     var emptyList = [];
     try
     {
-        if(data)
+        if(!useDbStrict)
         {
-            if(data.PBXUser)
-            {
-                var usr = data.PBXUser[userUuid];
+            var fmConfList = user.FollowMe;
 
-                if(usr)
-                {
-                    var fmConfList = usr.FollowMe;
-
-                    for(i=0; i<fmConfList.length; i++)
-                    {
-                        if(fmConfList[i].DestinationUserUuid)
-                        {
-                            fmConfList[i].DestinationUser = data.PBXUser[fmConfList[i].DestinationUserUuid];
-                        }
-                    }
-
-                    callback(undefined, fmConfList);
-                }
-                else
-                {
-                    callback(undefined, emptyList);
-                }
-            }
-            else
-            {
-                callback(undefined, emptyList);
-            }
+            callback(undefined, fmConfList);
         }
         else
         {
@@ -1121,13 +1098,16 @@ var GetPbxUserTemplatesForUser = function(reqId, userUuid, companyId, tenantId, 
 
 };
 
-var GetFeatureCodesForCompanyDB = function(reqId, companyId, tenantId, data, callback)
+var GetFeatureCodesForCompanyDB = function(reqId, companyId, tenantId, useDbStrict, callback)
 {
     try
     {
-        if(data)
+        if(!useDbStrict)
         {
-            callback(undefined, data.FeatureCode);
+            redisHandler.GetObject(null, 'FEATURECODE:' + tenantId + ':' + companyId, function(err, fc)
+            {
+                callback(err, fc);
+            });
         }
         else
         {
@@ -1153,20 +1133,16 @@ var GetFeatureCodesForCompanyDB = function(reqId, companyId, tenantId, data, cal
 
 };
 
-var GetPbxUserByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, data, callback)
+var GetPbxUserByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, useDbStrict, callback)
 {
     try
     {
-        if(data)
+        if(!useDbStrict)
         {
-            if(data.PBXUser)
+            redisHandler.GetObject(null, 'PBXUSER:' + tenantId + ':' + companyId + ':' + pbxUserUuid, function(err, userData)
             {
-                callback(undefined, data.PBXUser[pbxUserUuid]);
-            }
-            else
-            {
-                callback(undefined, undefined);
-            }
+                callback(err, userData);
+            });
         }
         else
         {
@@ -1195,19 +1171,14 @@ var GetPbxUserByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, data, c
 
 };
 
-var GetAllPbxUserDetailsByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, data, callback)
+var GetAllPbxUserDetailsByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, callback)
 {
     try
     {
-        if(data.PBXUser)
+        redisHandler.GetObject(null, 'PBXUSER:' + tenantId + ':' + companyId + ':' + pbxUserUuid, function(err, userData)
         {
-            var pbxUserDetails = data.PBXUser[pbxUserUuid];
-            callback(undefined, pbxUserDetails);
-        }
-        else
-        {
-            callback(undefined, undefined);
-        }
+            callback(err, userData);
+        });
 
     }
     catch(ex)
@@ -1243,11 +1214,14 @@ var GetPbxUserTemplateByIdDB = function(reqId, templateId, companyId, tenantId, 
 
 };
 
-var GetPbxMasterData = function(reqId, companyId, tenantId, data, callback)
+var GetPbxMasterData = function(reqId, companyId, tenantId, callback)
 {
     try
     {
-        callback(undefined, data.PBXMasterData);
+        redisHandler.GetObject(null, 'PBXCOMPANYINFO:' + tenantId + ':' + companyId, function(err, pbxMasterData)
+        {
+            callback(err, pbxMasterData);
+        });
     }
     catch(ex)
     {

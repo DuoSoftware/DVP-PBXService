@@ -12,6 +12,8 @@ client.auth(redisPassword, function (redisResp) {
     console.log("Redis Auth Response : " + redisResp);
 });
 
+client.select(7, function() { /* ... */ });
+
 
 var SetObjectWithExpire = function(key, value, timeout, callback)
 {

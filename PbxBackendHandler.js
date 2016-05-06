@@ -585,7 +585,7 @@ var GetForwardingByIdDB = function(reqId, fwdId, companyId, tenantId, callback)
 
 };
 
-var GetForwardingByUserDB = function(reqId, userUuid, companyId, tenantId, data, callback)
+var GetForwardingByUserDB = function(reqId, userUuid, companyId, tenantId, user, useDbStrict, callback)
 {
     var emptyList = [];
     try
@@ -755,7 +755,7 @@ var GetFollowMeByIdDB = function(reqId, fmId, companyId, tenantId, callback)
 
 };
 
-var GetFollowMeByUserDB = function(reqId, userUuid, companyId, tenantId, data, callback)
+var GetFollowMeByUserDB = function(reqId, userUuid, companyId, tenantId, user, useDbStrict, callback)
 {
     var emptyList = [];
     try
@@ -1064,7 +1064,7 @@ var GetPbxUserTemplatesForUser = function(reqId, userUuid, companyId, tenantId, 
 
 };
 
-var GetFeatureCodesForCompanyDB = function(reqId, companyId, tenantId, data, callback)
+var GetFeatureCodesForCompanyDB = function(reqId, companyId, tenantId, useDbStrict, callback)
 {
     try
     {
@@ -1088,7 +1088,7 @@ var GetFeatureCodesForCompanyDB = function(reqId, companyId, tenantId, data, cal
 
 };
 
-var GetPbxUserByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, data, callback)
+var GetPbxUserByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, useDbStrict, callback)
 {
     try
     {
@@ -1116,7 +1116,7 @@ var GetPbxUserByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, data, c
 
 };
 
-var GetAllPbxUserDetailsByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, data, callback)
+var GetAllPbxUserDetailsByIdDB = function(reqId, pbxUserUuid, companyId, tenantId, callback)
 {
     try
     {
@@ -1124,6 +1124,8 @@ var GetAllPbxUserDetailsByIdDB = function(reqId, pbxUserUuid, companyId, tenantI
             .then(function (pbxUserDetails)
             {
                 logger.debug('[DVP-PBXService.GetAllPbxUserDetailsByIdDB] - [%s] - PGSQL get all pbx user details by uuid query success', reqId);
+
+
                 callback(undefined, pbxUserDetails);
 
             }).catch(function(err)
@@ -1165,7 +1167,7 @@ var GetPbxUserTemplateByIdDB = function(reqId, templateId, companyId, tenantId, 
 
 };
 
-var GetPbxMasterData = function(reqId, companyId, tenantId, data, callback)
+var GetPbxMasterData = function(reqId, companyId, tenantId, callback)
 {
     try
     {
