@@ -11,7 +11,7 @@ var extApi = require('./PbxExternalApiAccess.js');
 var underscore = require('underscore');
 var xmlBuilder = require('./XmlDialplanBuilder.js');
 var moment = require('moment');
-//var jwt = require('restify-jwt');
+var jwt = require('restify-jwt');
 var secret = require('dvp-common/Authentication/Secret.js');
 var authorization = require('dvp-common/Authentication/Authorization.js');
 var redisHandler = require('./RedisHandler.js');
@@ -42,7 +42,7 @@ server.use(restify.fullResponse());
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
-//server.use(jwt({secret: secret.Secret}));
+server.use(jwt({secret: secret.Secret}));
 
 
 var FeatureCodeHandler = function(reqId, dnis, companyId, tenantId, callback)
