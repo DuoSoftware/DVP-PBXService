@@ -637,6 +637,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                                             pbxUserConf.Endpoints = tempEpList;
                                             pbxUserConf.VoicemailEnabled = voicemailEnabled;
                                             pbxUserConf.BypassMedia = bypassMedia;
+                                            pbxUserConf.RingTimeout = pbxDetails.RingTimeout;
 
                                         }
 
