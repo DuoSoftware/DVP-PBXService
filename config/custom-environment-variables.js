@@ -44,5 +44,7 @@ module.exports = {
         "user": "SYS_REDIS_USER",
         "password": "SYS_REDIS_PASSWORD"
 
-    }
+    },
+
+    "Token": "HOST_TOKEN"
 };

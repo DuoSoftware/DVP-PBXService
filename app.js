@@ -1108,7 +1108,7 @@ server.post('/DVP/API/:version/PBXService/PBXUser/:PbxUserUuid/DayPersonalGreeti
 
         if(pbxUserUuid && fileUuid && securityToken)
         {
-            extApi.RemoteGetFileMetadata(reqId, fileUuid, securityToken, function (err, fileMetaData)
+            extApi.RemoteGetFileMetadata(reqId, fileUuid, companyId, tenantId, function (err, fileMetaData)
             {
                 if (err)
                 {
@@ -1190,7 +1190,7 @@ server.post('/DVP/API/:version/PBXService/PBXUser/:PbxUserUuid/NightPersonalGree
 
         if(pbxUserUuid && fileUuid && securityToken)
         {
-            extApi.RemoteGetFileMetadata(reqId, fileUuid, securityToken, function (err, fileMetaData)
+            extApi.RemoteGetFileMetadata(reqId, fileUuid, companyId, tenantId, function (err, fileMetaData)
             {
                 if (err)
                 {
@@ -1765,7 +1765,7 @@ server.post('/DVP/API/:version/PBXService/PBXUser', authorization({resource:"pbx
         {
             var sipUserUuid = req.body.UserUuid;
 
-            extApi.RemoteGetSipUserDetailsForUuid(reqId, sipUserUuid, securityToken, function(err, apiResp)
+            extApi.RemoteGetSipUserDetailsForUuid(reqId, sipUserUuid, companyId, tenantId, function(err, apiResp)
             {
                 if(!err && apiResp)
                 {

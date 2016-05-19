@@ -5,16 +5,19 @@ var stringify = require('stringify');
 var logger = require('dvp-common/LogHandler/CommonLogHandler.js').logger;
 var validator = require('validator');
 
-
-
-var RemoteGetSipUserDetailsForUuid = function(reqId, sipUserUuid, securityToken, callback)
+var RemoteGetSipUserDetailsForUuid = function(reqId, sipUserUuid, companyId, tenantId, callback)
 {
     try
     {
+        var securityToken = config.Token;
+
+        securityToken = 'bearer ' + securityToken;
+
         logger.debug('[DVP-PBXService.RemoteGetSipUserDetailsForUuid] - [%s] -  Trying to get Sip User Details From Api - Params - sipUserUuid : %s', reqId, sipUserUuid);
         var sipUacServiceHost = config.Services.sipUacServiceHost;
         var sipUacServicePort = config.Services.sipUacServicePort;
         var sipUacServiceVersion = config.Services.sipUacServiceVersion;
+        var compInfo = tenantId + ':' + companyId;
 
         if(sipUacServiceHost && sipUacServiceVersion)
         {
@@ -28,7 +31,8 @@ var RemoteGetSipUserDetailsForUuid = function(reqId, sipUserUuid, securityToken,
             var options = {
                 url: httpUrl,
                 headers: {
-                    'authorization': securityToken
+                    'authorization': securityToken,
+                    'companyinfo': compInfo
                 }
             };
 
@@ -65,14 +69,20 @@ var RemoteGetSipUserDetailsForUuid = function(reqId, sipUserUuid, securityToken,
     }
 };
 
-var RemoteGetSipUserDetailsForExtension = function(reqId, extension, securityToken, callback)
+var RemoteGetSipUserDetailsForExtension = function(reqId, extension, companyId, tenantId, callback)
 {
     try
     {
+        var securityToken = config.Token;
+
+        securityToken = 'bearer ' + securityToken;
+
         logger.debug('[DVP-PBXService.RemoteGetSipUserDetailsForExtension] - [%s] -  Trying to get Sip User Details From Api - Params - extension : %s', reqId, extension);
         var sipUacServiceHost = config.Services.sipUacServiceHost;
         var sipUacServicePort = config.Services.sipUacServicePort;
         var sipUacServiceVersion = config.Services.sipUacServiceVersion;
+
+        var compInfo = tenantId + ':' + companyId;
 
         if(sipUacServiceHost && sipUacServiceVersion)
         {
@@ -86,7 +96,8 @@ var RemoteGetSipUserDetailsForExtension = function(reqId, extension, securityTok
             var options = {
                 url: httpUrl,
                 headers: {
-                    'authorization': securityToken
+                    'authorization': securityToken,
+                    'companyinfo': compInfo
                 }
             };
 
@@ -124,15 +135,20 @@ var RemoteGetSipUserDetailsForExtension = function(reqId, extension, securityTok
 };
 
 
-var RemoteGetFileMetadata = function(reqId, filename, appId, securityToken, callback)
+var RemoteGetFileMetadata = function(reqId, filename, appId, companyId, tenantId, callback)
 {
     try
     {
+        var securityToken = config.Token;
+
+        securityToken = 'bearer ' + securityToken;
+
         logger.debug('[DVP-PBXService.RemoteGetFileMetadata] - [%s] -  Trying to get file meta data from api - Params - filename : %s, appId : %s', reqId, filename, appId);
 
         var fileServiceHost = config.Services.fileServiceHost;
         var fileServicePort = config.Services.fileServicePort;
         var fileServiceVersion = config.Services.fileServiceVersion;
+        var compInfo = tenantId + ':' + companyId;
 
         if(fileServiceHost && fileServicePort && fileServiceVersion)
         {
@@ -146,7 +162,8 @@ var RemoteGetFileMetadata = function(reqId, filename, appId, securityToken, call
             var options = {
                 url: httpUrl,
                 headers: {
-                    'authorization': securityToken
+                    'authorization': securityToken,
+                    'companyinfo': compInfo
                 }
             };
 

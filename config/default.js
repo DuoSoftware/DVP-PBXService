@@ -40,6 +40,7 @@ module.exports = {
 
   },
 
-  "UseCache": false
+  "UseCache": false,
+  "Token": "123"
 
 };
