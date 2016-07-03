@@ -1861,6 +1861,16 @@ server.post('/DVP/API/:version/PBXService/PBXUser', authorization({resource:"pbx
                         RingTimeout: reqBody.RingTimeout
                     });
 
+                    if(reqBody.AllowedNumbers)
+                    {
+                        pbxUsrData.AllowedNumbers = reqBody.AllowedNumbers;
+                    }
+
+                    if(reqBody.DeniedNumbers)
+                    {
+                        pbxUsrData.DeniedNumbers = reqBody.DeniedNumbers;
+                    }
+
                     pbxBackendHandler.AddPbxUserDB(reqId, pbxUsrData, function(err, addResult)
                     {
                         if(err)
