@@ -41,7 +41,7 @@ server.use(restify.CORS());
 server.use(restify.fullResponse());
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
-server.use(restify.bodyParser());
+server.use(restify.bodyParser({ mapParams: false }));
 server.use(jwt({secret: secret.Secret}));
 
 
@@ -1517,6 +1517,71 @@ server.post('/DVP/API/:version/PBXService/PBXUser/:userUuid/FollowMe', authoriza
                 else
                 {
                     var jsonString = messageFormatter.FormatMessage(err, "Add follow me success", isSuccess, addResult);
+                    logger.debug('[DVP-PBXService.NewFollowMeConfig] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    res.end(jsonString);
+                }
+
+            })
+
+
+        }
+        else
+        {
+            var jsonString = messageFormatter.FormatMessage(new Error('Empty request body or no authorization token set'), "Empty request body or no authorization token set", false, false);
+            logger.debug('[DVP-PBXService.NewFollowMeConfig] - [%s] - API RESPONSE : %s', reqId, jsonString);
+            res.end(jsonString);
+
+        }
+
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.NewFollowMeConfig] - [%s] - Exception Occurred', reqId, ex);
+        var jsonString = messageFormatter.FormatMessage(ex, "Exception occurred", false, false);
+        logger.debug('[DVP-PBXService.NewFollowMeConfig] - [%s] - API RESPONSE : %s', reqId, jsonString);
+        res.end(jsonString);
+
+    }
+
+    return next();
+
+});
+
+server.post('/DVP/API/:version/PBXService/PBXUser/:userUuid/FollowMeMulti', authorization({resource:"pbxuser", action:"write"}), function(req, res, next)
+{
+    var reqId = nodeUuid.v1();
+    try
+    {
+        var securityToken = req.header('authorization');
+        var reqBody = req.body;
+        var userUuid = req.params.userUuid;
+
+        logger.debug('[DVP-PBXService.FollowMeMulti] - [%s] - HTTP Request Received - Req Body : ', reqId, reqBody);
+
+        var companyId = req.user.company;
+        var tenantId = req.user.tenant;
+
+        if (!companyId || !tenantId)
+        {
+            throw new Error("Invalid company or tenant");
+        }
+
+        if(reqBody && securityToken)
+        {
+            //Add new PBX User Record
+
+            pbxBackendHandler.AddFollowMeBulkDB(reqId, userUuid, companyId, tenantId, reqBody, securityToken, function (err, isSuccess)
+            {
+                if (err)
+                {
+                    var jsonString = messageFormatter.FormatMessage(err, "Add follow me config failed", false, false);
+                    logger.debug('[DVP-PBXService.NewFollowMeConfig] - [%s] - API RESPONSE : %s', reqId, jsonString);
+                    res.end(jsonString);
+                }
+                else
+                {
+                    var jsonString = messageFormatter.FormatMessage(err, "Add follow me success", isSuccess, isSuccess);
                     logger.debug('[DVP-PBXService.NewFollowMeConfig] - [%s] - API RESPONSE : %s', reqId, jsonString);
                     res.end(jsonString);
                 }

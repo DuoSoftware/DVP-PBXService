@@ -396,6 +396,104 @@ var AddPbxUserDeniedNumbersDB = function(reqId, userUuid, companyId, tenantId, n
 
 };
 
+var AddFollowMeBulkDB = function(reqId, userUuid, companyId, tenantId, followMeData, securityToken, callback)
+{
+    try
+    {
+        dbModel.PBXUser.find({where: [{UserUuid: userUuid},{CompanyId: companyId},{TenantId: tenantId}]})
+            .then(function (pbxUser)
+            {
+                if(pbxUser)
+                {
+                    logger.debug('[DVP-PBXService.AddFollowMeDB] - [%s] - Get PBX User PGSQL query success', reqId);
+
+                        //delete all records first
+
+                        dbModel.FollowMe.destroy({ where: [{PBXUserUuid: userUuid},{CompanyId: companyId},{TenantId: tenantId}]}).then(function (destroyCount)
+                        {
+                            var count = 0;
+                            var length = followMeData.length;
+
+                            for(i=0; i<length; i++)
+                            {
+                                if(followMeData[i].ObjCategory === 'USER' || followMeData[i].ObjCategory === 'GATEWAY')
+                                {
+                                    var followMeConfig = dbModel.FollowMe.build({
+
+                                        DestinationNumber: followMeData[i].DestinationNumber,
+                                        RingTimeout: followMeData[i].RingTimeout,
+                                        Priority: followMeData[i].Priority,
+                                        CompanyId: companyId,
+                                        TenantId: tenantId,
+                                        ObjClass: 'PBX',
+                                        ObjType: 'FOLLOW_ME',
+                                        ObjCategory: followMeData[i].ObjCategory,
+                                        PBXUserUuid: userUuid
+                                    });
+
+                                    followMeConfig
+                                        .save()
+                                        .then(function (fmRes)
+                                        {
+                                            count++;
+
+                                            if(count === length)
+                                            {
+                                                callback(null, true);
+                                            }
+
+
+                                        }).catch(function(err)
+                                        {
+                                            count++;
+                                            if(count === length)
+                                            {
+                                                callback(null, true);
+                                            }
+                                        })
+                                }
+                                else
+                                {
+                                    count++;
+                                    if(count === length)
+                                    {
+                                        callback(null, true);
+                                    }
+                                }
+                            }
+
+
+
+                        }).catch(function(err)
+                        {
+                            logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Insert Follow Me PGSQL query failed', reqId, err);
+                            callback(err, true);
+                        });
+
+
+
+                }
+                else
+                {
+                    logger.debug('[DVP-PBXService.AddFollowMeDB] - [%s] - Get PBX User PGSQL query success', reqId);
+                    callback(new Error('PBX User not found'), false);
+                }
+
+            }).catch(function(err)
+            {
+                logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Get PBX User PGSQL query failed', reqId, err);
+                callback(err, false);
+            });
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Exception occurred', reqId, ex);
+        callback(ex, false);
+    }
+
+};
+
 var AddFollowMeDB = function(reqId, userUuid, companyId, tenantId, followMeData, securityToken, callback)
 {
     try
@@ -1229,6 +1327,7 @@ var UnAssignTemplateFromUserDB = function(reqId, pbxUserUuid, companyId, tenantI
     }
 };
 
+
 var AssignTemplateToUserDB = function(reqId, pbxUserUuid, pbxTemplateId, companyId, tenantId, callback)
 {
     try
@@ -1321,3 +1420,4 @@ module.exports.DeleteForwardingDB = DeleteForwardingDB;
 module.exports.GetForwardingByIdDB = GetForwardingByIdDB;
 module.exports.GetForwardingByUserDB = GetForwardingByUserDB;
 module.exports.UpdatePbxUserDB = UpdatePbxUserDB;
+module.exports.AddFollowMeBulkDB = AddFollowMeBulkDB;
