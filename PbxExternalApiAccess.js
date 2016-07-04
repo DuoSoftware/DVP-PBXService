@@ -18,7 +18,7 @@ var RemoteGetSipUserDetailsForUuid = function(reqId, sipUserUuid, companyId, ten
         var sipUacServiceVersion = config.Services.sipUacServiceVersion;
         var compInfo = tenantId + ':' + companyId;
 
-        logger.debug('[DVP-PBXService.RemoteGetSipUserDetailsForUuid] - [%s] -  Trying to get Sip User Details From Api - Params - sipUserUuid : %s, compInfo : %s, token: %s', reqId, sipUserUuid, securityToken);
+        logger.debug('[DVP-PBXService.RemoteGetSipUserDetailsForUuid] - [%s] -  Trying to get Sip User Details From Api - Params - sipUserUuid : %s, compInfo : %s, token: %s', reqId, sipUserUuid, compInfo, securityToken);
 
         if(sipUacServiceHost && sipUacServiceVersion)
         {
