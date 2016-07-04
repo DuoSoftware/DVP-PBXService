@@ -33,7 +33,7 @@ var AddPbxMasterDataDB = function(reqId, pbxMasterData, companyId, tenantId, cal
                             IgnoreEarlyMedia: pbxMasterData.IgnoreEarlyMedia,
                             VoicemailEnabled: pbxMasterData.VoicemailEnabled,
                             CompanyId: companyId,
-                            TenantId: companyId,
+                            TenantId: tenantId,
                             ObjClass: "PBX",
                             ObjType: "PBXMASTERDATA",
                             ObjCategory: "DEFAULT"
@@ -987,7 +987,7 @@ var AddFeatureCodesDB = function(reqId, featureCodeProfile, companyId, tenantId,
                 {
                     logger.debug('[DVP-PBXService.AddFeatureCodesDB] - [%s] - PGSQL get feature code by company query success', reqId);
 
-                    featureCodeTemplate.updateAttributes({PickUp: featureCodeProfile.PickUp, Intercept: featureCodeProfile.Intercept, Park: featureCodeProfile.Park, VoiceMail: featureCodeProfile.Voicemail, Barge: featureCodeProfile.Barge}).then(function (rslt)
+                    featureCodeTemplate.updateAttributes({PickUp: featureCodeProfile.PickUp, Intercept: featureCodeProfile.Intercept, Park: featureCodeProfile.Park, VoiceMail: featureCodeProfile.VoiceMail, Barge: featureCodeProfile.Barge}).then(function (rslt)
                     {
                         logger.info('[DVP-PBXService.AddFeatureCodesDB] PGSQL Update pbx user with allowed numbers query success');
                         callback(undefined, true);
