@@ -13,11 +13,12 @@ var RemoteGetSipUserDetailsForUuid = function(reqId, sipUserUuid, companyId, ten
 
         securityToken = 'bearer ' + securityToken;
 
-        logger.debug('[DVP-PBXService.RemoteGetSipUserDetailsForUuid] - [%s] -  Trying to get Sip User Details From Api - Params - sipUserUuid : %s', reqId, sipUserUuid);
         var sipUacServiceHost = config.Services.sipUacServiceHost;
         var sipUacServicePort = config.Services.sipUacServicePort;
         var sipUacServiceVersion = config.Services.sipUacServiceVersion;
         var compInfo = tenantId + ':' + companyId;
+
+        logger.debug('[DVP-PBXService.RemoteGetSipUserDetailsForUuid] - [%s] -  Trying to get Sip User Details From Api - Params - sipUserUuid : %s, compInfo : %s, token: %s', reqId, sipUserUuid, securityToken);
 
         if(sipUacServiceHost && sipUacServiceVersion)
         {
