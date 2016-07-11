@@ -1875,6 +1875,7 @@ server.post('/DVP/API/:version/PBXService/PBXUser', authorization({resource:"pbx
                     {
                         if(err)
                         {
+                            console.log('fff');
                             var jsonString = messageFormatter.FormatMessage(err, "Add PBX User Failed", false, false);
                             logger.debug('[DVP-PBXService.NewPbxUser] - [%s] - API RESPONSE : %s', reqId, jsonString);
                             res.end(jsonString);
@@ -1891,6 +1892,7 @@ server.post('/DVP/API/:version/PBXService/PBXUser', authorization({resource:"pbx
                 }
                 else
                 {
+                    console.log('fff');
                     var jsonString = messageFormatter.FormatMessage(err, "Add PBX User Failed", false, false);
                     logger.debug('[DVP-PBXService.NewPbxUser] - [%s] - API RESPONSE : %s', reqId, jsonString);
                     res.end(jsonString);
