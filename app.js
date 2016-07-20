@@ -938,7 +938,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                             }
                                             else
                                             {
-                                                pbxUserConf = null;
+                                                pbxUserConf.OperationType = 'DENY';
                                             }
                                         }
                                         else
@@ -967,7 +967,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                             }
                                             else
                                             {
-                                                pbxUserConf = null;
+                                                pbxUserConf.OperationType = 'DENY';
                                             }
 
                                         }
