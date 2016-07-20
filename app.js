@@ -185,17 +185,13 @@ var RetrieveCacheData = function(companyId, tenantId, callback)
 
 };
 
-server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res, next)
+server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({resource:"pbxadmin", action:"write"}), function(req, res, next)
 {
     var pbxUserConf = {};
     var reqId = nodeUuid.v1();
     try
     {
         var reqBody = req.body;
-
-        var companyInfo = req.header('companyinfo');
-
-        var compInfo = companyInfo.split(":");
 
         var ani = reqBody.ANI;
         var dnis = reqBody.DNIS;
@@ -206,8 +202,14 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
         var fromUserUuid = '';
         var opType = undefined;
         var extExtraData = undefined;
-        var companyId = null;
-        var tenantId = null;
+
+        var companyId = req.user.company;
+        var tenantId = req.user.tenant;
+
+        if (!companyId || !tenantId)
+        {
+            throw new Error("Invalid company or tenant");
+        }
 
         if (extraData)
         {
@@ -215,14 +217,6 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
             fromUserUuid = extraData['FromUserUuid'];
             opType = extraData['OperationType'];
             extExtraData = extraData['ExtExtraData'];
-            companyId = extraData['CompanyId'];
-            tenantId = extraData['TenantId'];
-        }
-
-        if (compInfo && compInfo.length == 2)
-        {
-            tenantId = compInfo[0];
-            companyId = compInfo[1];
         }
 
 
