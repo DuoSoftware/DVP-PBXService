@@ -15,6 +15,7 @@ var jwt = require('restify-jwt');
 var secret = require('dvp-common/Authentication/Secret.js');
 var authorization = require('dvp-common/Authentication/Authorization.js');
 var redisHandler = require('./RedisHandler.js');
+var scheduleHandler = require('dvp-common/ScheduleValidator/ScheduleHandler.js');
 
 var useCache = config.UseCache;
 
@@ -235,7 +236,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                 {
                     pbxUserConf = null;
                     var jsonResponse = JSON.stringify(pbxUserConf);
-                    logger.debug('DVP-PBXServic+++++--e.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
+                    logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                     res.end(jsonResponse);
                 }
                 else
@@ -247,6 +248,41 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                         var advancedMethod = pbxDetails.AdvancedRouteMethod;
                         var voicemailEnabled = ValidateVoicemailStatus(masterData, pbxDetails.VoicemailEnabled);
                         var bypassMedia = pbxDetails.BypassMedia;
+
+                        if(pbxDetails.Schedule)
+                        {
+                            var pickedAppointment = scheduleHandler.CheckScheduleValidity(pbxDetails.Schedule);
+
+                            if(pickedAppointment && pickedAppointment.Action)
+                            {
+                                if(pickedAppointment.Action === 'DND')
+                                {
+                                    usrStatus = 'DND';
+                                    advancedMethod = 'NONE'
+                                }
+                                else if(pickedAppointment.Action === 'CALL_DIVERT')
+                                {
+                                    usrStatus = 'CALL_DIVERT';
+                                    advancedMethod = 'NONE'
+                                }
+                                else if(pickedAppointment.Action === 'AVAILABLE')
+                                {
+                                    usrStatus = 'AVAILABLE';
+                                    advancedMethod = 'NONE'
+                                }
+                                else if(pickedAppointment.Action === 'FOLLOW_ME')
+                                {
+                                    usrStatus = 'AVAILABLE';
+                                    advancedMethod = 'FOLLOW_ME'
+                                }
+                                else if(pickedAppointment.Action === 'FORWARD')
+                                {
+                                    usrStatus = 'AVAILABLE';
+                                    advancedMethod = 'FORWARD'
+                                }
+                            }
+
+                        }
 
                         if (pbxDetails.PersonalGreetingEnabled && pbxDetails.TimeZone)
                         {
@@ -518,6 +554,42 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', function(req, res,
                             var advancedMethod = pbxDetails.AdvancedRouteMethod;
                             var voicemailEnabled = ValidateVoicemailStatus(masterData, pbxDetails.VoicemailEnabled);
                             var bypassMedia = pbxDetails.BypassMedia;
+
+                            if(pbxDetails.Schedule)
+                            {
+                                var pickedAppointment = scheduleHandler.CheckScheduleValidity(pbxDetails.Schedule);
+
+                                if(pickedAppointment && pickedAppointment.Action)
+                                {
+
+                                    if(pickedAppointment.Action === 'DND')
+                                    {
+                                        usrStatus = 'DND';
+                                        advancedMethod = 'NONE'
+                                    }
+                                    else if(pickedAppointment.Action === 'CALL_DIVERT')
+                                    {
+                                        usrStatus = 'CALL_DIVERT';
+                                        advancedMethod = 'NONE'
+                                    }
+                                    else if(pickedAppointment.Action === 'AVAILABLE')
+                                    {
+                                        usrStatus = 'AVAILABLE';
+                                        advancedMethod = 'NONE'
+                                    }
+                                    else if(pickedAppointment.Action === 'FOLLOW_ME')
+                                    {
+                                        usrStatus = 'AVAILABLE';
+                                        advancedMethod = 'FOLLOW_ME'
+                                    }
+                                    else if(pickedAppointment.Action === 'FORWARD')
+                                    {
+                                        usrStatus = 'AVAILABLE';
+                                        advancedMethod = 'FORWARD'
+                                    }
+                                }
+
+                            }
 
                             if (pbxDetails.PersonalGreetingEnabled)
                             {
@@ -1875,7 +1947,6 @@ server.post('/DVP/API/:version/PBXService/PBXUser', authorization({resource:"pbx
                     {
                         if(err)
                         {
-                            console.log('fff');
                             var jsonString = messageFormatter.FormatMessage(err, "Add PBX User Failed", false, false);
                             logger.debug('[DVP-PBXService.NewPbxUser] - [%s] - API RESPONSE : %s', reqId, jsonString);
                             res.end(jsonString);

@@ -1221,10 +1221,23 @@ var GetAllPbxUserDetailsByIdDB = function(reqId, pbxUserUuid, companyId, tenantI
         dbModel.PBXUser.find({where: [{UserUuid: pbxUserUuid},{CompanyId: companyId},{TenantId: tenantId}], include:[{model: dbModel.PBXUserTemplate, as:'PBXUserTemplateActive'},{model: dbModel.Forwarding, as:'Forwarding'}]})
             .then(function (pbxUserDetails)
             {
-                logger.debug('[DVP-PBXService.GetAllPbxUserDetailsByIdDB] - [%s] - PGSQL get all pbx user details by uuid query success', reqId);
+                if(pbxUserDetails && pbxUserDetails.UseSchedule &&  pbxUserDetails.ScheduleId)
+                {
+                    dbModel.Schedule.find({where: [{id: scheduleId},{CompanyId: companyId},{TenantId: tenantId}], include: [{model: dbModel.Appointment, as: 'Appointment'}]})
+                        .then(function (schedule)
+                        {
+                            pbxUserDetails.Schedule = schedule;
+                            callback(undefined, pbxUserDetails);
+                        }).catch(function(err)
+                        {
+                            callback(undefined, pbxUserDetails);
+                        });
+                }
+                else
+                {
+                    callback(undefined, pbxUserDetails);
+                }
 
-
-                callback(undefined, pbxUserDetails);
 
             }).catch(function(err)
             {
