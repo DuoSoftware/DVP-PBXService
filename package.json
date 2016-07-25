@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/DuoSoftware/DVP-PBXService#readme",
   "dependencies": {
+    "async": "^2.0.0",
     "config": "^1.14.0",
     "dvp-common": "^0.1.4",
     "dvp-dbmodels": "^0.2.9",

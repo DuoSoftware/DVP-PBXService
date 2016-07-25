@@ -1,3 +1,4 @@
+'use strict'
 
 //development
 var restify = require('restify');
@@ -5,6 +6,7 @@ var nodeUuid = require('node-uuid');
 var messageFormatter = require('dvp-common/CommonMessageGenerator/ClientMessageJsonFormatter.js');
 var logger = require('dvp-common/LogHandler/CommonLogHandler.js').logger;
 var config = require('config');
+var async = require('async');
 var pbxBackendHandler;
 var dbModel = require('dvp-dbmodels');
 var extApi = require('./PbxExternalApiAccess.js');
@@ -149,6 +151,124 @@ var FeatureCodeHandler = function(reqId, dnis, companyId, tenantId, callback)
     }
 };
 
+var pbxStateShortCodeHandler = function(reqId, dnis, fromUserUuid, companyId, tenantId, callback)
+{
+    try
+    {
+        var firstCharacter = dnis.charAt(0);
+
+        if(firstCharacter === '*')
+        {
+            //process feature codes
+            var splitArr = dnis.split('*');
+
+            if(splitArr.length > 1)
+            {
+                var code = splitArr[1];
+
+                var updateObj = {};
+                var setTemplate = false;
+
+                switch(code)
+                {
+                    case '100':
+                        //DND
+                        updateObj.UserStatus = 'DND';
+                        updateObj.AdvancedRouteMethod = 'NONE';
+                        break;
+                    case '101':
+                        //AVAILABLE
+                        updateObj.UserStatus = 'AVAILABLE';
+                        updateObj.AdvancedRouteMethod = 'NONE';
+                        break;
+                    case '102':
+                        //CALL-DIVERT
+                        updateObj.UserStatus = 'CALL_DIVERT';
+                        updateObj.AdvancedRouteMethod = 'NONE';
+
+                        if(splitArr.length === 3)
+                        {
+                            setTemplate = true;
+                        }
+                        break;
+                    case '103':
+                        //FOLLOW_ME
+                        updateObj.UserStatus = 'AVAILABLE';
+                        updateObj.AdvancedRouteMethod = 'FOLLOW_ME';
+                        break;
+                    case '104':
+                        //FORWARDING
+                        updateObj.UserStatus = 'AVAILABLE';
+                        updateObj.AdvancedRouteMethod = 'FORWARD';
+                        break;
+                }
+
+
+                var getTemplateFunction = function(reqId, fromUserUuid, callback)
+                {
+                    if(setTemplate)
+                    {
+                        pbxBackendHandler.GetPbxUserTemplateByNumberDB(reqId, fromUserUuid, splitArr[2], companyId, tenantId, function(err, templ)
+                        {
+                            callback(err, templ);
+                        })
+                    }
+                    else
+                    {
+                        callback(null, null);
+                    }
+
+
+                };
+
+                var updateUserStatusFunction = function(templ, callback)
+                {
+                    if(templ)
+                    {
+                        updateObj.ActiveTemplate = templ.id;
+                    }
+
+                    pbxBackendHandler.UpdatePbxUserDB(reqId, fromUserUuid, updateObj, companyId, tenantId, function(err, updateResult)
+                    {
+                        callback(err, updateResult);
+                    });
+                }
+
+                async.waterfall([
+                    getTemplateFunction,
+                    updateUserStatusFunction,
+                ], function (err, result)
+                {
+                    if(err)
+                    {
+                        callback(err, false);
+                    }
+                    else
+                    {
+                        callback(null, true);
+                    }
+
+                });
+
+
+            }
+            else
+            {
+                callback(new Error('Invalid operation'), false);
+            }
+
+        }
+        else
+        {
+            callback(null, false);
+        }
+    }
+    catch(ex)
+    {
+        callback(ex, false);
+    }
+};
+
 var ValidateVoicemailStatus = function(companyMasterData, userVoicemailStatus)
 {
     if(companyMasterData)
@@ -192,6 +312,8 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
     try
     {
         var reqBody = req.body;
+
+        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - REQUEST RECEIVED : %s', reqId, reqBody);
 
         var ani = reqBody.ANI;
         var dnis = reqBody.DNIS;
@@ -893,106 +1015,127 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                 }
                 else
                 {
-                    FeatureCodeHandler(reqId, dnis, companyId, tenantId, function (err, feature, number)
+                    pbxStateShortCodeHandler(reqId, dnis, fromUserUuid, companyId, tenantId, function(err, scRes)
                     {
-                        if (feature)
+                        if(scRes)
                         {
-                            pbxUserConf.OperationType = feature;
-                            pbxUserConf.ExtraData = number;
+                            var xml = xmlBuilder.createPBXStateChangeDialplan(reqId, context, '[^\\s]*', companyId, tenantId, 'outbound');
+
+                            pbxUserConf.OperationType = 'DIALPLAN';
+                            pbxUserConf.Dialplan = xml;
 
                             var jsonResponse = JSON.stringify(pbxUserConf);
                             logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                             res.end(jsonResponse);
+
                         }
                         else
                         {
-                            if (fromUserUuid)
+                            FeatureCodeHandler(reqId, dnis, companyId, tenantId, function (err, feature, number)
                             {
-                                pbxBackendHandler.GetPbxUserByIdDB(reqId, fromUserUuid, companyId, tenantId, false, function (err, fromPbxUser)
+                                if (feature)
                                 {
-                                    if (fromPbxUser)
-                                    {
-                                        pbxUserConf.AllowIDD = fromPbxUser.AllowIDD;
-                                        if (!fromPbxUser.AllowOutbound)
-                                        {
-                                            var outNumArr = fromPbxUser.AllowedNumbers;
-
-                                            var outNum = underscore.find(outNumArr, function (num)
-                                            {
-                                                return num == dnis;
-                                            });
-
-                                            if (outNum)
-                                            {
-                                                var endp =
-                                                {
-                                                    DestinationNumber: outNum,
-                                                    ObjCategory: 'GATEWAY'
-                                                };
-
-                                                pbxUserConf.OperationType = 'GATEWAY';
-                                                pbxUserConf.Endpoints = endp;
-                                                pbxUserConf.UserRefId = userUuid;
-                                                pbxUserConf.VoicemailEnabled = false;
-                                                pbxUserConf.BypassMedia = false;
-                                            }
-                                            else
-                                            {
-                                                pbxUserConf.OperationType = 'DENY';
-                                            }
-                                        }
-                                        else
-                                        {
-
-                                            var outNumArr = fromPbxUser.DeniedNumbers;
-
-                                            var outNum = underscore.find(outNumArr, function (num)
-                                            {
-                                                return num == dnis;
-                                            });
-
-                                            if (!outNum)
-                                            {
-                                                var endp =
-                                                {
-                                                    DestinationNumber: dnis,
-                                                    ObjCategory: 'GATEWAY'
-                                                };
-
-                                                pbxUserConf.OperationType = 'GATEWAY';
-                                                pbxUserConf.Endpoints = endp;
-                                                pbxUserConf.UserRefId = userUuid;
-                                                pbxUserConf.VoicemailEnabled = false;
-                                                pbxUserConf.BypassMedia = false;
-                                            }
-                                            else
-                                            {
-                                                pbxUserConf.OperationType = 'DENY';
-                                            }
-
-                                        }
-
-                                    }
-                                    else
-                                    {
-                                        pbxUserConf = null;
-                                    }
+                                    pbxUserConf.OperationType = feature;
+                                    pbxUserConf.ExtraData = number;
 
                                     var jsonResponse = JSON.stringify(pbxUserConf);
                                     logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
                                     res.end(jsonResponse);
+                                }
+                                else
+                                {
+                                    if (fromUserUuid)
+                                    {
+                                        pbxBackendHandler.GetPbxUserByIdDB(reqId, fromUserUuid, companyId, tenantId, false, function (err, fromPbxUser)
+                                        {
+                                            if (fromPbxUser)
+                                            {
+                                                pbxUserConf.AllowIDD = fromPbxUser.AllowIDD;
+                                                if (!fromPbxUser.AllowOutbound)
+                                                {
+                                                    var outNumArr = fromPbxUser.AllowedNumbers;
 
-                                })
-                            }
-                            else
-                            {
-                                pbxUserConf = null;
-                                var jsonResponse = JSON.stringify(pbxUserConf);
-                                logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
-                                res.end(jsonResponse);
-                            }
+                                                    var outNum = underscore.find(outNumArr, function (num)
+                                                    {
+                                                        return num == dnis;
+                                                    });
+
+                                                    if (outNum)
+                                                    {
+                                                        var endp =
+                                                        {
+                                                            DestinationNumber: outNum,
+                                                            ObjCategory: 'GATEWAY'
+                                                        };
+
+                                                        pbxUserConf.OperationType = 'GATEWAY';
+                                                        pbxUserConf.Endpoints = endp;
+                                                        pbxUserConf.UserRefId = userUuid;
+                                                        pbxUserConf.VoicemailEnabled = false;
+                                                        pbxUserConf.BypassMedia = false;
+                                                    }
+                                                    else
+                                                    {
+                                                        pbxUserConf.OperationType = 'DENY';
+                                                    }
+                                                }
+                                                else
+                                                {
+
+                                                    var outNumArr = fromPbxUser.DeniedNumbers;
+
+                                                    var outNum = underscore.find(outNumArr, function (num)
+                                                    {
+                                                        return num == dnis;
+                                                    });
+
+                                                    if (!outNum)
+                                                    {
+                                                        var endp =
+                                                        {
+                                                            DestinationNumber: dnis,
+                                                            ObjCategory: 'GATEWAY'
+                                                        };
+
+                                                        pbxUserConf.OperationType = 'GATEWAY';
+                                                        pbxUserConf.Endpoints = endp;
+                                                        pbxUserConf.UserRefId = userUuid;
+                                                        pbxUserConf.VoicemailEnabled = false;
+                                                        pbxUserConf.BypassMedia = false;
+                                                    }
+                                                    else
+                                                    {
+                                                        pbxUserConf.OperationType = 'DENY';
+                                                    }
+
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                pbxUserConf = null;
+                                            }
+
+                                            var jsonResponse = JSON.stringify(pbxUserConf);
+                                            logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
+                                            res.end(jsonResponse);
+
+                                        })
+                                    }
+                                    else
+                                    {
+                                        pbxUserConf = null;
+                                        var jsonResponse = JSON.stringify(pbxUserConf);
+                                        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - API RESPONSE : %s', reqId, jsonResponse);
+                                        res.end(jsonResponse);
+                                    }
+                                }
+                            });
                         }
+
                     });
+
+
                 }
             }
         }

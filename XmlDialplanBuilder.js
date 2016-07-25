@@ -25,6 +25,68 @@ var createNotFoundResponse = function()
 
 };
 
+var createPBXStateChangeDialplan = function(reqId, context, destinationPattern, companyId, tenantId, dvpCallDirection)
+{
+    try
+    {
+        if (!destinationPattern)
+        {
+            destinationPattern = "";
+        }
+
+        if (!context)
+        {
+            context = "";
+        }
+
+        var doc = xmlBuilder.create('document');
+
+        var cond = doc.att('type', 'freeswitch/xml')
+            .ele('section').att('name', 'dialplan').att('description', 'RE Dial Plan For FreeSwitch')
+            .ele('context').att('name', context)
+            .ele('extension').att('name', 'test')
+            .ele('condition').att('field', 'destination_number').att('expression', destinationPattern)
+
+
+        cond.ele('action').att('application', 'set').att('data', 'DVP_ADVANCED_OP_ACTION=PABX_STATUS_CHANGE')
+            .up()
+
+        if(companyId)
+        {
+            cond.ele('action').att('application', 'set').att('data', 'companyid=' + companyId)
+                .up()
+        }
+        if(tenantId)
+        {
+            cond.ele('action').att('application', 'set').att('data', 'tenantid=' + tenantId)
+                .up()
+        }
+
+        if(dvpCallDirection)
+        {
+            cond.ele('action').att('application', 'set').att('data', 'DVP_CALL_DIRECTION=' + dvpCallDirection)
+                .up()
+        }
+
+        cond.ele('action').att('application', 'speak').att('data', 'flite|kal|FreeSWITCH is awesome')
+            .up()
+            .ele('action').att('application', 'hangup')
+            .up()
+
+        cond.end({pretty: true});
+
+
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n" + doc.toString({pretty: true});
+
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.createPBXStateChangeDialplan] - [%s] - Exception occurred creating xml', reqId, ex);
+        return createNotFoundResponse();
+    }
+
+};
+
 var CreateVoicePortalDialplan = function(reqId, pbxUserInfo, context, destinationPattern, ignoreEarlyMedia, luaFile)
 {
     try
@@ -168,3 +230,4 @@ var CreateVoicePortalDialplan = function(reqId, pbxUserInfo, context, destinatio
 
 module.exports.createNotFoundResponse = createNotFoundResponse;
 module.exports.CreateVoicePortalDialplan = CreateVoicePortalDialplan;
+module.exports.createPBXStateChangeDialplan = createPBXStateChangeDialplan;

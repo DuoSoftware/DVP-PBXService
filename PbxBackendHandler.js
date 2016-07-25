@@ -1278,6 +1278,28 @@ var GetPbxUserTemplateByIdDB = function(reqId, templateId, companyId, tenantId, 
 
 };
 
+var GetPbxUserTemplateByNumberDB = function(reqId, userUuid, divertNum, companyId, tenantId, callback)
+{
+    try
+    {
+        dbModel.PBXUserTemplate.find({where: [{CallDivertNumber: divertNum},{PBXUserUuid: userUuid},{CompanyId: companyId},{TenantId: tenantId}]})
+            .then(function (pbxUserTempl)
+            {
+                callback(undefined, pbxUserTempl);
+
+            }).catch(function(err)
+            {
+                callback(err, undefined);
+            });
+    }
+    catch(ex)
+    {
+        logger.error('[DVP-PBXService.GetPbxUserTemplateByNumberDB] - [%s] - Exception occurred', reqId, ex);
+        callback(ex, undefined);
+    }
+
+};
+
 var GetPbxMasterData = function(reqId, companyId, tenantId, callback)
 {
     try
@@ -1339,6 +1361,7 @@ var UnAssignTemplateFromUserDB = function(reqId, pbxUserUuid, companyId, tenantI
         callback(ex, false);
     }
 };
+
 
 
 var AssignTemplateToUserDB = function(reqId, pbxUserUuid, pbxTemplateId, companyId, tenantId, callback)
@@ -1434,3 +1457,4 @@ module.exports.GetForwardingByIdDB = GetForwardingByIdDB;
 module.exports.GetForwardingByUserDB = GetForwardingByUserDB;
 module.exports.UpdatePbxUserDB = UpdatePbxUserDB;
 module.exports.AddFollowMeBulkDB = AddFollowMeBulkDB;
+module.exports.GetPbxUserTemplateByNumberDB = GetPbxUserTemplateByNumberDB;
