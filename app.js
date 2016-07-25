@@ -204,7 +204,7 @@ var pbxStateShortCodeHandler = function(reqId, dnis, fromUserUuid, companyId, te
                 }
 
 
-                var getTemplateFunction = function(reqId, fromUserUuid, callback)
+                var getTemplateFunction = function(callback)
                 {
                     if(setTemplate)
                     {
