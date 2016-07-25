@@ -313,7 +313,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
     {
         var reqBody = req.body;
 
-        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - REQUEST RECEIVED : %s', reqId, reqBody);
+        logger.debug('DVP-PBXService.GeneratePBXConfig] - [%s] - REQUEST RECEIVED : %s', reqId, JSON.stringify(reqBody));
 
         var ani = reqBody.ANI;
         var dnis = reqBody.DNIS;
