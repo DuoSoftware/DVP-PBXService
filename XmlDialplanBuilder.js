@@ -68,7 +68,7 @@ var createPBXStateChangeDialplan = function(reqId, context, destinationPattern, 
                 .up()
         }
 
-        cond.ele('action').att('application', 'speak').att('data', 'flite|kal|pawan gona')
+        cond.ele('action').att('application', 'speak').att('data', 'flite|kal|your configuration saved successfully')
             .up()
             .ele('action').att('application', 'hangup')
             .up()
