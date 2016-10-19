@@ -34,7 +34,8 @@ module.exports = {
     {
         "IpAddress": "SYS_REDIS_HOST",
         "Port": "SYS_REDIS_PORT",
-        "Password": "SYS_REDIS_PASSWORD"
+        "Password": "SYS_REDIS_PASSWORD",
+        "db": "SYS_REDIS_DB_CONFIG"
     },
 
     "Security":
