@@ -7,7 +7,6 @@ var messageFormatter = require('dvp-common/CommonMessageGenerator/ClientMessageJ
 var logger = require('dvp-common/LogHandler/CommonLogHandler.js').logger;
 var config = require('config');
 var async = require('async');
-var pbxBackendHandler;
 var dbModel = require('dvp-dbmodels');
 var extApi = require('./PbxExternalApiAccess.js');
 var underscore = require('underscore');
@@ -18,17 +17,11 @@ var secret = require('dvp-common/Authentication/Secret.js');
 var authorization = require('dvp-common/Authentication/Authorization.js');
 var redisHandler = require('./RedisHandler.js');
 var scheduleHandler = require('dvp-common/ScheduleValidator/ScheduleHandler.js');
+var backendFactory = require('./BackendFactory.js');
 
 var useCache = config.UseCache;
 
-if(useCache)
-{
-    pbxBackendHandler = require('./PbxCacheObjHandler.js');
-}
-else
-{
-    pbxBackendHandler = require('./PbxBackendHandler.js');
-}
+var pbxBackendHandler = require('./PbxBackendHandler.js');
 
 var hostIp = config.Host.Ip;
 var hostPort = config.Host.Port;
@@ -59,7 +52,7 @@ var FeatureCodeHandler = function(reqId, dnis, companyId, tenantId, callback)
             //process feature codes
             var splitArr = dnis.split('*', 2);
 
-            pbxBackendHandler.GetFeatureCodesForCompanyDB(reqId, companyId, tenantId, false, function(err, fc)
+            backendFactory.getBackendHandler().GetFeatureCodesForCompanyDB(reqId, companyId, tenantId, false, function(err, fc)
             {
                 if(fc)
                 {
@@ -208,7 +201,7 @@ var pbxStateShortCodeHandler = function(reqId, dnis, fromUserUuid, companyId, te
                 {
                     if(setTemplate)
                     {
-                        pbxBackendHandler.GetPbxUserTemplateByNumberDB(reqId, fromUserUuid, splitArr[2], companyId, tenantId, function(err, templ)
+                        backendFactory.getBackendHandler().GetPbxUserTemplateByNumberDB(reqId, fromUserUuid, splitArr[2], companyId, tenantId, function(err, templ)
                         {
                             callback(err, templ);
                         })
@@ -346,7 +339,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
         {
             //try getting user for did
 
-            pbxBackendHandler.GetAllPbxUserDetailsByIdDB(reqId, userUuid, companyId, tenantId, function (err, pbxDetails)
+            backendFactory.getBackendHandler().GetAllPbxUserDetailsByIdDB(reqId, userUuid, companyId, tenantId, function (err, pbxDetails)
             {
                 if (err || !pbxDetails)
                 {
@@ -358,7 +351,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                 else
                 {
 
-                    pbxBackendHandler.GetPbxMasterData(reqId, companyId, tenantId, function (err, masterData)
+                    backendFactory.getBackendHandler().GetPbxMasterData(reqId, companyId, tenantId, function (err, masterData)
                     {
                         var usrStatus = pbxDetails.UserStatus;
                         var advancedMethod = pbxDetails.AdvancedRouteMethod;
@@ -434,7 +427,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
 
                             if (advancedMethod === 'FOLLOW_ME')
                             {
-                                pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, pbxDetails, false, function (err, fmList)
+                                backendFactory.getBackendHandler().GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, pbxDetails, false, function (err, fmList)
                                 {
                                     if (err)
                                     {
@@ -481,7 +474,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                             }
                             else if (advancedMethod === 'FORWARD')
                             {
-                                pbxBackendHandler.GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, pbxDetails, false, function (err, fwdList)
+                                backendFactory.getBackendHandler().GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, pbxDetails, false, function (err, fwdList)
                                 {
                                     if (err)
                                     {
@@ -579,7 +572,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                 if (pbxDetails.PBXUserTemplateActive.ObjCategory === 'PBXUSER' && pbxDetails.PBXUserTemplateActive.CallDivertUser)
                                 {
 
-                                    pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.PBXUserTemplateActive.CallDivertUser, companyId, tenantId, false, function (err, pbxUserObjDivert)
+                                    backendFactory.getBackendHandler().GetPbxUserByIdDB(reqId, pbxDetails.PBXUserTemplateActive.CallDivertUser, companyId, tenantId, false, function (err, pbxUserObjDivert)
                                     {
                                         if (err)
                                         {
@@ -650,7 +643,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
         {
             if (userUuid)
             {
-                pbxBackendHandler.GetAllPbxUserDetailsByIdDB(reqId, userUuid, companyId, tenantId, function (err, pbxDetails)
+                backendFactory.getBackendHandler().GetAllPbxUserDetailsByIdDB(reqId, userUuid, companyId, tenantId, function (err, pbxDetails)
                 {
                     if (err || !pbxDetails)
                     {
@@ -664,7 +657,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                     }
                     else
                     {
-                        pbxBackendHandler.GetPbxMasterData(reqId, companyId, tenantId, function (err, masterData)
+                        backendFactory.getBackendHandler().GetPbxMasterData(reqId, companyId, tenantId, function (err, masterData)
                         {
                             var usrStatus = pbxDetails.UserStatus;
                             var advancedMethod = pbxDetails.AdvancedRouteMethod;
@@ -741,7 +734,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
 
                                 if (advancedMethod === 'FOLLOW_ME')
                                 {
-                                    pbxBackendHandler.GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, pbxDetails, false, function (err, fmList)
+                                    backendFactory.getBackendHandler().GetFollowMeByUserDB(reqId, userUuid, companyId, tenantId, pbxDetails, false, function (err, fmList)
                                     {
                                         if (err)
                                         {
@@ -789,7 +782,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                 }
                                 else if (advancedMethod === 'FORWARD')
                                 {
-                                    pbxBackendHandler.GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, pbxDetails, false, function (err, fwdList)
+                                    backendFactory.getBackendHandler().GetForwardingByUserDB(reqId, userUuid, companyId, tenantId, pbxDetails, false, function (err, fwdList)
                                     {
                                         if (err)
                                         {
@@ -902,7 +895,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                     if (pbxDetails.PBXUserTemplateActive.ObjCategory === 'PBXUSER' && pbxDetails.PBXUserTemplateActive.DestinationUser)
                                     {
 
-                                        pbxBackendHandler.GetPbxUserByIdDB(reqId, pbxDetails.PBXUserTemplateActive.CallDivertUser, companyId, tenantId, false, function (err, pbxUserObjDivert)
+                                        backendFactory.getBackendHandler().GetPbxUserByIdDB(reqId, pbxDetails.PBXUserTemplateActive.CallDivertUser, companyId, tenantId, false, function (err, pbxUserObjDivert)
                                         {
                                             if (err)
                                             {
@@ -975,7 +968,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                     //
                     if (fromUserUuid)
                     {
-                        pbxBackendHandler.GetAllPbxUserDetailsByIdDB(reqId, fromUserUuid, companyId, tenantId, function (err, fromUsrDetails)
+                        backendFactory.getBackendHandler().GetAllPbxUserDetailsByIdDB(reqId, fromUserUuid, companyId, tenantId, function (err, fromUsrDetails)
                         {
                             if (err)
                             {
@@ -1046,7 +1039,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                 {
                                     if (fromUserUuid)
                                     {
-                                        pbxBackendHandler.GetPbxUserByIdDB(reqId, fromUserUuid, companyId, tenantId, false, function (err, fromPbxUser)
+                                        backendFactory.getBackendHandler().GetPbxUserByIdDB(reqId, fromUserUuid, companyId, tenantId, false, function (err, fromPbxUser)
                                         {
                                             if (fromPbxUser)
                                             {

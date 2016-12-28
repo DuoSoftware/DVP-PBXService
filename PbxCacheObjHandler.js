@@ -1177,7 +1177,23 @@ var GetAllPbxUserDetailsByIdDB = function(reqId, pbxUserUuid, companyId, tenantI
     {
         redisHandler.GetObject(null, 'PBXUSER:' + tenantId + ':' + companyId + ':' + pbxUserUuid, function(err, userData)
         {
-            callback(err, userData);
+
+            if(userData && userData.UseSchedule && userData.ScheduleId)
+            {
+                redisHandler.GetObject(null, 'SCHEDULE:' + tenantId + ':' + companyId + ':' + userData.ScheduleId, function(err, scheduleObj)
+                {
+                    userData.Schedule = scheduleObj;
+
+                    callback(undefined, userData);
+
+                });
+
+            }
+            else
+            {
+                callback(undefined, userData);
+            }
+
         });
 
     }
