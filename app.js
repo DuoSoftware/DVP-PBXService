@@ -162,6 +162,8 @@ var pbxStateShortCodeHandler = function(reqId, dnis, fromUserUuid, companyId, te
                 var updateObj = {};
                 var setTemplate = false;
 
+                var breakOp = false;
+
                 switch(code)
                 {
                     case '100':
@@ -194,6 +196,8 @@ var pbxStateShortCodeHandler = function(reqId, dnis, fromUserUuid, companyId, te
                         updateObj.UserStatus = 'AVAILABLE';
                         updateObj.AdvancedRouteMethod = 'FORWARD';
                         break;
+                    default:
+                        breakOp = true;
                 }
 
 
@@ -227,21 +231,30 @@ var pbxStateShortCodeHandler = function(reqId, dnis, fromUserUuid, companyId, te
                     });
                 }
 
-                async.waterfall([
-                    getTemplateFunction,
-                    updateUserStatusFunction,
-                ], function (err, result)
+                if(breakOp)
                 {
-                    if(err)
+                    callback(null, false);
+                }
+                else
+                {
+                    async.waterfall([
+                        getTemplateFunction,
+                        updateUserStatusFunction,
+                    ], function (err, result)
                     {
-                        callback(err, false);
-                    }
-                    else
-                    {
-                        callback(null, true);
-                    }
+                        if(err)
+                        {
+                            callback(err, false);
+                        }
+                        else
+                        {
+                            callback(null, true);
+                        }
 
-                });
+                    });
+                }
+
+
 
 
             }
