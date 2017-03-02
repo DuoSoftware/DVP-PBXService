@@ -1,6 +1,7 @@
 var dbModel = require('dvp-dbmodels');
 var logger = require('dvp-common/LogHandler/CommonLogHandler.js').logger;
 var externAccessor = require('./PbxExternalApiAccess.js');
+var redisCacheHandler = require('dvp-common/CSConfigRedisCaching/RedisHandler.js');
 
 var AddPbxMasterDataDB = function(reqId, pbxMasterData, companyId, tenantId, callback)
 {
@@ -15,6 +16,7 @@ var AddPbxMasterDataDB = function(reqId, pbxMasterData, companyId, tenantId, cal
                             //allow update
                             pbxMData.updateAttributes({BypassMedia: pbxMasterData.BypassMedia, IgnoreEarlyMedia: pbxMasterData.IgnoreEarlyMedia, VoicemailEnabled: pbxMasterData.VoicemailEnabled}).then(function (rslt)
                             {
+                                redisCacheHandler.addPBXCompDataToCache(rslt, companyId, tenantId);
                                 logger.info('[DVP-PBXService.AddPbxMasterData] PGSQL Update call rule with trunk number query success');
                                 callback(undefined, true);
 
@@ -42,6 +44,7 @@ var AddPbxMasterDataDB = function(reqId, pbxMasterData, companyId, tenantId, cal
                             .save()
                             .then(function (rslt)
                             {
+                                redisCacheHandler.addPBXCompDataToCache(rslt, companyId, tenantId);
                                 logger.debug('[DVP-PBXService.AddPbxMasterData] - [%s] - PGSQL query success', reqId);
                                 callback(undefined, true);
 
@@ -78,6 +81,7 @@ var SetDayPersonalGreetingDB = function(reqId, userUuid, greetingFile, companyId
                 {
                     pbxUser.updateAttributes({DayGreetingFile: greetingFile}).then(function (resp)
                     {
+                        redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                         logger.info('[DVP-PBXService.SetDayPersonalGreetingDB] PGSQL Update pbx user with day greeting query success');
                         callback(undefined, true);
 
@@ -118,6 +122,7 @@ var SetNightPersonalGreetingDB = function(reqId, userUuid, greetingFile, company
                 {
                     pbxUser.updateAttributes({NightGreetingFile: greetingFile}).then(function (reslt)
                     {
+                        redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                         logger.info('[DVP-PBXService.SetNightPersonalGreetingDB] PGSQL Update pbx user with night greeting query success');
                         callback(undefined, true);
 
@@ -158,6 +163,7 @@ var EnablePersonalGreetingDB = function(reqId, userUuid, isEnabled, companyId, t
                 {
                     pbxUser.updateAttributes({PersonalGreetingEnabled: isEnabled}).then(function (rsp)
                     {
+                        redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                         logger.info('[DVP-PBXService.EnablePersonalGreetingDB] PGSQL Update pbx user with enable greeting query success');
                         callback(undefined, true);
 
@@ -211,6 +217,7 @@ var RemovePbxUserAllowedNumberDB = function(reqId, userUuid, companyId, tenantId
 
                         pbxUser.updateAttributes({AllowedNumbers: JSON.stringify(allowedNumberArr)}).then(function (rsp)
                         {
+                            redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                             logger.info('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query success');
                             callback(undefined, true);
 
@@ -268,6 +275,7 @@ var RemovePbxUserDeniedNumberDB = function(reqId, userUuid, companyId, tenantId,
 
                         pbxUser.updateAttributes({DeniedNumbers: JSON.stringify(deniedNumberArr)}).then(function (rsp)
                         {
+                            redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                             callback(undefined, true);
 
                         }).catch(function(err)
@@ -321,6 +329,7 @@ var AddPbxUserAllowedNumbersDB = function(reqId, userUuid, companyId, tenantId, 
 
                     pbxUser.updateAttributes({AllowedNumbers: JSON.stringify(allowedNumberArr)}).then(function (rsp)
                     {
+                        redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                         logger.info('[DVP-PBXService.AddPbxUserAllowedNumbersDB] PGSQL Update pbx user with allowed numbers query success');
                         callback(undefined, true);
 
@@ -369,6 +378,7 @@ var AddPbxUserDeniedNumbersDB = function(reqId, userUuid, companyId, tenantId, n
 
                     pbxUser.updateAttributes({DeniedNumbers: JSON.stringify(deniedNumberArr)}).then(function (rsp)
                     {
+                        redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                         callback(undefined, true);
 
                     }).catch(function(err)
@@ -439,6 +449,7 @@ var AddFollowMeBulkDB = function(reqId, userUuid, companyId, tenantId, followMeD
 
                                             if(count === length)
                                             {
+                                                redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                                                 callback(null, true);
                                             }
 
@@ -448,6 +459,7 @@ var AddFollowMeBulkDB = function(reqId, userUuid, companyId, tenantId, followMeD
                                             count++;
                                             if(count === length)
                                             {
+                                                redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                                                 callback(null, true);
                                             }
                                         })
@@ -457,6 +469,7 @@ var AddFollowMeBulkDB = function(reqId, userUuid, companyId, tenantId, followMeD
                                     count++;
                                     if(count === length)
                                     {
+                                        redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                                         callback(null, true);
                                     }
                                 }
@@ -547,11 +560,13 @@ var AddFollowMeDB = function(reqId, userUuid, companyId, tenantId, followMeData,
 
                                                                         followMeConfig.setDestinationUser(dstUser).then(function(rs)
                                                                         {
+                                                                            redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                                                                             logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with Destination user Uuid PGSQL query sucess', reqId);
                                                                             callback(undefined, true, followMeConfig.id);
 
                                                                         }).catch(function(err)
                                                                         {
+                                                                            redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                                                                             logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with Destination User Uuid PGSQL query failed', reqId, err);
                                                                             callback(new Error('FollowMe configuration added but error occurred while assigning it to destination user'), false, followMeConfig.id);
                                                                         });
@@ -559,6 +574,7 @@ var AddFollowMeDB = function(reqId, userUuid, companyId, tenantId, followMeData,
 
                                                                 }).catch(function(err)
                                                                 {
+                                                                    redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                                                                     logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with PBXUser Uuid PGSQL query failed', reqId, err);
                                                                     callback(new Error('FollowMe configuration added but error occurred while assigning it to user'), false, followMeConfig.id);
                                                                 });
@@ -617,6 +633,7 @@ var AddFollowMeDB = function(reqId, userUuid, companyId, tenantId, followMeData,
 
                                     followMeConfig.setPBXUser(pbxUser).then(function(setRes)
                                     {
+                                        redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                                         logger.error('[DVP-PBXService.AddFollowMeDB] - [%s] - Update Follow Me record with PBXUser Uuid PGSQL query sucess', reqId);
                                         callback(undefined, true, followMeConfig.id);
                                     }).catch(function(err)
@@ -726,11 +743,13 @@ var AddForwardingDB = function(reqId, userUuid, companyId, tenantId, fwdConfig, 
 
                                 fwdConfig.setPBXUser(pbxUser).then(function(updateRes)
                                 {
+                                    redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                                     logger.error('[DVP-PBXService.AddForwardingDB] - [%s] - Update Forward record with PBXUser Uuid PGSQL query sucess', reqId);
                                     callback(undefined, true, fwdConfig.id);
 
                                 }).catch(function(err)
                                 {
+                                    redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                                     logger.error('[DVP-PBXService.AddForwardingDB] - [%s] - Update Forwarding record with PBXUser Uuid PGSQL query failed', reqId, err);
                                     callback(new Error('Forwarding configuration added but error occurred while assigning it to user'), false, fwdConfig.id);
                                 });
@@ -773,6 +792,10 @@ var DeleteForwardingDB = function(reqId, fwdId, companyId, tenantId, callback)
                 logger.debug('[DVP-PBXService.DeleteForwardingDB] - [%s] - PGSQL Get forwarding by Id query success', reqId);
                 fwdRec.destroy().then(function (result)
                 {
+                    if(fwdRec.PBXUserUuid)
+                    {
+                        redisCacheHandler.addPABXUserToCache(fwdRec.PBXUserUuid, companyId, tenantId);
+                    }
                     logger.debug('[DVP-RuleService.DeleteForwardingDB] PGSQL Delete forwarding query success');
                     callback(undefined, true);
 
@@ -806,6 +829,10 @@ var DeleteFollowMeDB = function(reqId, fmId, companyId, tenantId, callback)
             logger.debug('[DVP-PBXService.DeleteFollowMeDB] - [%s] - PGSQL Get Follow Me by Id query success', reqId);
                 fmRec.destroy().then(function (result)
                 {
+                    if(fmRec.PBXUserUuid)
+                    {
+                        redisCacheHandler.addPABXUserToCache(fmRec.PBXUserUuid, companyId, tenantId);
+                    }
                     logger.debug('[DVP-RuleService.DeleteFollowMeDB] PGSQL Delete pbx user query success');
                     callback(undefined, true);
 
@@ -890,6 +917,7 @@ var UpdatePbxUserDB = function(reqId, userUuid, updateData, companyId, tenantId,
                     logger.debug('[DVP-PBXService.UpdatePbxUserDB] - [%s] - PGSQL Get PBX User query success', reqId);
                     pbxUserToUpdate.updateAttributes(updateData).then(function(updateResult)
                     {
+                        redisCacheHandler.addPABXUserToCache(userUuid, companyId, tenantId);
                         logger.debug('[DVP-PBXService.UpdatePbxUserDB] - [%s] - PGSQL Update PBX User query success', reqId);
                         callback(undefined, true);
                     })
@@ -926,6 +954,7 @@ var AddPbxUserDB = function(reqId, pbxUserData, callback)
             .save()
             .then(function (resp)
             {
+                redisCacheHandler.addPABXUserToCache(pbxUserData.UserUuid, pbxUserData.CompanyId, pbxUserData.TenantId);
                 logger.debug('[DVP-PBXService.AddPbxUserDB] - [%s] - PGSQL query success', reqId);
                 callback(undefined, true);
 
@@ -952,6 +981,7 @@ var DeletePbxUserDB = function(reqId, pbxUserUuid, companyId, tenantId, callback
         {
             userRec.destroy().then(function (result)
                 {
+                    redisCacheHandler.removePABXUserFromCache(pbxUserUuid, companyId, tenantId);
                     logger.debug('[DVP-RuleService.DeletePbxUserDB] PGSQL Delete pbx user query success');
                     callback(undefined, true);
 
@@ -989,6 +1019,8 @@ var AddFeatureCodesDB = function(reqId, featureCodeProfile, companyId, tenantId,
 
                     featureCodeTemplate.updateAttributes({PickUp: featureCodeProfile.PickUp, Intercept: featureCodeProfile.Intercept, Park: featureCodeProfile.Park, VoiceMail: featureCodeProfile.VoiceMail, Barge: featureCodeProfile.Barge}).then(function (rslt)
                     {
+
+                        redisCacheHandler.addFeatureCodeToCache(rslt, companyId, tenantId);
                         logger.info('[DVP-PBXService.AddFeatureCodesDB] PGSQL Update pbx user with allowed numbers query success');
                         callback(undefined, true);
 
@@ -1008,6 +1040,7 @@ var AddFeatureCodesDB = function(reqId, featureCodeProfile, companyId, tenantId,
                         .save()
                         .then(function (saveRes)
                         {
+                            redisCacheHandler.addFeatureCodeToCache(saveRes, companyId, tenantId);
                             logger.debug('[DVP-PBXService.AddFeatureCodesDB] - [%s] - PGSQL query success', reqId);
                             callback(undefined, true);
 
@@ -1041,6 +1074,10 @@ var DeletePbxUserTemplateDB = function(reqId, templateId, companyId, tenantId, c
         {
             userTempRec.destroy().then(function (result)
                 {
+                    if(userTempRec && userTempRec.PBXUserUuid)
+                    {
+                        redisCacheHandler.addPABXUserToCache(userTempRec.PBXUserUuid, companyId, tenantId);
+                    }
                     logger.debug('[DVP-RuleService.DeletePbxUserTemplateDB] PGSQL Delete pbx user template query success');
                     callback(undefined, true);
 
@@ -1092,6 +1129,7 @@ var AddPbxUserTemplateDB = function(reqId, pbxUserUuid, pbxUserTemplate, company
             .save()
             .then(function (saveRes)
             {
+                redisCacheHandler.addPABXUserToCache(pbxUserUuid, companyId, tenantId);
                 logger.debug('[DVP-PBXService.AddPbxUserTemplateDB] - [%s] - PGSQL query success', reqId);
 
 
@@ -1332,6 +1370,8 @@ var UnAssignTemplateFromUserDB = function(reqId, pbxUserUuid, companyId, tenantI
                     logger.debug('[DVP-PBXService.UnAssignTemplateFromUserDB] - [%s] - PGSQL Get Template query success', reqId);
                     pbxUsr.setPBXUserTemplateActive(null).then(function (upresult)
                     {
+                        redisCacheHandler.addPABXUserToCache(pbxUserUuid, companyId, tenantId);
+
                         logger.debug('[DVP-PBXService.UnAssignTemplateFromUserDB] - [%s] - PGSQL Update pbx user with template id query success', reqId);
                         callback(undefined, true);
 
@@ -1383,6 +1423,7 @@ var AssignTemplateToUserDB = function(reqId, pbxUserUuid, pbxTemplateId, company
                                 logger.debug('[DVP-PBXService.AssignTemplateToUserDB] - [%s] - PGSQL Get Template query success', reqId);
                                 pbxUsr.setPBXUserTemplateActive(pbxUsrTemp).then(function (result)
                                 {
+                                    redisCacheHandler.addPABXUserToCache(pbxUserUuid, companyId, tenantId);
                                     logger.debug('[DVP-PBXService.AssignTemplateToUserDB] - [%s] - PGSQL Update pbx user with template id query success', reqId);
                                     callback(undefined, true);
 
