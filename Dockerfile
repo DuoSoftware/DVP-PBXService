@@ -8,7 +8,8 @@
 #EXPOSE 8820
 
 FROM node:5.10.0
-RUN git clone git://github.com/DuoSoftware/DVP-PBXService.git /usr/local/src/pbxservice
+ARG VERSION_TAG
+RUN git clone -b $VERSION_TAG https://github.com/DuoSoftware/DVP-PBXService.git /usr/local/src/pbxservice
 RUN cd /usr/local/src/pbxservice;
 WORKDIR /usr/local/src/pbxservice
 RUN npm install
