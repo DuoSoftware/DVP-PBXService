@@ -12,6 +12,7 @@ var extApi = require('./PbxExternalApiAccess.js');
 var underscore = require('underscore');
 var xmlBuilder = require('./XmlDialplanBuilder.js');
 var moment = require('moment');
+var momentTz = require('moment-timezone');
 var jwt = require('restify-jwt');
 var secret = require('dvp-common/Authentication/Secret.js');
 var authorization = require('dvp-common/Authentication/Authorization.js');
@@ -409,7 +410,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                         if (pbxDetails.PersonalGreetingEnabled && pbxDetails.TimeZone)
                         {
                             var utcTime = new Date().toISOString();
-                            var localTime = moment(utcTime).utcOffset(pbxDetails.TimeZone);
+                            var localTime = momentTz(utcTime).tz(pbxDetails.TimeZone);
                             var hours = localTime.hour();
 
                             hours = (hours + 24 - 2) % 24;
@@ -528,7 +529,7 @@ server.post('/DVP/API/:version/PBXService/GeneratePBXConfig', authorization({res
                                         if (pbxDetails.PersonalGreetingEnabled && pbxDetails.TimeZone)
                                         {
                                             var utcTime = new Date().toISOString();
-                                            var localTime = moment(utcTime).utcOffset(pbxDetails.TimeZone);
+                                            var localTime = momentTz(utcTime).tz(pbxDetails.TimeZone);
                                             var hours = localTime.hour();
 
                                             hours = (hours + 24 - 2) % 24;
