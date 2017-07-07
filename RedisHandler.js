@@ -170,16 +170,9 @@ var PublishToRedis = function(pattern, message, callback)
 {
     try
     {
-        if(client.connected)
-        {
-            var result = client.publish(pattern, message);
+       var result = client.publish(pattern, message);
             logger.debug('[DVP-DynamicConfigurationGenerator.SetObjectWithExpire] - REDIS SUCCESS');
             callback(undefined, true);
-        }
-        else
-        {
-            callback(new Error('REDIS CLIENT DISCONNECTED'), false);
-        }
 
 
     }
@@ -193,9 +186,7 @@ var GetFromSet = function(setName, callback)
 {
     try
     {
-        if(client.connected)
-        {
-            client.smembers(setName).keys("*", function (err, setValues)
+       client.smembers(setName).keys("*", function (err, setValues)
             {
                 if(err)
                 {
@@ -207,11 +198,6 @@ var GetFromSet = function(setName, callback)
                 }
                 callback(err, setValues);
             });
-        }
-        else
-        {
-            callback(new Error('REDIS CLIENT DISCONNECTED'), undefined);
-        }
 
 
     }
