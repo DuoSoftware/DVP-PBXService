@@ -1,11 +1,11 @@
 module.exports = {
   "DB": {
     "Type":"postgres",
-    "User":"duo",
-    "Password":"DuoS123",
+    "User":"",
+    "Password":"",
     "Port":5432,
-    "Host":"104.236.231.11",
-    "Database":"duo"
+    "Host":"",
+    "Database":""
   },
 
   "Host":{
@@ -17,13 +17,13 @@ module.exports = {
   "Redis":
   {
     "mode":"sentinel",//instance, cluster, sentinel
-    "ip": "45.55.142.207",
+    "ip": "",
     "port": 6389,
-    "user": "duo",
-    "password": "DuoS123",
+    "user": "",
+    "password": "",
     "db": 7,
     "sentinels":{
-      "hosts": "138.197.90.92,45.55.205.92,138.197.90.92",
+      "hosts": "",
       "port":16389,
       "name":"redis-cluster"
     }
@@ -34,13 +34,13 @@ module.exports = {
   "Security":
   {
 
-    "ip" : "45.55.142.207",
+    "ip" : "",
     "port": 6389,
-    "user": "duo",
-    "password": "DuoS123",
+    "user": "",
+    "password": "",
     "mode":"sentinel",//instance, cluster, sentinel
     "sentinels":{
-      "hosts": "138.197.90.92,45.55.205.92,138.197.90.92",
+      "hosts": "",
       "port":16389,
       "name":"redis-cluster"
     }
@@ -49,10 +49,10 @@ module.exports = {
   "Services":
   {
 
-    "fileServiceHost": "fileservice.104.131.67.21.xip.io",
+    "fileServiceHost": "",
     "fileServicePort": 8081,
     "fileServiceVersion":"6.0",
-    "sipUacServiceHost": "sipuserendpointservice.104.131.67.21.xip.io",
+    "sipUacServiceHost": "",
     "sipUacServicePort": 8085,
     "sipUacServiceVersion": "1.0.0.0"
 
